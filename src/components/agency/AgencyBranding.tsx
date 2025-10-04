@@ -12,10 +12,10 @@ export default function AgencyBranding() {
   const { agencyId, branding } = useAppSelector((state) => state.agency);
 
   const [formData, setFormData] = useState({
-    logo: branding?.logo || "",
+    logo: branding?.logoUrl || "",
     primaryColor: branding?.primaryColor || "#7E22CE",
     secondaryColor: branding?.secondaryColor || "#9333EA",
-    customDomain: branding?.customDomain || "",
+    customDomain: branding?.domainName || "",
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -41,10 +41,10 @@ export default function AgencyBranding() {
 
       // 🔸 Update local form state
       setFormData({
-        logo: data.branding?.logo || "",
-        primaryColor: data.branding?.primaryColor || "#7E22CE",
-        secondaryColor: data.branding?.secondaryColor || "#9333EA",
-        customDomain: data.branding?.customDomain || "",
+        logo: data?.logoUrl || "",
+        primaryColor: data?.primaryColor || "#7E22CE",
+        secondaryColor: data?.secondaryColor || "#9333EA",
+        customDomain: data?.domainName || "",
       });
     } catch (error) {
       console.error("Error fetching branding:", error);

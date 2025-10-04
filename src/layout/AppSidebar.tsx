@@ -17,6 +17,7 @@ import {
   PlugInIcon,
   TableIcon,
 } from "../icons/index";
+import { useAppSelector } from "@/redux/hooks";
 
 type NavItem = {
   name: string;
@@ -95,7 +96,8 @@ interface AppSidebarProps {
 const AppSidebar: React.FC<AppSidebarProps> = ({ userType }) => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
-
+const {agencyName} = useAppSelector(state=>state.agency)
+const {agencyName:fromClient} = useAppSelector(state=>state.client)
   // Get user type from localStorage if not provided as prop
   const [currentUserType, setCurrentUserType] = useState<string | null>(userType || null);
 
@@ -376,28 +378,14 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ userType }) => {
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-              <Image
-                className="dark:hidden"
-                src="/images/logo/logo.png"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-              <Image
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.png"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
+  <span className="text-lg font-semibold text-gray-800 dark:text-white/90">
+    {agencyName || fromClient || "Agency"}
+  </span>
             </>
           ) : (
-            <Image
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+  <span className="text-lg font-semibold text-gray-800 dark:text-white/90">
+    {agencyName || fromClient || "Agency"}
+  </span>
           )}
         </Link>
       </div>

@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/hooks";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -14,7 +15,8 @@ const AppHeader: React.FC = () => {
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-
+const {agencyName} = useAppSelector(state=>state.agency)
+const {agencyName:fromClient} = useAppSelector(state=>state.client)
   // Check if user exists in localStorage
   useEffect(() => {
     const checkUser = () => {
@@ -130,23 +132,11 @@ const AppHeader: React.FC = () => {
             {/* Cross Icon */}
           </button>
 
-          <Link href="/" className="lg:hidden">
-            <Image
-              width={154}
-              height={32}
-              className="dark:hidden"
-              src="./images/logo/logo.svg"
-              alt="Logo"
-            />
-            <Image
-              width={154}
-              height={32}
-              className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
-              alt="Logo"
-            />
-          </Link>
-
+        <Link href="/" className="lg:hidden">
+  <span className="text-lg font-semibold text-gray-800 dark:text-white/90">
+    {agencyName || fromClient || "Agency"}
+  </span>
+</Link>
           <button
             onClick={toggleApplicationMenu}
             className="flex items-center justify-center w-10 h-10 text-gray-700 rounded-lg z-99999 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden"

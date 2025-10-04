@@ -74,6 +74,12 @@ export const useUserData = (): UserData => {
           email: agencyData.email,
           subscription: agencyData.subscription,
           clients: agencyData.clients || [],
+          branding:{
+            logo:agencyData.logoUrl,
+            domainName:agencyData.domainName,
+            primaryColor:agencyData.primaryColor,
+            secondaryColor:agencyData.secondaryColor
+          }
         })
       );
     };

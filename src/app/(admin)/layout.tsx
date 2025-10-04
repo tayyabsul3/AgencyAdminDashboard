@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import Providers from "@/redux/Provider";
 import { Toaster } from "sonner";
 import AgencyProvider from "@/components/AgencyProvider";
+import AuthGuard from "@/hooks/useAuthGuard";
 export default function AdminLayout({
   children,
 }: {
@@ -37,6 +38,7 @@ export default function AdminLayout({
       {/* Sidebar and Backdrop */}
       <Providers>
         {/* <AgencyProvider> */}
+<AuthGuard>
 
 
 
@@ -52,6 +54,9 @@ export default function AdminLayout({
         {/* Page Content */}
         <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
       </div>
+</AuthGuard>
+
+
         {/* </AgencyProvider> */}
 
       </Providers>

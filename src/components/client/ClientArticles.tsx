@@ -193,92 +193,128 @@ const updateFirestoreData = async (): Promise<boolean> => {
     );
   }
 
-  return (
-    <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 p-6">
-      {/* Header Section */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
-            Article Generation
-          </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            Generate AI-powered articles for your content needs
-          </p>
+return (
+  <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg">
+    {/* Header Section */}
+    <div className="flex justify-between items-center mb-8">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-3">
+          Article Generation
+        </h1>
+        <p className="text-gray-600 text-lg">
+          Generate AI-powered articles for your content needs
+        </p>
+      </div>
+      <button
+        onClick={openModal}
+        disabled={availableCredits <= 0}
+        className="px-8 py-4 text-white font-bold rounded-xl transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+        style={{
+          background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+          boxShadow: '0 8px 25px rgba(76, 110, 245, 0.4)'
+        }}
+      >
+        Generate Article +
+      </button>
+    </div>
+
+    {/* Stats Section */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-200">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+            <span className="text-white font-bold text-lg">💎</span>
+          </div>
+          <div>
+            <p className="text-gray-600 font-bold">Available Credits</p>
+            <p className="text-3xl font-bold text-gray-900">
+              {availableCredits}
+            </p>
+          </div>
         </div>
-        <Button
-          onClick={openModal}
-          className="rounded-full bg-brand-500 hover:bg-brand-600 px-5 py-2 text-white"
-          disabled={availableCredits <= 0}
-        >
-          Generate Article +
-        </Button>
       </div>
 
-      {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">Available Credits</p>
-          <p className="text-2xl font-semibold text-gray-800 dark:text-white/90">
-            {availableCredits}
-          </p>
-        </div>
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">Articles Generated</p>
-          <p className="text-2xl font-semibold text-gray-800 dark:text-white/90">
-            {getArticlesGenerated()}
-          </p>
-        </div>
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">Status</p>
-          <p className="text-2xl font-semibold text-green-600 dark:text-green-400">
-            {availableCredits > 0 ? "Active" : "No Credits"}
-          </p>
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+            <span className="text-white font-bold text-lg">📊</span>
+          </div>
+          <div>
+            <p className="text-gray-600 font-bold">Articles Generated</p>
+            <p className="text-3xl font-bold text-gray-900">
+              {getArticlesGenerated()}
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Articles Table */}
+      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-200">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center">
+            <span className="text-white font-bold text-lg">🚀</span>
+          </div>
+          <div>
+            <p className="text-gray-600 font-bold">Status</p>
+            <p className={`text-2xl font-bold ${availableCredits > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {availableCredits > 0 ? "Active" : "No Credits"}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Articles Table */}
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-left">
+        <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-200 dark:border-gray-700">
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Title</th>
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Date Generated</th>
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="px-6 py-4 text-left font-bold text-gray-900 text-lg">Article Title</th>
+              <th className="px-6 py-4 text-left font-bold text-gray-900 text-lg">Date Generated</th>
+              <th className="px-6 py-4 text-left font-bold text-gray-900 text-lg">Status</th>
+              <th className="px-6 py-4 text-left font-bold text-gray-900 text-lg">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200">
             {articles.map((article) => (
-              <tr key={article.id} className="border-b border-gray-200 dark:border-gray-700">
-                <td className="px-4 py-3 text-gray-800 dark:text-white/90">{article.title}</td>
-                <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
-                  {article.createdAt.toLocaleDateString()}
+              <tr key={article.id} className="hover:bg-gray-50 transition-colors">
+                <td className="px-6 py-4">
+                  <p className="font-semibold text-gray-900">{article.title}</p>
                 </td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                <td className="px-6 py-4 text-gray-600">
+                  {article.createdAt.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  })}
+                </td>
+                <td className="px-6 py-4">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full font-bold bg-green-100 text-green-700">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
                     {article.status}
                   </span>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4">
                   <button
-                    onClick={() => {
-                      // Implement view article functionality
-                      toast.info(`Viewing: ${article.title}`);
-                    }}
-                    className="text-brand-500 hover:text-brand-600 dark:text-brand-400 text-sm"
+                    onClick={() => toast.info(`Viewing: ${article.title}`)}
+                    className="text-blue-600 hover:text-blue-700 font-bold transition-colors"
                   >
-                    View
+                    View Article
                   </button>
                 </td>
               </tr>
             ))}
             {articles.length === 0 && (
               <tr>
-                <td colSpan={4} className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <td colSpan={4} className="px-6 py-16 text-center">
                   <div className="flex flex-col items-center">
-                    <div className="text-4xl mb-2">📝</div>
-                    <p>No articles generated yet</p>
-                    <p className="text-sm mt-1">Use your credits to generate your first article</p>
+                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                      <span className="text-3xl">📝</span>
+                    </div>
+                    <p className="text-gray-900 font-bold text-xl mb-2">No Articles Yet</p>
+                    <p className="text-gray-600">
+                      Use your credits to generate your first article
+                    </p>
                   </div>
                 </td>
               </tr>
@@ -286,68 +322,95 @@ const updateFirestoreData = async (): Promise<boolean> => {
           </tbody>
         </table>
       </div>
+    </div>
 
-      {/* Generate Article Modal */}
-      <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[600px] p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white/90">
-          Generate New Article
-        </h3>
-        
-        <div className="space-y-4">
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-2">Credit Information</h4>
-            <p className="text-sm text-blue-700 dark:text-blue-400">
-              This will use 1 credit from your available {availableCredits} credits.
-            </p>
+    {/* Generate Article Modal */}
+    <Modal isOpen={isOpen} onClose={closeModal} className="max-w-2xl p-8">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-2xl font-bold text-gray-900">Generate New Article</h3>
+          <p className="text-gray-600">Create AI-powered content for your needs</p>
+        </div>
+      </div>
+      
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <span className="text-blue-600 font-bold text-lg">💎</span>
+            </div>
+            <div>
+              <h4 className="font-bold text-blue-800 mb-1">Credit Information</h4>
+              <p className="text-blue-700">
+                This will use 1 credit from your available {availableCredits} credits.
+              </p>
+            </div>
           </div>
+        </div>
 
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-            <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2">Article Details</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              A mock article will be generated using Lorem Ipsum text for demonstration purposes.
-              In a real implementation, this would connect to an AI content generation service.
-            </p>
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+              <span className="text-gray-600 font-bold text-lg">📄</span>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-1">Article Details</h4>
+              <p className="text-gray-700">
+                A mock article will be generated using Lorem Ipsum text for demonstration purposes.
+                In a real implementation, this would connect to an AI content generation service.
+              </p>
+            </div>
           </div>
+        </div>
 
-          {isGenerating && (
-            <div className="flex items-center justify-center py-4">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-gray-600 dark:text-gray-400">
-                  Generating article and updating records...
-                </span>
+        {isGenerating && (
+          <div className="flex items-center justify-center py-6">
+            <div className="flex items-center gap-4">
+              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              <div>
+                <p className="font-bold text-gray-900">Generating Article</p>
+                <p className="text-gray-600">Updating records and creating content...</p>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
 
-        <div className="flex justify-end gap-3 mt-6">
-          <Button
-            onClick={closeModal}
-            variant="outline"
-            className="rounded-full border border-gray-300 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-            disabled={isGenerating}
-          >
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleGenerateArticle}
-            className="rounded-full bg-brand-500 hover:bg-brand-600 text-white flex items-center gap-2"
-            disabled={isGenerating || availableCredits <= 0}
-          >
-            {isGenerating ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Processing...
-              </>
-            ) : (
-              "Generate Article (1 Credit)"
-            )}
-          </Button>
-        </div>
-      </Modal>
-    </div>
-  );
+      <div className="flex gap-4 mt-8">
+        <button
+          onClick={closeModal}
+          disabled={isGenerating}
+          className="flex-1 px-6 py-4 border-2 border-gray-300 text-gray-700 bg-white rounded-xl font-bold hover:bg-gray-50 transition-all duration-200 disabled:opacity-50"
+        >
+          Cancel
+        </button>
+        <button 
+          onClick={handleGenerateArticle}
+          disabled={isGenerating || availableCredits <= 0}
+          className="flex-1 px-6 py-4 text-white rounded-xl font-bold transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+            boxShadow: '0 8px 25px rgba(76, 110, 245, 0.4)'
+          }}
+        >
+          {isGenerating ? (
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Processing...</span>
+            </div>
+          ) : (
+            `Generate Article (1 Credit)`
+          )}
+        </button>
+      </div>
+    </Modal>
+  </div>
+);
 }
 
 

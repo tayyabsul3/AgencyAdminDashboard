@@ -336,218 +336,291 @@ export default function AgencySeats() {
     );
   }
 
-  return (
-    <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-4">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
-            Seats Management
-          </h2>
-          <Button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="rounded-full border border-gray-300 bg-brand-500 text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 flex items-center gap-2"
-            size="sm"
-          >
-            {isRefreshing ? (
-              <>
-                <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                Refreshing...
-              </>
-            ) : (
-              "Refresh"
-            )}
-          </Button>
-        </div>
-        <Button
-          onClick={handleInviteClick}
-          className="rounded-full bg-brand-500 hover:bg-brand-600 px-5 py-2 text-white"
-          disabled={usedSeats >= totalSeats}
+ return (
+  <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+    {/* Header */}
+    <div className="flex justify-between items-center mb-8">
+      <div className="flex items-center gap-4">
+        <h2 className="text-2xl font-bold text-gray-900">
+          Client Seats
+        </h2>
+        <button
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className="flex items-center gap-2 px-4 py-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors disabled:opacity-50"
         >
-          Invite Client +
-        </Button>
+          {isRefreshing ? (
+            <>
+              <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              Refreshing...
+            </>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Refresh
+            </>
+          )}
+        </button>
       </div>
+      <button
+        onClick={handleInviteClick}
+        className="px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        disabled={usedSeats >= totalSeats}
+        style={{
+          background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+          boxShadow: '0 4px 12px rgba(76, 110, 245, 0.3)'
+        }}
+      >
+        Invite Client +
+      </button>
+    </div>
 
-      {/* Seat Usage Summary */}
-      <div className="mb-6">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-          Seat Usage: {usedSeats} of {totalSeats} seats filled
-        </p>
-        <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-          <div 
-            className="bg-brand-500 h-2.5 rounded-full transition-all duration-300" 
-            style={{ width: `${totalSeats > 0 ? (usedSeats / totalSeats) * 100 : 0}%` }}
-          ></div>
+    {/* Seat Usage Summary */}
+    <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-semibold text-gray-900">Seat Usage</h3>
+        <div className="text-right">
+          <div className="font-bold text-gray-900 text-lg">{usedSeats} / {totalSeats}</div>
+          <div className="text-gray-600">seats used</div>
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+      </div>
+      
+      <div className="w-full bg-gray-200 rounded-full h-3">
+        <div 
+          className="h-3 rounded-full transition-all duration-500"
+          style={{ 
+            width: `${totalSeats > 0 ? (usedSeats / totalSeats) * 100 : 0}%`,
+            background: 'linear-gradient(90deg, #627FFF 0%, #23D2EE 100%)'
+          }}
+        ></div>
+      </div>
+      
+      <div className="flex justify-between items-center mt-3">
+        <div className="text-gray-600 font-medium">
           {availableSeats} seats available
-        </p>
-      </div>
-
-      {/* All Clients Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b border-gray-200 dark:border-gray-700">
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Name</th>
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Email</th>
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
-              <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients?.map((client: Client, index: number) => (
-              <tr key={index} className="border-b border-gray-200 dark:border-gray-700">
-                <td className="px-4 py-3 text-gray-800 dark:text-white/90">{client.name}</td>
-                <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{client.email}</td>
-                <td className="px-4 py-3">
-                  <span className={`px-2 py-1 text-xs rounded-full ${getStatusClass(client.status)}`}>
-                    {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  {client.status !== "archived" ? (
-    <button
-      onClick={() => openArchiveModal(client)}
-      disabled={archivingClient === client.email}
-      className="text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-    >
-      {archivingClient === client.email ? (
-        <>
-          <FaSpinner className="w-4 h-4 animate-spin" />
-          Archiving...
-        </>
-      ) : (
-        "Archive"
-      )}
-    </button>
-  ) : (
-    <span className="text-gray-400 text-sm">Archived</span>
-  )}
-                </td>
-              </tr>
-            ))}
-            {(!clients || clients.length === 0) && (
-              <tr>
-                <td colSpan={4} className="text-center py-6 text-gray-500 dark:text-gray-400">
-                  No clients found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Invite Modal */}
-      <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[500px] p-6">
-        {modalType === 'invite' && (
-          <div>
-           <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white/90">
-          Invite Client
-        </h3>
-        <div className="space-y-4">
-          <div>
-            <Label>Client Name</Label>
-            <Input
-              type="text"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-              placeholder="Enter client name"
-              disabled={isInviting}
-            />
-          </div>
-          <div>
-            <Label>Client Email</Label>
-            <Input
-              type="email"
-              value={clientEmail}
-              onChange={(e) => setClientEmail(e.target.value)}
-              placeholder="Enter client email"
-              disabled={isInviting}
-            />
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            <p>Seats: {usedSeats + 1} of {totalSeats} will be used</p>
-            {usedSeats + 1 > totalSeats && (
-              <p className="text-red-500">Not enough seats available!</p>
-            )}
-          </div>
         </div>
-
-        <div className="flex justify-end gap-3 mt-6">
-          <Button
-            onClick={closeModal}
-            variant="outline"
-
-            className="rounded-full border border-gray-300 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-            disabled={isInviting}
-          >
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleInvite} 
-            className="rounded-full bg-brand-500 hover:bg-brand-600 text-white flex items-center gap-2"
-            disabled={usedSeats >= totalSeats || isInviting}
-          >
-            {isInviting ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Creating Invite...
-              </>
-            ) : (
-              "Invite"
-            )}
-          </Button>
-        </div>
+        {usedSeats >= totalSeats && (
+          <div className="text-red-600 font-semibold flex items-center gap-2">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            Seat limit reached
           </div>
         )}
+      </div>
+    </div>
 
-        {modalType === 'archive' && selectedClient && (
-          <div className="text-center">
-            {/* Archive confirmation content */}
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
-              <svg className="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+    {/* Clients Table */}
+    <div className="overflow-hidden rounded-xl border border-gray-200">
+      <table className="w-full">
+        <thead>
+          <tr className="bg-gray-50 border-b border-gray-200">
+            <th className="px-6 py-4 text-left font-semibold text-gray-900">Client Name</th>
+            <th className="px-6 py-4 text-left font-semibold text-gray-900">Email Address</th>
+            <th className="px-6 py-4 text-left font-semibold text-gray-900">Status</th>
+            <th className="px-6 py-4 text-left font-semibold text-gray-900">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {clients?.map((client: Client, index: number) => (
+            <tr key={index} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
+              <td className="px-6 py-4 text-gray-900 font-medium">{client.name}</td>
+              <td className="px-6 py-4 text-gray-700">{client.email}</td>
+              <td className="px-6 py-4">
+                <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${
+                  client.status === "active" 
+                    ? "bg-green-100 text-green-700" 
+                    : client.status === "pending"
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-gray-100 text-gray-600"
+                }`}>
+                  {client.status === "active" && (
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                  )}
+                  {client.status === "pending" && (
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                  )}
+                  {client.status === "archived" && (
+                    <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                  )}
+                  {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
+                </span>
+              </td>
+              <td className="px-6 py-4">
+                {client.status !== "archived" ? (
+                  <button
+                    onClick={() => openArchiveModal(client)}
+                    disabled={archivingClient === client.email}
+                    className="flex items-center gap-2 px-4 py-2 text-red-600 bg-red-50 rounded-lg border border-red-200 hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  >
+                    {archivingClient === client.email ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                        Archiving...
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Archive
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <span className="text-gray-400 font-medium">Archived</span>
+                )}
+              </td>
+            </tr>
+          ))}
+          {(!clients || clients.length === 0) && (
+            <tr>
+              <td colSpan={4} className="px-6 py-12 text-center">
+                <div className="flex flex-col items-center justify-center text-gray-500">
+                  <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <div className="font-semibold text-gray-900 mb-2">No Clients Found</div>
+                  <div className="text-gray-600">Get started by inviting your first client</div>
+                </div>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+
+    {/* Invite Modal */}
+    <Modal isOpen={isOpen} onClose={closeModal} className="max-w-lg p-6">
+      {modalType === 'invite' && (
+        <div>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
               </svg>
             </div>
-            
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-2">
-              Archive Client
-            </h3>
-            
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Are you sure you want to archive <strong>{selectedClient.name}</strong>? 
-              This will free up one seat and the client will lose access.
-            </p>
-
-            <div className="flex justify-center gap-3">
-              <Button
-                onClick={closeAllModals}
-                variant="outline"
-                className="rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-                disabled={archivingClient !== null}
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={handleArchive}
-                className="rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center gap-2"
-                disabled={archivingClient !== null}
-              >
-                {archivingClient ? (
-                  <>
-                    <FaSpinner className="w-4 h-4 animate-spin" />
-                    Archiving...
-                  </>
-                ) : (
-                  "Yes, Archive"
-                )}
-              </Button>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">Invite Client</h3>
+              <p className="text-gray-600">Add a new client to your agency</p>
             </div>
           </div>
-        )}
-        
-      </Modal>
-    </div>
-  );
+
+          <div className="space-y-4">
+            <div>
+              <label className="block font-semibold text-gray-700 mb-2">Client Name</label>
+              <input
+                type="text"
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+                placeholder="Enter client full name"
+                disabled={isInviting}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block font-semibold text-gray-700 mb-2">Email Address</label>
+              <input
+                type="email"
+                value={clientEmail}
+                onChange={(e) => setClientEmail(e.target.value)}
+                placeholder="Enter client email address"
+                disabled={isInviting}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              />
+            </div>
+            
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex justify-between items-center font-medium text-gray-900">
+                <span>Seat Usage</span>
+                <span>{usedSeats + 1} of {totalSeats}</span>
+              </div>
+              {usedSeats + 1 > totalSeats && (
+                <div className="flex items-center gap-2 text-red-600 font-medium mt-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                  Not enough seats available
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex gap-3 mt-8">
+            <button
+              onClick={closeModal}
+              disabled={isInviting}
+              className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={handleInvite} 
+              disabled={usedSeats >= totalSeats || isInviting}
+              className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none"
+              style={{
+                background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+                boxShadow: '0 4px 12px rgba(76, 110, 245, 0.3)'
+              }}
+            >
+              {isInviting ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Creating Invite...
+                </div>
+              ) : (
+                "Send Invitation"
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {modalType === 'archive' && selectedClient && (
+        <div className="text-center">
+          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </div>
+          
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Archive Client</h3>
+          
+          <p className="text-gray-600 mb-2">
+            Are you sure you want to archive <strong>{selectedClient.name}</strong>?
+          </p>
+          <p className="text-gray-600 mb-6">
+            This will free up one seat and the client will lose access to the platform.
+          </p>
+
+          <div className="flex gap-3">
+            <button
+              onClick={closeAllModals}
+              disabled={archivingClient !== null}
+              className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={handleArchive}
+              disabled={archivingClient !== null}
+              className="flex-1 px-6 py-3 text-white bg-red-600 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {archivingClient ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Archiving...
+                </>
+              ) : (
+                "Yes, Archive"
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+    </Modal>
+  </div>
+);
 }

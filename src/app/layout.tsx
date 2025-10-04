@@ -6,10 +6,13 @@ import { SidebarProvider } from "@/context/SidebarContext";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Your App Name",
-  description: "Your app description",
-};
+export const metadata = {
+  title: 'QueryFuel - AI-Powered Content Creation',
+  description: 'Transform your expertise into professional blog articles with AI. From interview to published content in minutes, powered by GPT-4, DALL-E, and advanced AI tools.',
+  icons: {
+    icon: './favicon.svg',
+  },
+}
 
 export default function RootLayout({
   children,

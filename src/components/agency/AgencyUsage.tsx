@@ -149,420 +149,461 @@ function AgencyClientManagement({ agencyData, userType }: AgencyClientManagement
     );
   }
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
+ return (
+  <div className="space-y-8">
+    {/* Header */}
+    <div className="flex justify-between items-center">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Client Management
+        </h1>
+        <p className="text-gray-600">
+          Monitor client usage and manage your agency credits
+        </p>
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-semibold">
+          {subscription.tier}
+        </div>
+        <button
+          onClick={openAddCreditsModal}
+          className="px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02]"
+          style={{
+            background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+            boxShadow: '0 4px 12px rgba(76, 110, 245, 0.3)'
+          }}
+        >
+          Buy Credits +
+        </button>
+      </div>
+    </div>
+
+    {/* Agency Overview Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-600 font-medium">Total Clients</p>
+            <p className="text-3xl font-bold text-gray-900 mt-2">
+              {clients.length}
+            </p>
+            <p className="text-gray-500 mt-1">
+              {usedSeats}/{subscription.seats} seats used
+            </p>
+          </div>
+          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+            <span className="text-white text-lg">👥</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-600 font-medium">Articles Generated</p>
+            <p className="text-3xl font-bold text-gray-900 mt-2">
+              {totalArticlesGenerated}
+            </p>
+            <p className="text-gray-500 mt-1">
+              Across all clients
+            </p>
+          </div>
+          <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+            <span className="text-white text-lg">📊</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-600 font-medium">Credits Used</p>
+            <p className="text-3xl font-bold text-gray-900 mt-2">
+              {totalCreditsUsed}
+            </p>
+            <p className="text-gray-500 mt-1">
+              1 article = 1 credit
+            </p>
+          </div>
+          <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl flex items-center justify-center">
+            <span className="text-white text-lg">🔥</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-600 font-medium">Available Credits</p>
+            <p className="text-3xl font-bold text-gray-900 mt-2">
+              {availableCredits}
+            </p>
+            <p className={`font-medium mt-1 ${
+              availableCredits < 10 
+                ? 'text-red-600' 
+                : 'text-gray-500'
+            }`}>
+              {availableCredits < 10 ? 'Low credits' : 'Remaining'}
+            </p>
+          </div>
+          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+            <span className="text-white text-lg">💎</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Subscription Status */}
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white/90">
-            Client Management
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Monitor client usage and manage your agency credits
+          <h3 className="font-bold text-gray-900 text-lg">Subscription Status</h3>
+          <p className="text-gray-600">
+            {subscription.tier} Plan • {subscription.billingCycle} • {subscription.status}
           </p>
         </div>
         <div className="flex gap-3">
-          <div className="px-3 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-full text-sm font-medium">
-            {subscription.tier}
+          <div className={`px-4 py-2 rounded-lg font-semibold ${
+            subscription.status === 'active' 
+              ? 'bg-green-100 text-green-700' 
+              : subscription.status === 'unpaid'
+              ? 'bg-yellow-100 text-yellow-700'
+              : 'bg-red-100 text-red-700'
+          }`}>
+            {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
           </div>
-          <Button
-            onClick={openAddCreditsModal}
-            className="rounded-full bg-green-500 hover:bg-green-600 px-5 py-2 text-white"
-          >
-            Buy Credits +
-          </Button>
-        </div>
-      </div>
-
-      {/* Agency Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Clients</p>
-              <p className="text-2xl font-semibold text-gray-800 dark:text-white/90 mt-1">
-                {clients.length}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {usedSeats}/{subscription.seats} seats used
-              </p>
-            </div>
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-              <span className="text-2xl">👥</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Articles Generated</p>
-              <p className="text-2xl font-semibold text-gray-800 dark:text-white/90 mt-1">
-                {totalArticlesGenerated}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Across all clients
-              </p>
-            </div>
-            <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
-              <span className="text-2xl">📊</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Credits Used</p>
-              <p className="text-2xl font-semibold text-gray-800 dark:text-white/90 mt-1">
-                {totalCreditsUsed}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                1 article = 1 credit
-              </p>
-            </div>
-            <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-              <span className="text-2xl">🔥</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Available Credits</p>
-              <p className="text-2xl font-semibold text-gray-800 dark:text-white/90 mt-1">
-                {availableCredits}
-              </p>
-              <p className={`text-xs mt-1 ${
-                availableCredits < 10 
-                  ? 'text-red-500 dark:text-red-400' 
-                  : 'text-gray-500 dark:text-gray-400'
-              }`}>
-                {availableCredits < 10 ? 'Low credits' : 'Remaining'}
-              </p>
-            </div>
-            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-              <span className="text-2xl">💎</span>
-            </div>
+          <div className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium">
+            Updated: {formatFirestoreTimestamp(subscription.updatedAt)}
           </div>
         </div>
       </div>
+    </div>
 
-      {/* Subscription Status */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h3 className="font-semibold text-gray-800 dark:text-white/90">Subscription Status</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {subscription.tier} Plan • {subscription.billingCycle} • {subscription.status}
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-              subscription.status === 'active' 
-                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                : subscription.status === 'unpaid'
-                ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-            }`}>
-              {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
-            </div>
-            <div className="px-3 py-1 bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400 rounded-full text-sm font-medium">
-              Updated: {formatFirestoreTimestamp(subscription.updatedAt)}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Search and Filters */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-          <div className="w-full sm:w-64">
-            <Input
+    {/* Search and Filters */}
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div className="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
+        <div className="w-full lg:w-80">
+          <div className="relative">
+            <input
               type="text"
               placeholder="Search clients by name or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             />
-          </div>
-          <div className="flex gap-2">
-            <Button className="rounded-full border border-gray-300 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
-              Active ({clients.filter(c => c.status === 'active').length})
-            </Button>
-            <Button className="rounded-full border border-gray-300 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
-              All Clients ({clients.length})
-            </Button>
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
           </div>
         </div>
+        <div className="flex gap-3">
+          <button className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+            Active ({clients.filter(c => c.status === 'active').length})
+          </button>
+          <button className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+            All Clients ({clients.length})
+          </button>
+        </div>
       </div>
+    </div>
 
-      {/* Clients Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Client</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Articles Generated</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Credits Used</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Joined Date</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredClients.map((client) => (
-                <tr key={client.userId} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                  <td className="px-6 py-4">
-                    <div>
-                      <p className="font-medium text-gray-800 dark:text-white/90">{client.name}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{client.email}</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 font-mono mt-1">
-                        {client.userId.substring(0, 8)}...
-                      </p>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      client.status === 'active' 
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                        : 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'
-                    }`}>
-                      {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-semibold text-gray-800 dark:text-white/90">
-                        {client.articlesGenerated || 0}
-                      </span>
-                      {(client.articlesGenerated || 0) > 0 && (
-                        <span className="text-xs text-green-600 dark:text-green-400">
-                          +{client.articlesGenerated} credits
-                        </span>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-gray-800 dark:text-white/90 font-medium">
+    {/* Clients Table */}
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="px-6 py-4 text-left font-semibold text-gray-900">Client</th>
+              <th className="px-6 py-4 text-left font-semibold text-gray-900">Status</th>
+              <th className="px-6 py-4 text-left font-semibold text-gray-900">Articles</th>
+              <th className="px-6 py-4 text-left font-semibold text-gray-900">Credits Used</th>
+              <th className="px-6 py-4 text-left font-semibold text-gray-900">Joined Date</th>
+              <th className="px-6 py-4 text-left font-semibold text-gray-900">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {filteredClients.map((client) => (
+              <tr key={client.userId} className="hover:bg-gray-50 transition-colors">
+                <td className="px-6 py-4">
+                  <div>
+                    <p className="font-semibold text-gray-900">{client.name}</p>
+                    <p className="text-gray-600">{client.email}</p>
+                    <p className="text-gray-400 font-mono mt-1">
+                      {client.userId.substring(0, 8)}...
+                    </p>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${
+                    client.status === 'active' 
+                      ? 'bg-green-100 text-green-700' 
+                      : 'bg-gray-100 text-gray-600'
+                  }`}>
+                    {client.status === 'active' && (
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                    )}
+                    {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
+                  </span>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-gray-900">
                       {client.articlesGenerated || 0}
                     </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                    {formatFirestoreTimestamp(client.createdAt)}
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleViewClientDetails(client)}
-                      className="text-brand-500 hover:text-brand-600 dark:text-brand-400 text-sm font-medium"
-                    >
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              
-              {filteredClients.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center">
-                    <div className="flex flex-col items-center">
-                      <span className="text-4xl mb-4">👥</span>
-                      <p className="text-gray-500 dark:text-gray-400 text-lg">
-                        {searchTerm ? 'No clients found' : 'No clients yet'}
-                      </p>
-                      <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
-                        {searchTerm ? 'Try adjusting your search terms' : 'Start by inviting clients to your agency'}
-                      </p>
+                    {(client.articlesGenerated || 0) > 0 && (
+                      <span className="text-green-600 font-medium">
+                        +{client.articlesGenerated}
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <span className="text-gray-900 font-bold">
+                    {client.articlesGenerated || 0}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-gray-600">
+                  {formatFirestoreTimestamp(client.createdAt)}
+                </td>
+                <td className="px-6 py-4">
+                  <button
+                    onClick={() => handleViewClientDetails(client)}
+                    className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                  >
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            ))}
+            
+            {filteredClients.length === 0 && (
+              <tr>
+                <td colSpan={6} className="px-6 py-16 text-center">
+                  <div className="flex flex-col items-center">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                      <span className="text-2xl">👥</span>
                     </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                    <p className="text-gray-900 font-semibold text-lg mb-2">
+                      {searchTerm ? 'No clients found' : 'No clients yet'}
+                    </p>
+                    <p className="text-gray-600">
+                      {searchTerm ? 'Try adjusting your search terms' : 'Start by inviting clients to your agency'}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {/* Add Credits Modal */}
+    <Modal isOpen={isAddCreditsOpen} onClose={closeAddCreditsModal} className="max-w-4xl p-8">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+          <span className="text-white text-xl">💎</span>
+        </div>
+        <div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            Buy Additional Credits
+          </h3>
+          <p className="text-gray-600">
+            Purchase credits to continue generating articles for your clients. Current balance: {availableCredits} credits.
+          </p>
         </div>
       </div>
 
-      {/* Add Credits Modal */}
-      <Modal isOpen={isAddCreditsOpen} onClose={closeAddCreditsModal} className="max-w-4xl p-6">
-        <h3 className="text-2xl font-bold text-gray-800 dark:text-white/90 mb-2">
-          Buy Additional Credits
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          Purchase credits to continue generating articles for your clients. Current balance: {availableCredits} credits.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Credit Packages */}
-          <div>
-            <Label className="mb-4 block">Choose a Package</Label>
-            <div className="space-y-3">
-              {getCreditPackages().map((pkg, index) => (
-                <div
-                  key={index}
-                  className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
-                    creditAmount === pkg.credits
-                      ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20 dark:border-brand-400'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-                  } ${pkg.popular ? 'ring-2 ring-blue-500 ring-opacity-50' : ''}`}
-                  onClick={() => setCreditAmount(pkg.credits)}
-                >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold text-gray-800 dark:text-white/90">
-                        {pkg.credits} Credits
-                      </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        ${pkg.price.toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {pkg.popular && (
-                        <span className="px-2 py-1 text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
-                          Popular
-                        </span>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Credit Packages */}
+        <div>
+          <h4 className="font-bold text-gray-900 mb-4">Choose a Package</h4>
+          <div className="space-y-4">
+            {getCreditPackages().map((pkg, index) => (
+              <div
+                key={index}
+                className={`border-2 rounded-xl p-5 cursor-pointer transition-all ${
+                  creditAmount === pkg.credits
+                    ? 'border-blue-500 bg-blue-50 shadow-md'
+                    : 'border-gray-200 hover:border-gray-300'
+                } ${pkg.popular ? 'ring-2 ring-blue-500 ring-opacity-30' : ''}`}
+                onClick={() => setCreditAmount(pkg.credits)}
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-gray-900 text-lg">
+                      {pkg.credits} Credits
+                    </p>
+                    <p className="text-gray-600">
+                      ${pkg.price.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {pkg.popular && (
+                      <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
+                        Popular
+                      </span>
+                    )}
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                      creditAmount === pkg.credits
+                        ? 'border-blue-500 bg-blue-500'
+                        : 'border-gray-300'
+                    }`}>
+                      {creditAmount === pkg.credits && (
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
                       )}
-                      <div className={`w-4 h-4 rounded-full border-2 ${
-                        creditAmount === pkg.credits
-                          ? 'border-brand-500 bg-brand-500'
-                          : 'border-gray-300 dark:border-gray-600'
-                      }`}></div>
                     </div>
                   </div>
-                  {pkg.popular && (
-                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
-                      Best value per credit
-                    </p>
-                  )}
                 </div>
-              ))}
-            </div>
+                {pkg.popular && (
+                  <p className="text-blue-600 font-medium mt-2">
+                    Best value per credit
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
 
-            {/* Custom Amount */}
-            <div className="mt-6">
-              <Label>Or enter custom amount</Label>
-              <Input
-                type="number"
-                min="1"
-                value={creditAmount}
-                onChange={(e) => setCreditAmount(parseInt(e.target.value) || 1)}
-                className="mt-2"
-              />
+          {/* Custom Amount */}
+          <div className="mt-6">
+            <label className="block font-semibold text-gray-900 mb-2">Or enter custom amount</label>
+            <input
+              type="number"
+              min="1"
+              value={creditAmount}
+              onChange={(e) => setCreditAmount(parseInt(e.target.value) || 1)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            />
+          </div>
+        </div>
+
+        {/* Order Summary */}
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
+          <h4 className="font-bold text-gray-900 mb-6 text-lg">Order Summary</h4>
+          
+          <div className="space-y-4 mb-6">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Credits</span>
+              <span className="font-bold text-gray-900">{creditAmount}</span>
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Price per credit</span>
+              <span className="font-bold text-gray-900">
+                ${(creditAmount <= 10 ? 0.99 : creditAmount <= 25 ? 0.92 : creditAmount <= 50 ? 0.80 : creditAmount <= 100 ? 0.75 : 0.72).toFixed(2)}
+              </span>
+            </div>
+            
+            <div className="border-t border-gray-300 pt-4">
+              <div className="flex justify-between items-center text-xl font-bold">
+                <span className="text-gray-900">Total</span>
+                <span className="text-blue-600">
+                  ${(creditAmount * (creditAmount <= 10 ? 0.99 : creditAmount <= 25 ? 0.92 : creditAmount <= 50 ? 0.80 : creditAmount <= 100 ? 0.75 : 0.72)).toFixed(2)}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Order Summary */}
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
-            <h4 className="font-semibold text-gray-800 dark:text-white/90 mb-4">Order Summary</h4>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Credits</span>
-                <span className="font-medium text-gray-800 dark:text-white/90">{creditAmount}</span>
-              </div>
-              
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Price per credit</span>
-                <span className="font-medium text-gray-800 dark:text-white/90">
-                  ${(creditAmount <= 10 ? 0.99 : creditAmount <= 25 ? 0.92 : creditAmount <= 50 ? 0.80 : creditAmount <= 100 ? 0.75 : 0.72).toFixed(2)}
-                </span>
-              </div>
-              
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-                <div className="flex justify-between text-lg font-semibold">
-                  <span className="text-gray-800 dark:text-white/90">Total</span>
-                  <span className="text-brand-500">
-                    ${(creditAmount * (creditAmount <= 10 ? 0.99 : creditAmount <= 25 ? 0.92 : creditAmount <= 50 ? 0.80 : creditAmount <= 100 ? 0.75 : 0.72)).toFixed(2)}
-                  </span>
+          <div className="space-y-4">
+            <button
+              onClick={handleAddCredits}
+              disabled={isProcessing}
+              className="w-full py-4 text-white font-bold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none"
+              style={{
+                background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+                boxShadow: '0 4px 12px rgba(76, 110, 245, 0.3)'
+              }}
+            >
+              {isProcessing ? (
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Processing Payment...
                 </div>
-              </div>
-            </div>
+              ) : (
+                `Buy ${creditAmount} Credits - $${(creditAmount * (creditAmount <= 10 ? 0.99 : creditAmount <= 25 ? 0.92 : creditAmount <= 50 ? 0.80 : creditAmount <= 100 ? 0.75 : 0.72)).toFixed(2)}`
+              )}
+            </button>
+            
+            <p className="text-gray-500 text-center">
+              Secure payment processed by Stripe. Your financial information is encrypted and secure.
+            </p>
+          </div>
+        </div>
+      </div>
+    </Modal>
 
-            <div className="mt-6 space-y-3">
-              <Button
-                onClick={handleAddCredits}
-                className="w-full bg-green-500 hover:bg-green-600 text-white py-3"
-                disabled={isProcessing}
-              >
-                {isProcessing ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Processing Payment...
-                  </div>
-                ) : (
-                  `Buy ${creditAmount} Credits - $${(creditAmount * (creditAmount <= 10 ? 0.99 : creditAmount <= 25 ? 0.92 : creditAmount <= 50 ? 0.80 : creditAmount <= 100 ? 0.75 : 0.72)).toFixed(2)}`
-                )}
-              </Button>
-              
-              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                Secure payment processed by Stripe. Your financial information is encrypted and secure.
+    {/* Client Details Modal */}
+    <Modal isOpen={isClientDetailOpen} onClose={closeClientDetailModal} className="max-w-2xl p-8">
+      {selectedClient && (
+        <>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+              <span className="text-white text-xl font-bold">
+                {selectedClient.name.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                {selectedClient.name}
+              </h3>
+              <p className="text-gray-600">{selectedClient.email}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-5 border border-blue-100">
+              <p className="text-gray-600 font-medium">Articles Generated</p>
+              <p className="text-3xl font-bold text-gray-900 mt-2">
+                {selectedClient.articlesGenerated || 0}
+              </p>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-5 border border-green-100">
+              <p className="text-gray-600 font-medium">Credits Used</p>
+              <p className="text-3xl font-bold text-gray-900 mt-2">
+                {selectedClient.articlesGenerated || 0}
               </p>
             </div>
           </div>
-        </div>
-      </Modal>
 
-      {/* Client Details Modal */}
-      <Modal isOpen={isClientDetailOpen} onClose={closeClientDetailModal} className="max-w-2xl p-6">
-        {selectedClient && (
-          <>
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white/90 mb-2">
-              {selectedClient.name}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{selectedClient.email}</p>
-
-            <div className="grid grid-cols-2 gap-6 mb-6">
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                <p className="text-sm text-gray-500 dark:text-gray-400">Articles Generated</p>
-                <p className="text-2xl font-semibold text-gray-800 dark:text-white/90">
-                  {selectedClient.articlesGenerated || 0}
-                </p>
+          <div className="border-t border-gray-200 pt-6">
+            <h4 className="font-bold text-gray-900 mb-4 text-lg">Client Information</h4>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                <span className="text-gray-600 font-medium">User ID:</span>
+                <span className="font-mono text-gray-900 bg-gray-100 px-3 py-1 rounded-lg">
+                  {selectedClient.userId.substring(0, 12)}...
+                </span>
               </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                <p className="text-sm text-gray-500 dark:text-gray-400">Credits Used</p>
-                <p className="text-2xl font-semibold text-gray-800 dark:text-white/90">
-                  {selectedClient.articlesGenerated || 0}
-                </p>
+              <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                <span className="text-gray-600 font-medium">Status:</span>
+                <span className="capitalize text-gray-900 font-medium">{selectedClient.status}</span>
               </div>
-            </div>
-
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-              <h4 className="font-semibold text-gray-800 dark:text-white/90 mb-3">Client Information</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">User ID:</span>
-                  <span className="font-mono text-gray-800 dark:text-white/90 text-xs">
-                    {selectedClient.userId}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Status:</span>
-                  <span className="capitalize text-gray-800 dark:text-white/90">{selectedClient.status}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Tier:</span>
-                  <span className="text-gray-800 dark:text-white/90 capitalize">{selectedClient.tier}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Joined:</span>
-                  <span className="text-gray-800 dark:text-white/90">
-                    {formatFirestoreTimestamp(selectedClient.createdAt)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Last Updated:</span>
-                  <span className="text-gray-800 dark:text-white/90">
-                    {formatFirestoreTimestamp(selectedClient.updatedAt)}
-                  </span>
-                </div>
+              <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                <span className="text-gray-600 font-medium">Tier:</span>
+                <span className="text-gray-900 font-medium capitalize">{selectedClient.tier}</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                <span className="text-gray-600 font-medium">Joined:</span>
+                <span className="text-gray-900 font-medium">
+                  {formatFirestoreTimestamp(selectedClient.createdAt)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-3">
+                <span className="text-gray-600 font-medium">Last Updated:</span>
+                <span className="text-gray-900 font-medium">
+                  {formatFirestoreTimestamp(selectedClient.updatedAt)}
+                </span>
               </div>
             </div>
-          </>
-        )}
-      </Modal>
-    </div>
-  );
+          </div>
+        </>
+      )}
+    </Modal>
+  </div>
+);
 }
 
 export default withUserData(AgencyClientManagement);

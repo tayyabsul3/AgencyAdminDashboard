@@ -30,7 +30,7 @@ export const clientSlice = createSlice({
   name: "client",
   initialState,
   reducers: {
-    setClientData: (state, action: PayloadAction<ClientState>) => {
+    setClientData: (state, action: PayloadAction<ClientState | any>) => {
       return { ...state, ...action.payload };
     },
     clearClientData: (state) => {

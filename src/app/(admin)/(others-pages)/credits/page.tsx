@@ -1,4 +1,4 @@
-import CreditsUsage from "@/components/agency/AgencyCredits";
+import CreditsUsage from "@/components/client/ClientArticles";
 import { Metadata } from "next";
 import React from "react";
 

@@ -1,10 +1,33 @@
 // components/client/ClientProfile.tsx
 "use client";
 import React from "react";
-import { useAppSelector } from "@/redux/hooks";
+import { withUserData } from "@/components/WithUserData";
 
-export default function ClientProfile() {
-  const client = useAppSelector((state) => state.client);
+interface ClientProfileProps {
+  agencyData: any;
+  clientData: any;
+  userType: 'agency' | 'client' | null;
+}
+
+function ClientProfile({ agencyData, clientData, userType }: ClientProfileProps) {
+  const client = clientData;
+
+  // Don't show profile for agencies
+  if (userType === 'agency') {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-12">
+          <div className="text-4xl mb-4">🏢</div>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white/90 mb-2">
+            Agency Account
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            This profile page is for client accounts only.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Format timestamp to readable date
   const formatDate = (timestamp: any) => {
@@ -83,8 +106,7 @@ export default function ClientProfile() {
                   <p className="text-gray-800 dark:text-white/90 capitalize">{client.status || "N/A"}</p>
                 </div>
               </div>
-              
-              
+            </div>
           </div>
 
           {/* Subscription & Usage */}
@@ -183,7 +205,6 @@ export default function ClientProfile() {
           </div>
         </div>
       </div>
-      </div>
 
       {/* Data Debug Section (Remove in production) */}
       {process.env.NODE_ENV === 'development' && (
@@ -199,3 +220,6 @@ export default function ClientProfile() {
     </div>
   );
 }
+
+// Export the wrapped component
+export default withUserData(ClientProfile);

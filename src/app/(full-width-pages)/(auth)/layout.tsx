@@ -21,14 +21,14 @@ export default function AuthLayout({
               {/* <!-- ===== Common Grid Shape Start ===== --> */}
               <GridShape />
               <div className="flex flex-col items-center max-w-xs">
-                <Link href="/" className="block mb-4">
+                {/* <Link href="/" className="block mb-4">
                   <Image
                     width={231}
                     height={48}
                     src="/images/logo/logo-dark.png"
                     alt="Logo"
                   />
-                </Link>
+                </Link> */}
                 <p className="text-center text-gray-400 dark:text-white/60">
                  Admin DashBoard Authentication 
                 </p>

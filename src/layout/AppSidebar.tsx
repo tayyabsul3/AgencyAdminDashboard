@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState,useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -22,108 +22,118 @@ type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  isVisible?: (userType: string | null) => boolean;
+  subItems?: { 
+    name: string; 
+    path: string; 
+    pro?: boolean; 
+    new?: boolean;
+    isVisible?: (userType: string | null) => boolean;
+  }[];
 };
 
+// Define navigation items with visibility conditions
 const navItems: NavItem[] = [
-  // {
-  //   icon: <GridIcon />,
-  //   name: "Dashboard",
-  //   subItems: [{ name: "Insights", path: "/", pro: false }],
-  // },
-    {
+  {
     icon: <GridIcon />,
-    name: "Agency ",
-     path: "/",
-    // subItems: [{ name: "Insights", path: "/", pro: false }],
+    name: "Agency",
+    path: "/",
+    isVisible: (userType) => userType === "agency" ,
   },
-   {
+  {
     icon: <TableIcon />,
-    name: "Seats ",
-     path: "/seats",
-    // subItems: [{ name: "Insights", path: "/", pro: false }],
+    name: "Usage",
+    path: "/usage",
+    isVisible: (userType) => userType === "agency",
   },
-  //  {
-  //   icon: <PageIcon />,
-  //   name: "Subscription ",
-  //    path: "/subscription",
-  //   // subItems: [{ name: "Insights", path: "/", pro: false }],
-  // },
+  {
+    icon: <PieChartIcon />,
+    name: "Seats",
+    path: "/seats",
+    isVisible: (userType) => userType === "agency",
+  },
+  {
+    icon: <PageIcon />,
+    name: "Profile",
+    path: "/",
+    isVisible: (userType) => userType === "client",
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Articles",
+    path: "/articles",
+    isVisible: (userType) => userType === "client",
+  },
   // {
-  //   icon: <PieChartIcon />,
-  //   name: "Credits",
-  //   path:"/credits"
-  // },
-  // {
-  //   icon: <CalenderIcon />,
-  //   name: "Campaign",
-  //   path: "/campaign",
-  // },
-  // {
-  //   icon: <TableIcon />,
-  //   name: "Media",
-  //   path: "/media",
-  // },
-  // {
-  //   icon: <UserCircleIcon />,
+  //   icon: <Media />,
   //   name: "Profile",
   //   path: "/profile",
-  // },
-
-  // {
-  //   name: "Forms",
-  //   icon: <ListIcon />,
-  //   subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+  //   isVisible: (userType) => userType === "client",
   // },
   // {
-  //   name: "Tables",
-  //   icon: <TableIcon />,
-  //   subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
-  // },
-  // {
-  //   name: "Pages",
-  //   icon: <PageIcon />,
-  //   subItems: [
-  //     { name: "Blank Page", path: "/blank", pro: false },
-  //     { name: "404 Error", path: "/error-404", pro: false },
-  //   ],
+  //   icon: <BoxCubeIcon />,
+  //   name: "Settings",
+  //   path: "/settings",
+  //   isVisible: (userType) => userType === "agency" || userType === "client",
   // },
 ];
 
 const othersItems: NavItem[] = [
-  // {
-  //   icon: <PieChartIcon />,
-  //   name: "Charts",
-  //   subItems: [
-  //     { name: "Line Chart", path: "/line-chart", pro: false },
-  //     { name: "Bar Chart", path: "/bar-chart", pro: false },
-  //   ],
-  // },
-  // {
-  //   icon: <BoxCubeIcon />,
-  //   name: "UI Elements",
-  //   subItems: [
-  //     { name: "Alerts", path: "/alerts", pro: false },
-  //     { name: "Avatar", path: "/avatars", pro: false },
-  //     { name: "Badge", path: "/badge", pro: false },
-  //     { name: "Buttons", path: "/buttons", pro: false },
-  //     { name: "Images", path: "/images", pro: false },
-  //     { name: "Videos", path: "/videos", pro: false },
-  //   ],
-  // },
+  // Additional items can be added here with visibility conditions
   // {
   //   icon: <PlugInIcon />,
-  //   name: "Authentication",
-  //   subItems: [
-  //     { name: "Sign In", path: "/signin", pro: false },
-  //     { name: "Sign Up", path: "/signup", pro: false },
-  //   ],
+  //   name: "Admin",
+  //   path: "/admin",
+  //   isVisible: (userType) => userType === "agency",
   // },
 ];
 
-const AppSidebar: React.FC = () => {
+interface AppSidebarProps {
+  userType?: string | null;
+}
+
+const AppSidebar: React.FC<AppSidebarProps> = ({ userType }) => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+
+  // Get user type from localStorage if not provided as prop
+  const [currentUserType, setCurrentUserType] = useState<string | null>(userType || null);
+
+  useEffect(() => {
+    if (!userType) {
+      // Try to get user type from localStorage
+      const storedUserType = localStorage.getItem("userType");
+      setCurrentUserType(storedUserType);
+    } else {
+      setCurrentUserType(userType);
+    }
+  }, [userType]);
+
+  // Filter navigation items based on user type and visibility conditions
+  const getFilteredNavItems = (items: NavItem[]) => {
+    return items.filter(item => {
+      // If no visibility condition is set, show to all users
+      if (!item.isVisible) return true;
+      
+      // Check visibility condition
+      return item.isVisible(currentUserType);
+    }).map(item => {
+      // Filter subItems if they exist
+      if (item.subItems) {
+        return {
+          ...item,
+          subItems: item.subItems.filter(subItem => {
+            if (!subItem.isVisible) return true;
+            return subItem.isVisible(currentUserType);
+          })
+        };
+      }
+      return item;
+    });
+  };
+
+  const filteredNavItems = getFilteredNavItems(navItems);
+  const filteredOthersItems = getFilteredNavItems(othersItems);
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -158,19 +168,16 @@ const AppSidebar: React.FC = () => {
                 <span className={`menu-item-text`}>{nav.name}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
-              <div 
-               className={`ml-auto w-5 h-5 transition-transform duration-200  ${
+                <div 
+                  className={`ml-auto w-5 h-5 transition-transform duration-200  ${
                     openSubmenu?.type === menuType &&
                     openSubmenu?.index === index
                       ? "rotate-180 text-brand-500"
                       : ""
                   }`}
-              >
-
-                <ChevronDownIcon
-                   
-                  />
-              </div>
+                >
+                  <ChevronDownIcon />
+                </div>
               )}
             </button>
           ) : (
@@ -196,7 +203,9 @@ const AppSidebar: React.FC = () => {
               </Link>
             )
           )}
-          {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
+          {nav.subItems && 
+           nav.subItems.length > 0 && 
+           (isExpanded || isHovered || isMobileOpen) && (
             <div
               ref={(el) => {
                 subMenuRefs.current[`${menuType}-${index}`] = el;
@@ -265,14 +274,13 @@ const AppSidebar: React.FC = () => {
   );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // const isActive = (path: string) => path === pathname;
-   const isActive = useCallback((path: string) => path === pathname, [pathname]);
+  const isActive = useCallback((path: string) => path === pathname, [pathname]);
 
   useEffect(() => {
     // Check if the current path matches any submenu item
     let submenuMatched = false;
     ["main", "others"].forEach((menuType) => {
-      const items = menuType === "main" ? navItems : othersItems;
+      const items = menuType === "main" ? filteredNavItems : filteredOthersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
@@ -292,7 +300,7 @@ const AppSidebar: React.FC = () => {
     if (!submenuMatched) {
       setOpenSubmenu(null);
     }
-  }, [pathname,isActive]);
+  }, [pathname, isActive, filteredNavItems, filteredOthersItems]);
 
   useEffect(() => {
     // Set the height of the submenu items when the submenu is opened
@@ -319,6 +327,31 @@ const AppSidebar: React.FC = () => {
       return { type: menuType, index };
     });
   };
+
+  // Show loading state while determining user type
+  if (currentUserType === undefined) {
+    return (
+      <aside
+        className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+          ${
+            isExpanded || isMobileOpen
+              ? "w-[290px]"
+              : isHovered
+              ? "w-[290px]"
+              : "w-[90px]"
+          }
+          ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0`}
+      >
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
+          </div>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside
@@ -368,6 +401,20 @@ const AppSidebar: React.FC = () => {
           )}
         </Link>
       </div>
+      
+      {/* User Type Badge
+      {(isExpanded || isHovered || isMobileOpen) && currentUserType && (
+        <div className="mb-4 px-2">
+          <div className={`px-3 py-4 rounded-full text-xs font-medium text-center ${
+            currentUserType === 'agency' 
+              ? 'bg-blue-100 text-blue-700  dark:bg-blue-900/30 dark:text-blue-400'
+              : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+          }`}>
+            {currentUserType === 'agency' ? 'Agency Owner' : 'Client'}
+          </div>
+        </div>
+      )} */}
+
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
@@ -385,28 +432,29 @@ const AppSidebar: React.FC = () => {
                   <HorizontaLDots />
                 )}
               </h2>
-              {renderMenuItems(navItems, "main")}
+              {renderMenuItems(filteredNavItems, "main")}
             </div>
 
-            {/* <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div> */}
+            {filteredOthersItems.length > 0 && (
+              <div className="">
+                <h2
+                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
+                    !isExpanded && !isHovered
+                      ? "lg:justify-center"
+                      : "justify-start"
+                  }`}
+                >
+                  {isExpanded || isHovered || isMobileOpen ? (
+                    "Others"
+                  ) : (
+                    <HorizontaLDots />
+                  )}
+                </h2>
+                {renderMenuItems(filteredOthersItems, "others")}
+              </div>
+            )}
           </div>
         </nav>
-        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
     </aside>
   );

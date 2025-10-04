@@ -6,6 +6,7 @@ import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
+import { useRouter } from "next/navigation";
 
 interface UserProfile {
   address: {
@@ -79,12 +80,12 @@ export default function UserDropdown() {
   const closeComingSoon = () => {
     setIsComingSoonOpen(false);
   };
-
+const router = useRouter()
   const handleSignOut = () => {
     // Remove user from localStorage
     localStorage.removeItem("user");
-    // Redirect to signin page
-    window.location.href = "/signin";
+    localStorage.removeItem("userType");
+   router.push("/signin")
   };
 
   // Fallback user data if not loaded from localStorage

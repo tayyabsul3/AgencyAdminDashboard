@@ -36,7 +36,7 @@ export default function AdminLayout({
     <div className="min-h-screen xl:flex">
       {/* Sidebar and Backdrop */}
       <Providers>
-        <AgencyProvider>
+        {/* <AgencyProvider> */}
 
 
 
@@ -52,7 +52,7 @@ export default function AdminLayout({
         {/* Page Content */}
         <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
       </div>
-        </AgencyProvider>
+        {/* </AgencyProvider> */}
 
       </Providers>
     </div>

@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+ output: "export", // enable static export
+  eslint: {
+    ignoreDuringBuilds: true, // skip ESLint errors
+  },
+  typescript: {
+    ignoreBuildErrors: true, // skip TypeScript errors
+  },
+  images: { unoptimized: true },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

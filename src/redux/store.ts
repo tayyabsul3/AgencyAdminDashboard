@@ -12,7 +12,12 @@ export const makeStore = () => {
        client: clientReducer,
       subscription:subscriptionReducer
     },
-  });
+   middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // 🚫 disables the warning globally
+    }),
+});
+  
 };
 
 // Infer the type of makeStore

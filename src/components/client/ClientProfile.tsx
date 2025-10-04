@@ -101,7 +101,7 @@ export default function ClientProfile() {
               
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-500 dark:text-gray-400">Articles Generated</label>
-                <p className="text-gray-800 dark:text-white/90 text-2xl font-semibold text-brand-500">
+                <p className="text-gray-800 dark:text-white/90 text-2xl font-semibold ">
                   {client.articlesGenerated || 0}
                 </p>
               </div>

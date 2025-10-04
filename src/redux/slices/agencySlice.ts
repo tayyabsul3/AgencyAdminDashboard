@@ -25,8 +25,9 @@ const initialState :AgencyData = {
   subscription: null,
   clients: [],
   branding: {
-    logo: "/default-logo.png", // placeholder default
+    logo: "", // placeholder default
     primaryColor: "#4F46E5",   // indigo
+    secondaryColor:"",
     customDomain: "",
   },
 };

@@ -8,6 +8,7 @@ import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import { toast } from "sonner";
 import { withUserData } from "@/components/WithUserData";
+import AgencyUpgrade from "./AgencyUpgrade";
 
 interface Client {
   userId: string;
@@ -165,6 +166,14 @@ function AgencyClientManagement({ agencyData, userType }: AgencyClientManagement
         <div className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-semibold">
           {subscription.tier}
         </div>
+        <AgencyUpgrade 
+    agencyData={agencyData} 
+    userType={userType}
+    onTierUpdate={() => {
+      // Refresh data when tier is updated
+      // You can add your data refresh logic here
+    }}
+  />
         <button
           onClick={openAddCreditsModal}
           className="px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02]"

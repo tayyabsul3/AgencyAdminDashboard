@@ -156,7 +156,7 @@ console.log(inviteSnap)
         clients: updatedClients
       }, { merge: true });
 
-      const emailRef = doc(db, "emails", user.uid);
+      const emailRef = doc(db, "email", user.uid);
         await setDoc(emailRef, {
          createdAt: Timestamp.now(),
           email: formData.email,

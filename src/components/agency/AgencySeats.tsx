@@ -114,6 +114,10 @@ export default function AgencySeats() {
     return `inv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   };
 
+
+
+
+  
   // Create invite document in Firestore
   const createInviteDocument = async (agencyId: string, inviteId: string, inviteData: any) => {
     try {

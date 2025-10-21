@@ -116,7 +116,8 @@ export const useUserData = (): UserData => {
           status: clientData.status,
           tier: clientData.tier,
           articlesGenerated: clientData.articlesGenerated || 0,
-          agencySubscription: agencySubscription
+          agencySubscription: agencySubscription,
+           articleLimit: clientData.articleLimit || 10
         })
       );
     };

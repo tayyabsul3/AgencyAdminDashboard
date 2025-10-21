@@ -1,10 +1,5 @@
 "use client";
-import Checkbox from "@/components/form/input/Checkbox";
-import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
-import Button from "@/components/ui/button/Button";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
-import Link from "next/link";
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/lib/Firebase";
@@ -110,6 +105,33 @@ export default function SignInForm() {
     }
   };
 
+  // Check if client is archived
+  const checkClientStatus = async (userId: string, agencyId: string) => {
+    try {
+      const agencyRef = doc(db, "agencies", agencyId);
+      const agencySnap = await getDoc(agencyRef);
+      
+      if (agencySnap.exists()) {
+        const agencyData = agencySnap.data();
+        const clients = agencyData.clients || [];
+        
+        // Find the client in the agency's clients array
+        const client = clients.find((c: any) => c.userId === userId);
+        
+        if (client && client.status === "archived") {
+          return false; // Client is archived
+        }
+        
+        return true; // Client is active or pending
+      }
+      
+      return true; // Default to allowing access if agency not found
+    } catch (error) {
+      console.error("Error checking client status:", error);
+      return true; // Default to allowing access on error
+    }
+  };
+
   const handleSubmit = async () => {
     setError("");
     setIsLoading(true);
@@ -136,7 +158,6 @@ export default function SignInForm() {
 
       if (agencySnap.exists()) {
         const agencyData = agencySnap.data();
-        // alert(agencyData.isFirstLogin)
         // Check if it's first time login
         if (agencyData?.isFirstLogin) {
           setPasswordChangeModal(true);
@@ -178,6 +199,15 @@ export default function SignInForm() {
         if (clientSnap.exists()) {
           const clientData = clientSnap.data();
           
+          // Check if client is archived
+          const isClientActive = await checkClientStatus(user.uid, clientData.agencyId);
+          
+          if (!isClientActive) {
+            setError("Your account has been archived. Please contact your agency administrator.");
+            setIsLoading(false);
+            return;
+          }
+          
           const isSubscriptionPaid = await checkSubscriptionStatus('client', user.uid, clientData.agencyId);
           
           if (!isSubscriptionPaid) {
@@ -202,7 +232,8 @@ export default function SignInForm() {
               status: clientData.status,
               tier: clientData.tier,
               articlesGenerated: clientData.articlesGenerated,
-              agencySubscription: agencyData?.subscription || null
+              agencySubscription: agencyData?.subscription || null,
+              articleLimit: clientData.articleLimit || 10// Add article limit to client data
             })
           );
 
@@ -442,6 +473,12 @@ export default function SignInForm() {
                     Keep me logged in
                   </span>
                 </div>
+                <button
+    onClick={() => router.push("/forgotPassword")}
+    className="text-blue-600 hover:text-blue-700 font-medium transition-colors text-lg"
+  >
+    Forgot Password?
+  </button>
              
               </div>
 
@@ -562,12 +599,12 @@ export default function SignInForm() {
 
       {/* Password Change Modal */}
       {passwordChangeModal && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-200"
+        <div className="fixed inset-0 bg-black/60   flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl custom-scrollbar max-h-[100dvh] overflow-auto p-8 max-w-md w-full shadow-2xl border border-gray-200"
                style={{
                  background: 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%)'
                }}>
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 ">
               <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <span className="text-white text-2xl">🔒</span>
               </div>

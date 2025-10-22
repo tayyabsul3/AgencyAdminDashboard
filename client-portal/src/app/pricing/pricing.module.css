@@ -1,0 +1,319 @@
+.pricing {
+  background: #F4F4F4;
+  color: #333;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.contentWrapper {
+  padding-top: 0.25rem; /* remove top space so navbar sits higher */
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 3rem;
+}
+
+/* Pricing page specific overrides for LandingNavbar width and spacing */
+.pricingNavContainer {
+  margin-top: 0.25rem !important; /* further reduce space above navbar */
+  margin-bottom: 1.25rem !important;
+}
+
+.pricingNavInner {
+  max-width: 1400px !important; /* match pricing container width */
+  width: 100% !important;
+}
+
+/* Headings (kept for legacy usage) */
+.title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: rgba(51, 51, 51, 0.8);
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tiers grid */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.tier {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s ease;
+  text-align: center;
+  backdrop-filter: blur(25px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 600px; /* equal height cards */
+}
+
+.tier:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+}
+
+.tier.popular {
+  border: 2px solid #00D4FF;
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+}
+
+/* Apply Growth-style border to all tiers when needed */
+.tierBorder {
+  border: 2px solid #00D4FF;
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+}
+
+/* Special background for Scale plan (card 3) */
+.scaleGradient {
+  background: linear-gradient(90deg, #66dbf0 0%, #c9d0ed 100%);
+}
+
+.popularBadge {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #00D4FF 0%, #00A8CC 100%);
+  color: #0A0E27;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tierHeader { margin-bottom: 2rem; }
+.tierName { font-size: 1.25rem; font-weight: 600; color: #333; margin-bottom: 1rem; }
+.price { display: flex; align-items: baseline; justify-content: center; margin-bottom: 0.5rem; }
+.currency { font-size: 1.5rem; color: rgba(51,51,51,0.8); }
+.amount { font-size: 2.5rem; font-weight: 700; color: #3b82f6; font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; }
+.period { font-size: 1rem; color: rgba(51,51,51,0.8); margin-left: 0.25rem; }
+.tierDescription { color: rgba(51,51,51,0.8); font-size: 0.9rem; }
+
+/* Ensure features list sits toward the bottom for all cards */
+.features {
+  list-style: none;
+  padding: 0 !important;
+  /* align list from the top instead of pushing it down */
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important; /* keep the same space above the CTA */
+  text-align: left;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start; /* align icon with first line of text */
+  margin-bottom: 0.65rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* No gap below the final list item */
+.feature:last-child {
+  margin-bottom: 0;
+}
+
+.ctaWrap {
+  /* keep CTA/buttons anchored at the bottom of the card */
+  margin-top: auto !important;
+  padding-top: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Ensure button has no default margin on top */
+.subscribeBtn {
+  margin-top: 0 !important;
+  display: block; /* allow mx-auto to center reliably */
+  width: 220px; /* enforce consistent width */
+}
+
+/* New circular bullet icon (purple dot with soft ring) */
+.bulletIcon {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6C63FF; /* inner dot */
+  box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12); /* outer soft ring */
+  margin-right: 0.5rem; /* spacing from text */
+  margin-top: 5px; /* closer vertical alignment */
+  flex-shrink: 0;
+}
+
+/* Success and Cancel Pages */
+
+.detailCard.tier {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s ease;
+  text-align: center;
+  backdrop-filter: blur(25px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 600px; /* equal height cards */
+}
+
+.detailCard h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail span:first-child {
+  color: rgba(51, 51, 51, 0.7);
+}
+
+.detail span:last-child {
+  color: #333;
+  font-weight: 500;
+}
+
+.active {
+  color: #10b981;
+  text-transform: capitalize;
+}
+
+.successActions, .cancelActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(240, 147, 251, 0.3);
+}
+
+.secondaryBtn {
+  color: #333;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+  backdrop-filter: blur(25px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.secondaryBtn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.cancelReasons {
+  text-align: left;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(25px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.cancelReasons h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.cancelReasons ul {
+  color: rgba(51, 51, 51, 0.8);
+  padding-left: 1.5rem;
+}
+
+.cancelReasons li {
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .tiers {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .tier {
+    padding: 1.5rem;
+  }
+
+  .billingToggle {
+    max-width: 280px;
+  }
+
+  .toggleBtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .successActions, .cancelActions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .primaryBtn, .secondaryBtn {
+    width: 100%;
+    text-align: center;
+  }
+}

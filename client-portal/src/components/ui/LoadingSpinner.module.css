@@ -1,0 +1,144 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.spinner {
+  display: inline-block;
+  position: relative;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  animation: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-style: solid;
+}
+
+/* Size variants */
+.small {
+  width: 24px;
+  height: 24px;
+}
+
+.small .circle {
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  border-width: 2px;
+}
+
+.medium {
+  width: 40px;
+  height: 40px;
+}
+
+.medium .circle {
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  border-width: 3px;
+}
+
+.large {
+  width: 64px;
+  height: 64px;
+}
+
+.large .circle {
+  width: 52px;
+  height: 52px;
+  margin: 6px;
+  border-width: 4px;
+}
+
+/* Color variants */
+.primary .circle {
+  border-color: #3b82f6 transparent transparent transparent;
+}
+
+.secondary .circle {
+  border-color: #6b7280 transparent transparent transparent;
+}
+
+.success .circle {
+  border-color: #10b981 transparent transparent transparent;
+}
+
+.warning .circle {
+  border-color: #f59e0b transparent transparent transparent;
+}
+
+.danger .circle {
+  border-color: #ef4444 transparent transparent transparent;
+}
+
+.white .circle {
+  border-color: #ffffff transparent transparent transparent;
+}
+
+/* Animation delays for multiple circles */
+.circle:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.circle:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.circle:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+.text {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* Spinner animation */
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .overlay {
+    background: rgba(17, 24, 39, 0.9);
+  }
+
+  .text {
+    color: #9ca3af;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .circle {
+    animation-duration: 2s;
+  }
+}

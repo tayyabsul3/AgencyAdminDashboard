@@ -1,0 +1,377 @@
+.container {
+  width: 100%;
+}
+
+/* Linear Progress Styles */
+.progressBar {
+  width: 100%;
+}
+
+.progressTrack {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease-in-out;
+  position: relative;
+}
+
+.animated .progressFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Size variants */
+.small .progressTrack {
+  height: 4px;
+}
+
+.medium .progressTrack {
+  height: 8px;
+}
+
+.large .progressTrack {
+  height: 12px;
+}
+
+/* Color variants */
+.primary {
+  background-color: #3b82f6;
+}
+
+.secondary {
+  background-color: #6b7280;
+}
+
+.success {
+  background-color: #10b981;
+}
+
+.warning {
+  background-color: #f59e0b;
+}
+
+.danger {
+  background-color: #ef4444;
+}
+
+/* Labels */
+.labelTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.percentage {
+  color: #6b7280;
+}
+
+.label {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Circular Progress Styles */
+.circularProgress {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circularSvg {
+  transform: rotate(-90deg);
+}
+
+.circularTrack {
+  fill: none;
+  stroke: #e5e7eb;
+}
+
+.circularFill {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s ease-in-out;
+}
+
+.circularText {
+  position: absolute;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.small .circularText {
+  font-size: 0.75rem;
+}
+
+.large .circularText {
+  font-size: 1rem;
+}
+
+/* Step Progress Styles */
+.stepContainer {
+  display: flex;
+  align-items: flex-start;
+}
+
+.horizontal {
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.vertical {
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.horizontal .step {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.vertical .step {
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.vertical .stepIndicator {
+  flex-direction: column;
+  margin-right: 1rem;
+}
+
+.stepCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.small .stepCircle {
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.medium .stepCircle {
+  width: 32px;
+  height: 32px;
+  font-size: 0.875rem;
+}
+
+.large .stepCircle {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+}
+
+.stepConnector {
+  background-color: #e5e7eb;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.horizontal .stepConnector {
+  height: 2px;
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.vertical .stepConnector {
+  width: 2px;
+  height: 2rem;
+  margin-top: 0.5rem;
+}
+
+.stepLabel {
+  margin-top: 0.5rem;
+}
+
+.vertical .stepLabel {
+  margin-top: 0;
+}
+
+.stepTitle {
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.stepDescription {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Step states */
+.completed .stepCircle {
+  background-color: #10b981;
+  color: white;
+}
+
+.completed .stepConnector {
+  background-color: #10b981;
+}
+
+.completed .stepTitle {
+  color: #10b981;
+}
+
+.current .stepCircle {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.current .stepTitle {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.upcoming .stepCircle {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  border: 2px solid #e5e7eb;
+}
+
+.upcoming .stepTitle {
+  color: #9ca3af;
+}
+
+.checkIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.small .checkIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.large .checkIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Multi Progress Styles */
+.multiContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.multiItem {
+  width: 100%;
+}
+
+.multiLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.multiValue {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .progressTrack {
+    background-color: #374151;
+  }
+
+  .circularTrack {
+    stroke: #374151;
+  }
+
+  .labelTop,
+  .circularText,
+  .stepTitle {
+    color: #d1d5db;
+  }
+
+  .percentage,
+  .label,
+  .stepDescription,
+  .multiValue {
+    color: #9ca3af;
+  }
+
+  .stepConnector {
+    background-color: #374151;
+  }
+
+  .upcoming .stepCircle {
+    background-color: #374151;
+    color: #6b7280;
+    border-color: #4b5563;
+  }
+
+  .upcoming .stepTitle {
+    color: #6b7280;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .progressFill,
+  .circularFill,
+  .stepCircle,
+  .stepConnector {
+    transition: none;
+  }
+
+  .animated .progressFill::after {
+    animation: none;
+  }
+}

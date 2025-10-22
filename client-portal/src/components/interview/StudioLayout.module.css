@@ -1,0 +1,350 @@
+/* Studio Layout - Professional Three-Panel System */
+
+.studioLayout {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  color: black;
+  font-family: var(--font-body);
+}
+
+/* Studio Header */
+.studioHeader {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* Studio Main Content Area */
+.studioMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xs) var(--space-lg);
+  gap: var(--space-xs);
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Three-Panel System */
+.studioPanels {
+  display: grid;
+  grid-template-columns: 1fr 320px 1.2fr; /* Expanded interviewer column with wider console */
+  gap: var(--space-md);
+  align-items: start;
+  min-height: 0;
+  height: auto; /* Compact: only as tall as needed */
+  flex: 0;
+}
+
+/* Two-column variant: when only Interviewer and Response panels are used */
+.twoColumnPanels {
+  grid-template-columns: 0.5fr 0.5fr; /* Even split to widen interviewer panel */
+}
+
+/* Single-column variant: when only Interviewer panel is shown */
+.interviewerOnlyPanels {
+  grid-template-columns: 1fr; /* Full width for interviewer */
+}
+
+/* Individual Panels */
+.interviewerPanel {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-height: 200px;
+  height: auto;
+}
+
+
+
+/* Tablet Layout (768px - 1023px) */
+@media (max-width: 1023px) {
+  .studioMain {
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .studioPanels {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .recordingConsole {
+    order: -1; /* Move recording console to top on tablet */
+    min-height: 300px;
+    padding: var(--space-xl);
+  }
+
+  .interviewerPanel,
+  .responsePanel {
+    min-height: 300px;
+    padding: var(--space-lg);
+    min-width: auto; /* Relax min-width for tablet */
+  }
+}
+
+/* Mobile Layout (320px - 767px) */
+@media (max-width: 767px) {
+  .studioLayout {
+    min-height: auto; /* Remove forced full height */
+  }
+
+  .studioHeader {
+    padding: var(--space-md);
+    position: sticky;
+    top: 0;
+  }
+
+  .studioMain {
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+
+  .studioPanels {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    min-height: auto;
+  }
+
+  .recordingConsole {
+    order: -1;
+    min-height: 250px;
+    padding: var(--space-lg);
+    border-radius: var(--radius-large);
+  }
+
+  .interviewerPanel {
+    order: -2; /* Question comes first on mobile */
+    min-height: 200px;
+    padding: var(--space-md);
+    min-width: auto; /* Relax min-width for mobile */
+  }
+
+  .responsePanel {
+    min-height: 200px;
+    padding: var(--space-md);
+  }
+
+
+}
+
+/* Extra Small Mobile (320px - 479px) */
+@media (max-width: 479px) {
+  .studioMain {
+    padding: var(--space-sm);
+    gap: var(--space-sm);
+  }
+
+  .studioPanels {
+    gap: var(--space-sm);
+  }
+
+  .recordingConsole {
+    min-height: 200px;
+    padding: var(--space-md);
+  }
+
+  .interviewerPanel,
+  .responsePanel {
+    min-height: 150px;
+    padding: var(--space-sm);
+  }
+
+  .studioHeader {
+    padding: var(--space-sm);
+  }
+}
+
+/* Landscape Orientation Optimizations */
+@media (max-height: 600px) and (orientation: landscape) {
+  .studioMain {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .studioPanels {
+    grid-template-columns: 1fr 320px 1.2fr; /* Keep expanded interviewer column in landscape */
+    gap: var(--space-md);
+    min-height: auto;
+  }
+
+  .recordingConsole {
+    order: 0;
+    min-height: 200px;
+    padding: var(--space-md);
+  }
+
+  .interviewerPanel,
+  .responsePanel {
+    min-height: 200px;
+    padding: var(--space-md);
+    min-width: auto; /* Relax min-width for short landscape */
+  }
+}
+
+/* Large Desktop Layout (1280px+) */
+@media (min-width: 1280px) {
+  .studioPanels {
+    grid-template-columns: 1.05fr 360px 1.25fr; /* Larger screens: maintain response bias while widening interviewer */
+    gap: var(--space-xl);
+    max-width: 1800px;
+  }
+
+  .twoColumnPanels {
+    grid-template-columns: 0.5fr 0.5fr; /* Even split on large screens */
+  }
+
+  .recordingConsole {
+    min-height: 100%;
+    padding: var(--space-xl);
+  }
+
+  .interviewerPanel,
+  .responsePanel {
+    min-height: 100%;
+    padding: var(--space-xl);
+  }
+}
+
+/* Ultra-wide Layout (1536px+) */
+@media (min-width: 1536px) {
+  .studioPanels {
+    grid-template-columns: 1.1fr 380px 1.3fr; /* Ultra-wide: maintain bias with expanded interviewer column */
+    gap: var(--space-2xl);
+    max-width: 2000px;
+  }
+
+  .twoColumnPanels {
+    grid-template-columns: 0.5fr 0.5fr; /* Maintain even split */
+  }
+}
+
+/* Panel Hover Effects */
+.interviewerPanel:hover,
+.responsePanel:hover {
+  /* Remove hover lift animation */
+  transform: none;
+  /* box-shadow: var(--shadow-medium); */
+  transition: none;
+  outline: none;
+  border: none;
+}
+
+.recordingConsole:hover {
+  /* Remove hover lift animation */
+  transform: none;
+  box-shadow: var(--shadow-large);
+  transition: none;
+}
+
+/* Focus Management for Accessibility */
+.interviewerPanel:focus-within,
+.recordingConsole:focus-within,
+.responsePanel:focus-within {
+  outline: none;
+}
+
+/* Loading States */
+.interviewerPanel.loading,
+.recordingConsole.loading,
+.responsePanel.loading {
+  background: var(--glass-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.interviewerPanel.loading::after,
+.recordingConsole.loading::after,
+.responsePanel.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .interviewerPanel,
+  .recordingConsole,
+  .responsePanel {
+    border: 2px solid var(--text-primary);
+  }
+
+  .studioHeader {
+    border-color: var(--text-primary);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .interviewerPanel,
+  .recordingConsole,
+  .responsePanel {
+    transition: none;
+  }
+
+  .interviewerPanel:hover,
+  .recordingConsole:hover,
+  .responsePanel:hover {
+    transform: none;
+  }
+
+  .interviewerPanel.loading::after,
+  .recordingConsole.loading::after,
+  .responsePanel.loading::after {
+    animation: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .studioLayout {
+    background: white;
+    color: black;
+  }
+
+  .studioHeader {
+    display: none;
+  }
+
+  .studioPanels {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .interviewerPanel,
+  .recordingConsole,
+  .responsePanel {
+    background: white;
+    border: 1px solid black;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

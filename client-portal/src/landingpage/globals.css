@@ -1,0 +1,65 @@
+.testimonial-scroller {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 10vw;
+}
+.testimonial-scroller::-webkit-scrollbar { display: none; }
+.testimonial-scroller { scrollbar-width: none; }
+
+.testimonial-card {
+  flex: 0 0 auto; /* do not stretch */
+  width: 439px;
+  height: 208px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  scroll-snap-align: center;
+  background: #ffffff;
+  border: 1px solid #C2C2C2;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  transition: transform .3s ease, filter .3s ease, opacity .3s ease, box-shadow .3s ease;
+  opacity: 0.4;
+  filter: blur(2px);
+  backdrop-filter: blur(24px);
+}
+
+.testimonial-card.active {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.testimonial-edge-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12vw;
+  pointer-events: none;
+  z-index: 3;
+}
+.testimonial-edge-fade.left {
+  left: 0;
+  background: linear-gradient(to right, rgba(248,249,250,1), rgba(248,249,250,0));
+}
+.testimonial-edge-fade.right {
+  right: 0;
+  background: linear-gradient(to left, rgba(248,249,250,1), rgba(248,249,250,0));
+}
+
+/* Make nav arrows prominent and clickable above fades */
+.testimonial-arrows {
+  z-index: 6; /* above fades (3) */
+  background: #ffffff !important;
+  color: #111827 !important; /* dark gray */
+  border: 1px solid rgba(0,0,0,0.08) !important;
+}
+.testimonial-arrows:hover {
+  background: #f3f4f6 !important; /* subtle hover */
+}
+.testimonial-arrows i { color: inherit; }

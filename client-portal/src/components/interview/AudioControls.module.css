@@ -1,0 +1,666 @@
+/* Audio Controls Component Styles */
+
+.audioControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Volume Control */
+.volumeControl {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.volumeButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.volumeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.volumeButton.muted {
+  color: #e74c3c;
+}
+
+.volumeIcon {
+  font-size: 1rem;
+}
+
+.volumeLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 35px;
+  text-align: left;
+}
+
+.volumeSliderContainer {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 50, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.volumeSlider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.volumeRange {
+  writing-mode: bt-lr; /* IE */
+  -webkit-appearance: slider-vertical; /* WebKit */
+  width: 8px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volumeRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(240, 147, 251, 0.3);
+}
+
+.volumeRange::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(240, 147, 251, 0.3);
+}
+
+.volumeMarkers {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.volumeMarker {
+  font-weight: 500;
+}
+
+/* Audio Quality Indicator */
+.audioQuality {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.qualityButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.qualityButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.qualityButton.good {
+  color: #4ecdc4;
+}
+
+.qualityButton.poor {
+  color: #f39c12;
+}
+
+.qualityButton.failed {
+  color: #e74c3c;
+}
+
+.qualityButton.unknown {
+  color: #95a5a6;
+}
+
+.qualityIcon {
+  font-size: 1rem;
+}
+
+.qualityLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.qualityDetails {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 50, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 200px;
+  text-align: center;
+}
+
+.qualityHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.qualityTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+}
+
+.qualityDescription {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.qualityActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.qualityAction {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.qualityAction:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+}
+
+.qualityDismiss {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.qualityDismiss:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Microphone Test */
+.microphoneTest {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.micButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.micButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.micButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.micButton.testing {
+  color: #f39c12;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.micIcon {
+  font-size: 1rem;
+}
+
+.micLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.testResult {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 50, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.testResult.success {
+  border-color: #4ecdc4;
+  color: #4ecdc4;
+}
+
+.testResult.error {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.testResultIcon {
+  font-size: 0.9rem;
+}
+
+.testResultText {
+  font-weight: 500;
+}
+
+/* Switch Mode Button */
+.switchMode {
+  display: flex;
+  align-items: center;
+}
+
+.switchButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.switchButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.switchIcon {
+  font-size: 1rem;
+}
+
+.switchLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Additional Controls */
+.additionalControls {
+  display: flex;
+  align-items: center;
+}
+
+.settingsDropdown {
+  position: relative;
+}
+
+.settingsButton {
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.settingsButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.settingsIcon {
+  font-size: 1rem;
+}
+
+.settingsMenu {
+  position: absolute;
+  top: -200px;
+  right: 0;
+  background: rgba(30, 30, 50, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 220px;
+  display: none;
+}
+
+.settingsDropdown:hover .settingsMenu {
+  display: block;
+}
+
+.settingsHeader {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.settingItem {
+  margin-bottom: 1rem;
+}
+
+.settingItem:last-child {
+  margin-bottom: 0;
+}
+
+.settingLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.settingCheckbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #f093fb;
+}
+
+.settingVolumeControl {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.settingVolumeSlider {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.settingVolumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(240, 147, 251, 0.3);
+}
+
+.settingVolumeSlider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(240, 147, 251, 0.3);
+}
+
+.settingVolumeValue {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  min-width: 35px;
+  text-align: right;
+}
+
+.settingAction {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.settingAction:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.settingAction:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .audioControls {
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .volumeButton,
+  .qualityButton,
+  .micButton,
+  .switchButton {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .volumeLabel,
+  .qualityLabel,
+  .micLabel,
+  .switchLabel {
+    font-size: 0.75rem;
+  }
+  
+  .volumeSliderContainer,
+  .qualityDetails,
+  .testResult,
+  .settingsMenu {
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .audioControls {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    justify-content: center;
+  }
+  
+  .volumeControl,
+  .audioQuality,
+  .microphoneTest,
+  .switchMode {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .additionalControls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .volumeButton,
+  .qualityButton,
+  .micButton,
+  .switchButton {
+    width: 100%;
+    justify-content: center;
+    padding: 0.5rem;
+  }
+  
+  .volumeSliderContainer {
+    top: -100px;
+  }
+  
+  .qualityDetails {
+    top: -120px;
+  }
+  
+  .settingsMenu {
+    top: -180px;
+    right: -50px;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .audioControls {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+  
+  .volumeControl,
+  .audioQuality,
+  .microphoneTest,
+  .switchMode,
+  .additionalControls {
+    width: 100%;
+  }
+  
+  .volumeButton,
+  .qualityButton,
+  .micButton,
+  .switchButton {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .volumeLabel,
+  .qualityLabel,
+  .micLabel,
+  .switchLabel {
+    font-size: 0.8rem;
+  }
+  
+  .volumeSliderContainer,
+  .qualityDetails,
+  .settingsMenu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 250px;
+  }
+  
+  .testResult {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 200px;
+  }
+}

@@ -1,0 +1,368 @@
+/* SuggestiveAnswers Component Styles */
+
+.suggestiveAnswers {
+  background: var(--surface-1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.headerIcon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.headerText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.headerTitle {
+  font-weight: 600;
+  color: white;
+  font-size: 16px;
+}
+
+.loadingText {
+  font-size: 14px;
+  color: white;
+  font-style: italic;
+}
+
+.retryButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.retryButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.suggestionsContainer {
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.suggestionsContainer.faded {
+  opacity: 0.6;
+  filter: blur(1px);
+}
+
+.suggestionsContainer.highlighted {
+  background: linear-gradient(135deg, rgba(22, 122, 204, 0.1), rgba(159, 122, 234, 0.1));
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 0 20px rgba(66, 153, 225, 0.2);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(66, 153, 225, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(66, 153, 225, 0.3);
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.loadingMessage {
+  color: #718096;
+  font-size: 14px;
+}
+
+.errorContainer {
+  padding: 16px;
+}
+
+.suggestionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface-1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.suggestion:hover {
+  background: rgba(66, 153, 225, 0.1);
+  border-color: rgba(66, 153, 225, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion:active {
+  transform: translateY(0);
+}
+
+.suggestion.speaking {
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.2), rgba(159, 122, 234, 0.2));
+  border-color: rgba(66, 153, 225, 0.5);
+  animation: speakingPulse 1s infinite;
+}
+
+@keyframes speakingPulse {
+  0%, 100% {
+    background: linear-gradient(135deg, rgba(66, 153, 225, 0.2), rgba(159, 122, 234, 0.2));
+  }
+  50% {
+    background: linear-gradient(135deg, rgba(66, 153, 225, 0.3), rgba(159, 122, 234, 0.3));
+  }
+}
+
+.suggestionBullet {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.suggestionText {
+  flex: 1;
+  color: white;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.speakButton {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.speakButton:hover {
+  background-color: rgba(66, 153, 225, 0.1);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.speakButton.speaking {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  opacity: 1;
+  animation: speakingButton 0.5s infinite alternate;
+}
+
+@keyframes speakingButton {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+.footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footerNote {
+  font-size: 12px;
+  color: #718096;
+  text-align: center;
+  font-style: italic;
+}
+
+.silentPrompt {
+  font-size: 13px;
+  color: #4299e1;
+  text-align: center;
+  font-weight: 500;
+  animation: fadeInOut 2s infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .suggestiveAnswers {
+    padding: 16px;
+    margin: 12px 0;
+  }
+  
+  .header {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .headerTitle {
+    font-size: 15px;
+  }
+  
+  .suggestion {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  
+  .suggestionText {
+    font-size: 13px;
+  }
+  
+  .speakButton {
+    font-size: 12px;
+    padding: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .suggestiveAnswers {
+    padding: 12px;
+    margin: 8px 0;
+  }
+  
+  .suggestion {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  
+  .suggestionText {
+    font-size: 12px;
+  }
+  
+  .footerNote {
+    font-size: 11px;
+  }
+  
+  .silentPrompt {
+    font-size: 12px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .suggestiveAnswers {
+    background: rgba(26, 32, 44, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .headerTitle {
+    color: #e2e8f0;
+  }
+  
+  .loadingText {
+    color: #a0aec0;
+  }
+  
+  .suggestion {
+    background: rgba(45, 55, 72, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .suggestion:hover {
+    background: rgba(66, 153, 225, 0.2);
+    border-color: rgba(66, 153, 225, 0.4);
+  }
+  
+  .suggestionText {
+    color: #e2e8f0;
+  }
+  
+  .footerNote {
+    color: #a0aec0;
+  }
+  
+  .loadingMessage {
+    color: #a0aec0;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .suggestiveAnswers {
+    border: 2px solid #000;
+    background: #fff;
+  }
+  
+  .suggestion {
+    border: 1px solid #000;
+    background: #fff;
+  }
+  
+  .suggestion:hover {
+    background: #f0f8ff;
+  }
+  
+  .suggestionText {
+    color: #000;
+  }
+  
+  .headerTitle {
+    color: #000;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .suggestiveAnswers,
+  .suggestionsContainer,
+  .suggestion,
+  .speakButton {
+    transition: none;
+  }
+  
+  .pulse,
+  .speakingPulse,
+  .speakingButton,
+  .fadeInOut {
+    animation: none;
+  }
+  
+  .suggestionsContainer.highlighted {
+    animation: none;
+    box-shadow: 0 0 20px rgba(66, 153, 225, 0.3);
+  }
+}

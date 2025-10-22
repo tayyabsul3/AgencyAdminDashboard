@@ -1,0 +1,434 @@
+/* Voice Interview Studio - Main Container Styles */
+
+.voiceInterviewStudio {
+  /* Google Meet-like dark design */
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff;
+  background: #202124;
+  min-height: auto; /* Remove forced full height */
+}
+
+/* Loading State */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #202124;
+  color: #ffffff;
+  text-align: center;
+  padding: 24px;
+}
+
+.loadingSpinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #5f6368;
+  border-top: 4px solid #1a73e8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+.loadingText {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Error State */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #202124;
+  color: #ffffff;
+  text-align: center;
+  padding: 24px;
+}
+
+.errorMessage {
+  max-width: 500px;
+  padding: 32px;
+  background: #303134;
+  border: 1px solid #5f6368;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.errorIcon {
+  font-size: 4rem;
+  margin-bottom: var(--space-lg);
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.iconText {
+  font-size: 12px;
+  font-weight: 500;
+  color: #9aa0a6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.errorMessage h3 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+  line-height: 1.25;
+}
+
+.errorMessage p {
+  font-size: 14px;
+  color: #9aa0a6;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.errorActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.errorActions button {
+  min-width: 200px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: #1a73e8;
+  color: #ffffff;
+}
+
+.errorActions button:hover {
+  background: #1557b0;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+}
+
+/* Studio-specific overrides */
+
+/* Intro review quick link */
+.introReviewLinkRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-xs);
+}
+
+.introReviewLinkButton {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 0;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.introReviewLinkButton:hover {
+  color: #1557b0;
+}
+
+.introReviewLinkButton:focus-visible {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+/* Auto-save row above console */
+.autoSaveRow {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-sm);
+}
+.autoSaveBadge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #5f6368;
+  background: #303134;
+  color: #9aa0a6;
+}
+.autoSaveBadge.saving { color: #9aa0a6; }
+.autoSaveBadge.saved { color: #34a853; background: rgba(52, 168, 83, 0.1); border-color: #34a853; }
+.autoSaveBadge.error { color: #ea4335; background: rgba(234, 67, 53, 0.1); border-color: #ea4335; }
+
+.responsePanelHidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.responsePanelPlaceholder {
+  width: 100%;
+  height: 1px;
+}
+
+/* Floating Auto-save Badge */
+.autoSaveFloating {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 999;
+}
+
+.autoSaveFloating .autoSaveBadge {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border: 1px solid #e8eaed;
+  color: #202124;
+}
+.voiceInterviewStudio .btn-primary {
+  background: #1a73e8;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.voiceInterviewStudio .btn-primary:hover {
+  background: #1557b0;
+  box-shadow: 0 4px 16px rgba(26, 115, 232, 0.4);
+  transform: none;
+}
+
+.voiceInterviewStudio .btn-secondary {
+  background: #ffffff;
+  color: #1a73e8;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.voiceInterviewStudio .btn-secondary:hover {
+  background: #f8f9fa;
+  border-color: #1a73e8;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.2);
+  transform: none;
+}
+
+/* Animation keyframes */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .loadingContainer,
+  .errorContainer {
+    padding: 16px;
+  }
+
+  .errorMessage {
+    padding: 24px;
+    margin: 12px;
+  }
+
+  .errorIcon {
+    font-size: 3rem;
+  }
+
+  .errorMessage h3 {
+    font-size: 20px;
+  }
+
+  .errorMessage p {
+    font-size: 14px;
+  }
+
+  .errorActions {
+    gap: 8px;
+  }
+
+  .errorActions button {
+    min-width: 180px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .loadingSpinner {
+    width: 50px;
+    height: 50px;
+    border-width: 4px;
+    border-color: #e8eaed;
+    border-top-color: #1a73e8;
+  }
+
+  .loadingText {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .errorMessage {
+    padding: 16px;
+    margin: 8px;
+  }
+
+  .errorIcon {
+    font-size: 2.5rem;
+  }
+
+  .errorMessage h3 {
+    font-size: 18px;
+  }
+
+  .errorActions button {
+    min-width: 160px;
+    padding: 10px 16px;
+  }
+
+  .loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+    border-color: #e8eaed;
+    border-top-color: #1a73e8;
+  }
+
+  .loadingText {
+    font-size: 14px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .errorMessage {
+    border: 2px solid #202124;
+  }
+
+  .errorActions button {
+    border: 2px solid #202124;
+  }
+
+  .notificationContent {
+    border: 2px solid #202124;
+  }
+
+  .autoSaveBadge {
+    border: 2px solid #202124;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .loadingSpinner {
+    animation: none;
+  }
+
+  .errorActions button {
+    transition: none;
+  }
+
+  .errorActions button:hover {
+    transform: none;
+  }
+
+  .voiceInterviewStudio .btn-primary:hover,
+  .voiceInterviewStudio .btn-secondary:hover {
+    transform: none;
+  }
+}
+
+/* Focus management */
+.errorActions button:focus-visible {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .voiceInterviewStudio {
+    background: white;
+    color: black;
+  }
+
+  .loadingContainer,
+  .errorContainer {
+    display: none;
+  }
+
+  .notificationContent,
+  .autoSaveFloating {
+    display: none;
+  }
+}/* AI S
+peech Error Notification - Non-blocking */
+.aiSpeechNotification {
+  position: fixed;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  z-index: 1000;
+  max-width: 400px;
+}
+
+.notificationContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #303134;
+  border: 1px solid #5f6368;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+}
+
+.notificationIcon {
+  font-size: 18px;
+  flex-shrink: 0;
+  color: #ea4335;
+}
+
+.notificationText {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #9aa0a6;
+}
+
+.notificationClose {
+  background: none;
+  border: none;
+  color: #9aa0a6;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationClose:hover {
+  background: #5f6368;
+  color: #ffffff;
+}
+
+/* removed slideInRight keyframes */
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -9,8 +9,40 @@
         "**/node_modules/**"
       ],
       "rewrites": [
+        { "source": "/client/**", "destination": "/client/index.html" },
+        { "source": "/api/stripe/webhook", "function": "stripeWebhook" },
+        { "source": "/api/**", "function": "api" },
         { "source": "**", "destination": "/index.html" }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "source": "client-portal/functions",
+    "runtime": "nodejs22",
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ],
+    "egressSettings": "ALLOW_ALL"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5002
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4003
+    },
+    "hub": {
+      "port": 4403
+    }
+  },
+  "firestore": {
+    "database": "queryfuel",
+    "location": "nam5",
+    "rules": "client-portal/firestore.rules",
+    "indexes": "client-portal/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "client-portal/storage.rules"
+  }
 }

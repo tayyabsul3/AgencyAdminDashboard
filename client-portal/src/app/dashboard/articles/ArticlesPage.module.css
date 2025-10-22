@@ -1,0 +1,121 @@
+.articlesPage {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Use GPU acceleration for smoother rendering */
+  will-change: scroll-position;
+}
+
+.content {
+  padding-top: 120px;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  /* Optimize for smooth scrolling */
+  contain: layout;
+}
+
+/* Loading and error containers for better layout stability */
+.loadingContainer,
+.errorContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.articleListLoading {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.articleListContainer {
+  background: rgba(255, 255, 255, 0.1);
+  /* Optimize backdrop filter for performance */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  /* Enable GPU acceleration */
+  transform: translateZ(0);
+  /* Prevent layout shifts */
+  min-height: 200px;
+}
+
+.loginButton {
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  /* Optimize transitions - only transition what changes */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Enable GPU acceleration */
+  will-change: transform;
+}
+
+.loginButton:hover {
+  transform: translateY(-2px) translateZ(0);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.loginButton:active {
+  transform: translateY(0) translateZ(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .articleListContainer {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8rem;
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+  }
+}

@@ -1,0 +1,150 @@
+.hero {
+  position: relative;
+  background: #f7f9ff;
+  overflow: hidden;
+}
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient( circle at center, rgba(88,135,255,0.25), rgba(88,135,255,0) 60% );
+  filter: blur(6px);
+  z-index: 0;
+}
+.hero::before {
+  top: -120px;
+  left: -120px;
+}
+.hero::after {
+  bottom: -160px;
+  right: -140px;
+}
+
+.sectionTitle {
+  font-weight: 700;
+}
+
+.cardSoft {
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 24px rgba(20, 24, 62, 0.06);
+}
+
+.gradientCta {
+  background: linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%);
+}
+
+.videoFrame {
+  border-radius: 18px;
+  background: linear-gradient(135deg,#ffffff,#e9f1ff);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 12px 40px rgba(20, 24, 62, 0.10);
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  color: #8b93a7;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 38%;
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.badgeChip {
+  border: 1px solid rgba(88,135,255,0.35);
+  background: rgba(88,135,255,0.10);
+  color: #3e5bd1;
+}
+
+.logoGhost {
+  height: 22px;
+  opacity: 0.6;
+  filter: grayscale(100%);
+}
+
+.counter {
+  font-weight: 800;
+}
+
+/* ===== Figma: Top Section (Navbar + Hero) ===== */
+.navShell {
+  background: #ffffff;
+}
+
+.navInner {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(20,24,62,0.08);
+  padding: 10px 16px;
+}
+
+.ctaPill {
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%);
+  color: #fff !important;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 6px 18px rgba(76, 110, 245, 0.35);
+}
+
+.heroWrap {
+  padding-top: 56px;
+  padding-bottom: 40px;
+}
+
+.heroTitle {
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.gradientText {
+  background: linear-gradient(180deg, #59a1ff 0%, #4a78ff 60%, #6fe0ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.heroLead {
+  color: #6b7287;
+  max-width: 760px;
+}
+
+.chip {
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #fff;
+  color: #3b4457;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chipIcon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e9efff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #5476ff;
+}
+
+.keywordCard {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  box-shadow: 0 8px 26px rgba(20,24,62,0.08);
+  background: linear-gradient(135deg,#ffffff,#f0f6ff);
+}

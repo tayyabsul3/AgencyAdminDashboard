@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4000",
+    "dev:client": "cd client-portal && npm run dev",
     "build": "next build",
+    "build:both": "node build-both.js",
     "start": "next start",
     "lint": "next lint"
   },

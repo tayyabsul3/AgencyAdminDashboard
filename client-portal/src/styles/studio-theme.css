@@ -1,0 +1,443 @@
+/* Voice Interview Studio Theme - Professional Design System */
+
+:root {
+  /* Google Meet Dark Theme Color Palette */
+  --studio-primary: #202124;
+  --studio-secondary: #303134;
+  --studio-accent: #1a73e8;
+  --studio-highlight: #00D4FF;
+  --studio-success: #34a853;
+  --studio-warning: #fbbc04;
+  --studio-error: #ea4335;
+  --studio-info: #1a73e8;
+
+  /* Studio Surface Colors */
+  --studio-surface-1: rgba(32, 33, 36, 0.9);
+  --studio-surface-2: rgba(60, 64, 67, 0.8);
+  --studio-surface-3: rgba(26, 115, 232, 0.1);
+  --studio-background: #202124;
+
+  /* Glass Morphism System */
+  --glass-primary: rgba(32, 33, 36, 0.9);
+  --glass-secondary: rgba(60, 64, 67, 0.8);
+  --glass-accent: rgba(26, 115, 232, 0.1);
+  --glass-light: rgba(26, 115, 232, 0.05);
+  --glass-border: rgba(95, 99, 104, 0.3);
+
+  /* Studio Gradients */
+  --studio-gradient: linear-gradient(135deg, #202124 0%, #303134 50%, #202124 100%);
+  --recording-gradient: linear-gradient(135deg, #00D4FF 0%, #00A8CC 100%);
+  --success-gradient: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+  --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+
+  /* Text Colors */
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --text-muted: #5f6368;
+  --text-accent: #1a73e8;
+  --text-highlight: #00D4FF;
+  --text-success: #34a853;
+  --text-warning: #fbbc04;
+  --text-error: #ea4335;
+
+  /* Shadow System */
+  --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(26, 115, 232, 0.3);
+  --shadow-recording: 0 0 30px rgba(0, 212, 255, 0.4);
+
+  /* Border Radius System */
+  --radius-small: 6px;
+  --radius-medium: 12px;
+  --radius-large: 20px;
+  --radius-xl: 28px;
+  --radius-full: 50%;
+
+  /* Spacing System */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+
+  /* Typography System - Broadcast Quality */
+  --font-display: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+
+  /* Font Sizes - Studio Scale */
+  --text-xs: 0.75rem;     /* 12px - Metadata */
+  --text-sm: 0.875rem;    /* 14px - Small text */
+  --text-base: 1rem;      /* 16px - Body text */
+  --text-lg: 1.125rem;    /* 18px - Large body */
+  --text-xl: 1.25rem;     /* 20px - Small headings */
+  --text-2xl: 1.5rem;     /* 24px - Headings */
+  --text-3xl: 1.875rem;   /* 30px - Large headings */
+  --text-4xl: 2.25rem;    /* 36px - Display */
+  --text-hero: 2.5rem;    /* 40px - Hero text */
+
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+
+  /* Animation Timing */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 750ms;
+
+  /* Animation Easing */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-studio: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Z-Index Scale */
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal: 40;
+  --z-popover: 50;
+  --z-tooltip: 60;
+  --z-toast: 70;
+
+  /* Responsive Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Audio Visualization Colors */
+  --audio-low: #16a34a;
+  --audio-medium: #f59e0b;
+  --audio-high: #dc2626;
+  --audio-optimal: #3b82f6;
+  --waveform-active: #00D4FF;
+  --waveform-inactive: rgba(51, 51, 51, 0.2);
+
+  /* Status Colors */
+  --status-idle: var(--text-secondary);
+  --status-recording: var(--studio-highlight);
+  --status-processing: var(--studio-accent);
+  --status-success: var(--studio-success);
+  --status-warning: var(--studio-warning);
+  --status-error: var(--studio-error);
+}
+
+/* Studio Theme Base Styles */
+.studio-theme {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: white;
+  min-height: auto; /* Remove forced full height */
+  line-height: var(--leading-normal);
+}
+
+/* Glass Morphism Utility Classes */
+.glass-primary {
+  background: var(--glass-primary);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-secondary {
+  background: var(--glass-secondary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-accent {
+  background: var(--glass-accent);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Studio Button System */
+.btn-studio {
+  font-family: var(--font-body);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-medium);
+  transition: all var(--duration-normal) var(--ease-studio);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-studio:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--accent-gradient);
+  color: white;
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--text-base);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-large);
+}
+
+.btn-recording {
+  background: var(--recording-gradient);
+  color: #0A0E27;
+  padding: var(--space-lg) var(--space-2xl);
+  font-size: var(--text-lg);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-recording);
+  min-width: 120px;
+  min-height: 60px;
+}
+
+.btn-recording:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--shadow-recording), var(--shadow-large);
+}
+
+.btn-recording.recording {
+  animation: recordingPulse 2s ease-in-out infinite;
+}
+
+.btn-secondary {
+  background: var(--glass-secondary);
+  color: var(--text-primary);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--text-sm);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+  background: var(--glass-accent);
+  transform: translateY(-1px);
+}
+
+/* Studio Card System */
+.card-studio {
+  background: var(--glass-primary);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-medium);
+  padding: var(--space-xl);
+}
+
+.card-panel {
+  background: var(--glass-secondary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-medium);
+  padding: var(--space-lg);
+}
+
+/* Typography Utilities */
+.text-hero {
+  font-size: var(--text-hero);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-display {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+}
+
+.text-heading {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-tight);
+}
+
+.text-subheading {
+  font-size: var(--text-xl);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  text-shadow: none;
+}
+
+.text-body {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.text-small {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.text-micro {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Animation Keyframes */
+@keyframes recordingPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: var(--shadow-recording);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-recording), 0 0 40px rgba(0, 212, 255, 0.4);
+  }
+}
+
+@keyframes processingRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes waveformPulse {
+  0%, 100% { height: 4px; opacity: 0.6; }
+  50% { height: 20px; opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: var(--shadow-glow); }
+  50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); }
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  :root {
+    --text-hero: 2rem;
+    --text-4xl: 1.875rem;
+    --text-3xl: 1.5rem;
+    --text-2xl: 1.25rem;
+  }
+
+  .btn-recording {
+    min-width: 80px;
+    min-height: 80px;
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .card-studio {
+    padding: var(--space-lg);
+  }
+
+  .card-panel {
+    padding: var(--space-md);
+  }
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --text-secondary: rgba(255, 255, 255, 0.9);
+    --text-tertiary: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Focus Management */
+.focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 2px;
+}
+
+/* Loading States */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--glass-primary) 0%,
+    var(--glass-secondary) 50%,
+    var(--glass-primary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Status Indicators */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-small);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.status-recording {
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--studio-highlight);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.status-processing {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--studio-accent);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.status-success {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--text-success);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.status-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--text-warning);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-error {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--text-error);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}

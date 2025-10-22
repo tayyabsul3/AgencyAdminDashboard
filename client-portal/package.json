@@ -1,0 +1,39 @@
+{
+  "name": "firebase-auth-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:lan": "next dev -H 0.0.0.0 -p 3000",
+    "build": "next build",
+    "build:staging": "NODE_ENV=production NEXT_PUBLIC_ENVIRONMENT=staging next build",
+    "build:production": "NODE_ENV=production NEXT_PUBLIC_ENVIRONMENT=production next build",
+    "start": "next start",
+    "start:lan": "next start -H 0.0.0.0 -p 3000",
+    "lint": "next lint",
+    "deploy": "node scripts/deploy.js",
+    "deploy:staging": "node scripts/deploy.js staging",
+    "deploy:production": "node scripts/deploy.js production",
+    "deploy:audio-production": "node scripts/deploy-production.js",
+    "validate:audio-deployment": "node scripts/validate-audio-deployment.js",
+    "health-check": "curl -f http://localhost:3000/api/health || echo 'Health check failed'",
+    "validate-env": "node -e \"require('./src/config/environment').validateEnvironment()\"",
+    "validate-deployment": "node scripts/validate-deployment.js",
+    "security-audit": "npm audit --audit-level moderate"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@stripe/stripe-js": "^7.9.0",
+    "firebase": "^10.14.1",
+    "firebase-admin": "^13.5.0",
+    "next": "15.4.6",
+    "nodemailer": "^7.0.9",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "15.4.6"
+  }
+}

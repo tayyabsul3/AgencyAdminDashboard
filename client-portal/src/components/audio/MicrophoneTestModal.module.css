@@ -1,0 +1,569 @@
+/* Microphone Test Modal Styles */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeInOverlay 0.3s ease-out forwards;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+}
+
+.modal {
+  background: rgba(30, 30, 50, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  color: white;
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  animation: slideInModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideInModal {
+  from {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.content {
+  padding: 2rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Current Stage */
+.currentStage {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.stageIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.currentStage h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+}
+
+/* Audio Level Indicator */
+.audioLevelContainer {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.audioLevelLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.audioLevelBar {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.audioLevelFill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.1s ease, background-color 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.audioLevelHint {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  font-style: italic;
+  min-height: 1.2rem;
+}
+
+/* Instructions */
+.instructions {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.instructions p {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+}
+
+.samplePhrases {
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.phrase {
+  padding: 0.75rem 1rem;
+  background: rgba(240, 147, 251, 0.1);
+  border: 1px solid rgba(240, 147, 251, 0.2);
+  border-radius: 12px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+}
+
+.recordingIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: #ff6b6b;
+}
+
+.recordingDot {
+  width: 12px;
+  height: 12px;
+  background: #ff6b6b;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* Playback Info */
+.playbackInfo {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.playbackInfo p {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.recordedText {
+  padding: 1rem;
+  background: rgba(78, 205, 196, 0.1);
+  border: 1px solid rgba(78, 205, 196, 0.2);
+  border-radius: 12px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 1rem 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Results */
+.results {
+  margin: 2rem 0;
+}
+
+.resultItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resultIcon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+.resultLabel {
+  flex: 1;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.resultStatus {
+  font-weight: 600;
+  color: white;
+}
+
+.overallResult {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.overallIcon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.overallText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  line-height: 1.4;
+}
+
+/* Error */
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+.errorIcon {
+  font-size: 1.2rem;
+  margin-top: 0.1rem;
+}
+
+.errorText {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.4;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.actions button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px; /* Touch-friendly */
+}
+
+.completeButton {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+}
+
+.completeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+}
+
+.retryButton {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+}
+
+.retryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+}
+
+.cancelButton {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancelButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .modal {
+    margin: 0.5rem;
+    max-width: none;
+    border-radius: 16px;
+  }
+  
+  .header {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .content {
+    padding: 1.5rem;
+  }
+  
+  .stageIcon {
+    font-size: 2.5rem;
+  }
+  
+  .currentStage h3 {
+    font-size: 1.2rem;
+  }
+  
+  .actions {
+    padding: 1.25rem 1.5rem;
+    flex-direction: column;
+  }
+  
+  .actions button {
+    margin-bottom: 0.5rem;
+  }
+  
+  .actions button:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalOverlay {
+    padding: 0.5rem;
+  }
+  
+  .modal {
+    border-radius: 12px;
+  }
+  
+  .header {
+    padding: 1rem 1.25rem;
+  }
+  
+  .header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .closeButton {
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+  }
+  
+  .content {
+    padding: 1.25rem;
+  }
+  
+  .stageIcon {
+    font-size: 2.2rem;
+  }
+  
+  .currentStage h3 {
+    font-size: 1.1rem;
+  }
+  
+  .audioLevelContainer {
+    padding: 1.25rem;
+  }
+  
+  .samplePhrases {
+    gap: 0.4rem;
+  }
+  
+  .phrase {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .resultItem {
+    padding: 0.8rem;
+  }
+  
+  .overallResult {
+    padding: 1.25rem;
+  }
+  
+  .overallIcon {
+    font-size: 2rem;
+  }
+  
+  .overallText {
+    font-size: 1rem;
+  }
+  
+  .actions {
+    padding: 1rem 1.25rem;
+  }
+  
+  .actions button {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+}
+
+/* Landscape orientation */
+@media (max-height: 600px) and (orientation: landscape) {
+  .modal {
+    max-height: 95vh;
+  }
+  
+  .content {
+    max-height: 50vh;
+  }
+  
+  .stageIcon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .currentStage h3 {
+    font-size: 1.1rem;
+  }
+  
+  .audioLevelContainer {
+    margin: 1rem 0;
+    padding: 1rem;
+  }
+  
+  .overallResult {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  
+  .overallIcon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .modal {
+    border: 2px solid white;
+    background: rgba(0, 0, 0, 0.95);
+  }
+  
+  .resultItem,
+  .audioLevelContainer,
+  .phrase,
+  .recordedText,
+  .overallResult,
+  .error {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
+  }
+  
+  .recordingDot {
+    animation: none;
+  }
+  
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}

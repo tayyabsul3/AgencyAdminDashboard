@@ -1,0 +1,612 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.header h1 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 2rem;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.refreshButton {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.refreshButton:hover {
+  background: #2563eb;
+}
+
+.refreshButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.lastChecked {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.overallStatus {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statusBadge {
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.summary {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.summary span {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+.healthy { color: #10b981; }
+.warnings { color: #f59e0b; }
+.unhealthy { color: #ef4444; }
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.serviceCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.serviceCard:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.serviceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.serviceHeader h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.serviceStatus {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.serviceMessage {
+  color: #4b5563;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.serviceDetails {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+
+.serviceDetails strong {
+  color: #1f2937;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.serviceDetails pre {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.errorSection {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.errorSection h3 {
+  color: #dc2626;
+  margin: 0 0 1rem 0;
+}
+
+.errorSection p {
+  color: #7f1d1d;
+  margin: 0;
+}
+
+.recommendations {
+  background: #fffbeb;
+  border: 1px solid #fed7aa;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.recommendations h3 {
+  color: #92400e;
+  margin: 0 0 1rem 0;
+}
+
+.recommendations ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #78350f;
+}
+
+.recommendations li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.recommendations code {
+  background: #fbbf24;
+  color: #78350f;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.envGuide {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.envGuide h3 {
+  color: #0c4a6e;
+  margin: 0 0 1rem 0;
+}
+
+.envGuide p {
+  color: #0f172a;
+  margin-bottom: 1rem;
+}
+
+.envGuide code {
+  background: #1e40af;
+  color: white;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.envExample {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin: 0;
+  border: 1px solid #374151;
+}
+
+.apiTesting {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.apiTesting h3 {
+  color: #166534;
+  margin: 0 0 1rem 0;
+}
+
+.apiTesting p {
+  color: #15803d;
+  margin-bottom: 1rem;
+}
+
+.testButton {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.testButton:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.testButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.testResults {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.testResults h4 {
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+}
+
+.testSummary {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.testStat {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.testStat.passed {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.testStat.failed {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.testStat.warnings {
+  background: #fffbeb;
+  color: #d97706;
+  border-color: #fed7aa;
+}
+
+.testResult {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.testResult:last-child {
+  margin-bottom: 0;
+}
+
+.testHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.testHeader h5 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.testStatus {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.testDetails {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+  overflow-x: auto;
+}
+
+.testDetails pre {
+  margin: 0;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .overallStatus {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .summary {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+}/* P
+roduction Monitoring */
+.productionSection {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.monitoringCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.monitoringCard h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #1e293b;
+}
+
+.configStatus h5,
+.healthMetrics h5,
+.cacheStats h5 {
+  margin: 15px 0 10px 0;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.configGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.configItem {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.configItem.healthy {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.configItem.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.configItem.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metricValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.cacheGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.cacheStat {
+  padding: 10px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  color: #475569;
+}
+
+.usageChart {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.usageDay {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.usageDate {
+  font-weight: 600;
+  color: #1e293b;
+  min-width: 100px;
+}
+
+.usageStats {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.usageStats span {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .productionSection {
+    padding: 15px;
+  }
+  
+  .sectionHeader {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .configGrid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  
+  .metricsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  
+  .usageDay {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .usageStats {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}

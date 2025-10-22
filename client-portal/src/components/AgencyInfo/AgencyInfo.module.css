@@ -1,0 +1,65 @@
+/* Agency Info Component Styles */
+
+.agencyBanner {
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+  border: 1px solid #0ea5e9;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.agencyCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.agencyIcon {
+  color: #0ea5e9;
+  font-size: 1.5rem;
+}
+
+.agencyName {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.creditInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.creditBadge {
+  background: #f0f9ff;
+  color: #0369a1;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.creditBadge.low {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.creditBadge.empty {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.infoText {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.compactInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}

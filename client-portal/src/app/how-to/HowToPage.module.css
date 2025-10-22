@@ -1,0 +1,353 @@
+.pageContainer {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.mainTitle {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.1em;
+  color: #666;
+  line-height: 1.5;
+}
+
+.featuredArticleCard {
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tags {
+  margin-bottom: 15px;
+}
+
+.tag {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #007bff;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  margin-right: 10px;
+}
+
+.articleTitle {
+  font-size: 1.8em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.articleDescription {
+  font-size: 0.9em;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.articleMeta span {
+  font-size: 0.9em;
+  margin-right: 10px;
+  opacity: 0.8;
+}
+
+.whatsIncludedSection {
+  margin-bottom: 40px;
+}
+
+.whatsIncludedTitle {
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.gradientText {
+  background: linear-gradient(180deg, #59a1ff 0%, #4a78ff 60%, #6fe0ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+
+.contentCardsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.contentCard {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cardIcon {
+  font-size: 2em;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.cardTitle {
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.cardDescription {
+  font-size: 0.9em;
+  color: #555;
+  line-height: 1.6;
+}
+
+.screenshotsSection {
+  margin-top: 40px;
+}
+
+.screenshotsTitle {
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.screenshotItem {
+  margin-bottom: 30px;
+}
+
+.screenshotSubtitle {
+  font-size: 1.7em;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.screenshotDetail {
+  font-size: 0.9em;
+}
+
+.keyTakeawaysSection {
+  background-color: #e8f7fa;
+  border-radius: 10px;
+  padding: 30px;
+  margin-top: 40px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.keyTakeawaysTitle {
+  font-size: 1.6em;
+  color: #007bff;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.takeawayItem {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.takeawayIcon {
+  color: #28a745;
+  font-size: 1.2em;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
+.takeawayText {
+  font-size: 1em;
+  color: #333;
+  line-height: 1.5;
+}
+
+.callToActionSection {
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  color: white;
+  padding: 20px 26px;
+  border-radius: 10px;
+  margin-top: 30px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.callToActionTitle {
+  font-size: 2em;
+  margin-bottom: 5px;
+}
+
+.callToActionSubtitle {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.callToActionBtn {
+  background-color: #fff;
+  color: #007bff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.callToActionBtn:hover {
+  background-color: #e2e6ea;
+  color: #0056b3;
+}
+
+.callToActionArrow {
+  font-size: 1em;
+}
+
+.callToActionFinePrint {
+  font-size: 0.8em;
+  margin-top: 20px;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .mainTitle {
+    font-size: 2em;
+  }
+
+  .subtitle {
+    font-size: 1em;
+  }
+
+  .featuredArticleCard {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .articleTitle {
+    font-size: 1.3em;
+  }
+
+  .articleDescription {
+    font-size: 0.8em;
+  }
+
+  .whatsIncludedTitle,
+  .screenshotsTitle {
+    font-size: 1.5em;
+  }
+
+  .contentCardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contentCard {
+    padding: 20px;
+  }
+
+  .cardIcon {
+    font-size: 1.8em;
+  }
+
+  .cardTitle {
+    font-size: 1.1em;
+  }
+
+  .cardDescription {
+    font-size: 0.85em;
+  }
+
+  .screenshotSubtitle {
+    font-size: 1.2em;
+  }
+
+  .screenshotText {
+    font-size: 1em;
+  }
+
+  .screenshotDescription {
+    font-size: 0.85em;
+  }
+
+  .screenshotDetail {
+    font-size: 0.9em;
+  }
+
+  .keyTakeawaysSection {
+    padding: 20px;
+  }
+
+  .keyTakeawaysTitle {
+    font-size: 1.4em;
+  }
+
+  .takeawayText {
+    font-size: 0.9em;
+  }
+
+  .callToActionSection {
+    padding: 30px 20px;
+  }
+
+  .callToActionTitle {
+    font-size: 1.6em;
+  }
+
+  .callToActionSubtitle {
+    font-size: 1em;
+  }
+
+  .callToActionBtn {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  .callToActionFinePrint {
+    font-size: 0.75em;
+  }
+}
+
+
+/* New styles for ImageCarousel integration */
+.screenshotItem .carouselContainer {
+  margin-bottom: 20px; /* Space between carousel and detail text */
+}
+
+.screenshotItem .carouselImageWrapper {
+  height: auto; /* Allow image to dictate height */
+  max-height: 400px; /* Max height for consistency */
+}
+
+.screenshotItem .carouselImage {
+  object-fit: contain; /* Ensure entire image is visible */
+}
+
+/* Responsive adjustments for screenshotItem */
+@media (max-width: 768px) {
+  .screenshotItem .carouselContainer {
+    max-width: 100%;
+  }
+
+  .screenshotItem .carouselImageWrapper {
+    height: 250px; /* Smaller height on mobile */
+  }
+}

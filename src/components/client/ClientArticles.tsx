@@ -30,7 +30,7 @@ function ClientArticleGeneration({ agencyData, clientData, userType }: ClientArt
   const [articles, setArticles] = useState<Article[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [availableCredits, setAvailableCredits] = useState(0);
-  
+
   // Limit configuration
   const [articleLimit, setArticleLimit] = useState(10); // Default limit
   const [articlesGenerated, setArticlesGenerated] = useState(0);
@@ -52,7 +52,7 @@ function ClientArticleGeneration({ agencyData, clientData, userType }: ClientArt
       // Calculate available credits considering both agency credits and client limit
       const agencyCredits = agencyData.subscription?.credits || 0;
       const clientRemainingLimit = Math.max(0, articleLimit - articlesGenerated);
-      
+
       // Client can only use up to their remaining limit, but not more than agency has
       const actualAvailableCredits = Math.min(agencyCredits, clientRemainingLimit);
       setAvailableCredits(actualAvailableCredits);
@@ -62,12 +62,12 @@ function ClientArticleGeneration({ agencyData, clientData, userType }: ClientArt
   // Check if client can generate more articles
   const canGenerateArticle = () => {
     if (userType !== 'client') return false;
-    
+
     const agencyCredits = agencyData.subscription?.credits || 0;
     const hasAgencyCredits = agencyCredits > 0;
     const underClientLimit = articlesGenerated < articleLimit;
     const hasAvailableCredits = availableCredits > 0;
-    
+
     return hasAgencyCredits && underClientLimit && hasAvailableCredits;
   };
 
@@ -183,7 +183,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
     try {
       // First update Firestore data
       const updateSuccess = await updateFirestoreData();
-      
+
       if (!updateSuccess) {
         setIsGenerating(false);
         return;
@@ -193,19 +193,19 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
       setTimeout(() => {
         const articleTitle = `Article ${articles.length + 1} - ${new Date().toLocaleDateString()}`;
         const newArticle = generateMockArticle(articleTitle);
-        
+
         const newArticlesGenerated = articlesGenerated + 1;
-        
+
         setArticles(prev => [newArticle, ...prev]);
         setArticlesGenerated(newArticlesGenerated);
         dispatch(updateClientArticles(newArticlesGenerated));
-        
+
         // Update available credits considering the new state
         const agencyCredits = (agencyData.subscription?.credits || 0) - 1;
         const clientRemainingLimit = Math.max(0, articleLimit - newArticlesGenerated);
         const newAvailableCredits = Math.min(agencyCredits, clientRemainingLimit);
         setAvailableCredits(newAvailableCredits);
-       
+
         toast.success("Article generated successfully!");
         closeModal();
         setIsGenerating(false);
@@ -335,7 +335,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
           <span className="text-gray-600 font-bold">{articlesGenerated} / {articleLimit}</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-4">
-          <div 
+          <div
             className="h-4 rounded-full transition-all duration-500"
             style={{
               width: `${getLimitProgress()}%`,
@@ -424,7 +424,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
             <p className="text-gray-600">Create AI-powered content for your needs</p>
           </div>
         </div>
-        
+
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200">
             <div className="flex items-center gap-3">
@@ -479,7 +479,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
           >
             Cancel
           </button>
-          <button 
+          <button
             onClick={handleGenerateArticle}
             disabled={isGenerating || !canGenerateArticle()}
             className="flex-1 px-6 py-4 text-white rounded-xl font-bold transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none shadow-lg"

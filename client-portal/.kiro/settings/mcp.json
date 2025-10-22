@@ -1,0 +1,248 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-fetch-server"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "fetch",
+        "fetch_markdown"
+      ],
+      "disabledTools": []
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\USER\\Documents"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "read_text_file",
+        "create_directory"
+      ]
+    },
+    "duckduckgo": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "duckduckgo-mcp-server"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "search",
+        "duckduckgo_web_search"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "sequentialthinking"
+      ]
+    },
+    "memory-bank": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@allpepper/memory-bank-mcp"
+      ],
+      "env": {
+        "MEMORY_BANK_ROOT": "C:\\Users\\USER\\Documents\\memory-bank"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "memory_bank_write",
+        "list_projects",
+        "list_project_files",
+        "memory_bank_read"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "browser_wait_for",
+        "browser_take_screenshot",
+        "browser_click",
+        "browser_navigate",
+        "browser_type",
+        "browser_snapshot",
+        "browser_evaluate",
+        "browser_fill_form",
+        "browser_press_key",
+        "browser_console_messages",
+        "browser_select_option",
+        "browser_handle_dialog"
+      ]
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "env": {},
+      "disabled": true,
+      "autoApprove": [
+        "puppeteer_navigate"
+      ]
+    },
+    "eslint": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@eslint/mcp"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "lint-files"
+      ]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest",
+        "--",
+        "--executablePath=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+      ],
+      "env": {
+        "PROGRAMFILES": "C:\\\\Program Files",
+        "GOOGLE_CHROME_EXE": "C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe"
+      },
+      "disabled": true,
+      "autoApprove": [
+        "list_pages",
+        "new_page",
+        "navigate_page",
+        "take_snapshot",
+        "take_screenshot",
+        "click",
+        "fill",
+        "evaluate_script",
+        "select_page",
+        "wait_for",
+        "fill_form",
+        "list_console_messages",
+        "navigate_page_history",
+        "hover"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "resolve-library-id",
+        "get-library-docs"
+      ]
+    },
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest",
+        "mcp"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "firebase_get_environment",
+        "firestore_list_collections",
+        "firestore_query_collection",
+        "firestore_get_documents",
+        "firebase_get_project",
+        "firebase_read_resources",
+        "firebase_update_environment",
+        "firebase_get_security_rules",
+        "firebase_login",
+        "firebase_list_projects",
+        "auth_get_users"
+      ],
+      "disabledTools": [
+        "dataconnect_build",
+        "dataconnect_generate_schema",
+        "dataconnect_generate_operation",
+        "dataconnect_list_services",
+        "dataconnect_execute",
+        "crashlytics_create_note",
+        "crashlytics_delete_note",
+        "crashlytics_get_issue",
+        "crashlytics_list_events",
+        "crashlytics_batch_get_events",
+        "crashlytics_list_notes",
+        "crashlytics_get_top_issues",
+        "crashlytics_get_top_variants",
+        "crashlytics_get_top_versions",
+        "crashlytics_get_top_apple_devices",
+        "crashlytics_get_top_android_devices",
+        "crashlytics_get_top_operating_systems",
+        "crashlytics_update_issue",
+        "apphosting_fetch_logs",
+        "apphosting_list_backends"
+      ]
+    },
+    "stripe": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@stripe/mcp",
+        "--tools=all"
+      ],
+      "env": {
+        "STRIPE_SECRET_KEY": "sk_test_51SEwMSDwNpDs4AJudohzt1hYLckK5Kq1m3BqI4ssfnNDUlEOu8LazAeRl4LFhhXl9MzWShfkQwNPdxgJJyfSpVMr00Esz3pPYD"
+      },
+      "disabled": true,
+      "autoApprove": [
+        "list_customers",
+        "list_products",
+        "list_subscriptions",
+        "retrieve_balance",
+        "list_prices",
+        "update_subscription",
+        "cancel_subscription",
+        "list_invoices",
+        "create_customer",
+        "list_payment_intents",
+        "create_refund"
+      ]
+    },
+    "shadcn-ui": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "shadcn-ui-mcp-server"
+      ],
+      "env": {},
+      "disabled": true,
+      "autoApprove": [
+        "get_component",
+        "list_components",
+        "search_components",
+        "list_shadcn_components",
+        "get_component_details",
+        "get_component_examples"
+      ]
+    }
+  }
+}

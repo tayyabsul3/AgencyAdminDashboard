@@ -10,6 +10,7 @@ import Providers from "@/redux/Provider";
 import { Toaster } from "sonner";
 import AgencyProvider from "@/components/AgencyProvider";
 import AuthGuard from "@/hooks/useAuthGuard";
+import DevIndicator from "@/components/DevIndicator";
 export default function AdminLayout({
   children,
 }: {
@@ -54,6 +55,7 @@ export default function AdminLayout({
         {/* Page Content */}
         <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
       </div>
+      <DevIndicator />
 </AuthGuard>
 
 

@@ -1,0 +1,941 @@
+/* Enhanced Subscription Management Styles */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: 100vh;
+  background: #F4F4F4;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 0.1rem;
+  padding: 2.25rem 0;
+}
+
+.title {
+  font-size: 4rem; /* Corresponds to Bootstrap's display-3 */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) { /* Medium devices and up */
+  .title {
+    font-size: 4.5rem; /* Corresponds to Bootstrap's display-2 */
+  }
+}
+
+.subtitle {
+  font-size: 1.25rem; /* Corresponds to Bootstrap's lead font size */
+  color: rgba(51, 51, 51, 0.8);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Tab Navigation */
+.tabNavigation {
+  display: flex;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 15px;
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+  flex: 1;
+  padding: 1rem 2rem;
+  border: none;
+  background: transparent;
+  color: rgba(51, 51, 51, 0.7);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.tab:hover {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%);
+  box-shadow: 0 6px 18px rgba(76, 110, 245, 0.35);
+  color: #fff;
+  border-color: transparent;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  
+}
+
+/* Status Card */
+.statusCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1.4rem;
+}.st
+atusCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.statusHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.statusInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statusIcon {
+  font-size: 2rem;
+}
+
+.statusTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.statusBadge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statusBadge.success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.statusBadge.info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+}
+
+.statusBadge.warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: #333;
+}
+
+.statusBadge.danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+.statusBadge.secondary {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.statusDescription {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.statusDescription p {
+  color: rgba(51, 51, 51, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem 0;
+}
+
+.statusDescription p:last-child {
+  margin-bottom: 0;
+}
+
+.statusReason {
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 0.85rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Alert Messages */
+.alert {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #856404;
+  font-size: 0.9rem;
+}
+
+.urgentAlert {
+  background: rgba(255, 193, 7, 0.15);
+  border: 2px solid rgba(255, 193, 7, 0.5);
+  animation: pulseAlert 2s infinite;
+}
+
+.dangerAlert {
+  background: rgba(220, 53, 69, 0.1);
+  border: 2px solid rgba(220, 53, 69, 0.3);
+  color: #721c24;
+}
+
+.infoAlert {
+  background: rgba(23, 162, 184, 0.1);
+  border: 2px solid rgba(23, 162, 184, 0.3);
+  color: #0c5460;
+}
+
+@keyframes pulseAlert {
+  0%, 100% { 
+    border-color: rgba(255, 193, 7, 0.5);
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.3);
+  }
+  50% { 
+    border-color: rgba(255, 193, 7, 0.8);
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.1);
+  }
+}
+
+.alertHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.alertIcon {
+  font-size: 1.25rem;
+}
+
+.alertContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alertContent p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.alertActions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.button.small {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  min-width: 120px;
+}
+
+/* Subscription Card */
+.subscriptionCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.subscriptionCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cardHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.accessLevel {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Subscription Details */
+.subscriptionDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.value {
+  color: rgba(51, 51, 51, 0.8);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+
+.button.primary {
+  background: linear-gradient(135deg, #00D4FF 0%, #00A8CC 100%);
+  color: #0A0E27;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 212, 255, 0.4);
+  text-decoration: none;
+}
+
+.button.secondary {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+}
+
+.button.secondary:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+/* No Subscription State */
+.noSubscription {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.noSubscription h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.noSubscription p {
+  color: rgba(51, 51, 51, 0.8);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Billing History */
+.billingTab {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sectionHeader h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.sectionHeader p {
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.invoiceList {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.invoiceHeader {
+  display: grid;
+  grid-template-columns: 1fr 120px 100px 120px 140px;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.headerCell {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.invoiceItem {
+  display: grid;
+  grid-template-columns: 1fr 120px 100px 120px 140px;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s ease;
+}
+
+.invoiceItem:hover {
+  background: rgba(59, 130, 246, 0.02);
+}
+
+.invoiceItem:last-child {
+  border-bottom: none;
+}
+
+.invoiceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.invoiceDate {
+  font-size: 0.85rem;
+  color: rgba(51, 51, 51, 0.6);
+  font-weight: 500;
+}
+
+.invoiceDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.invoiceNumber {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.invoiceDescription {
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.paymentMethodUsed {
+  color: rgba(51, 51, 51, 0.5);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.invoiceAmount {
+  font-weight: 600;
+  color: #333;
+  text-align: right;
+  font-size: 0.95rem;
+}
+
+.invoiceStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+  justify-content: center;
+}
+
+.invoiceStatus.paid {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.invoiceStatus.open {
+  background: rgba(255, 193, 7, 0.1);
+  color: #856404;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.invoiceStatus.draft {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.invoiceStatus.void {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.statusIcon {
+  font-size: 0.8rem;
+}
+
+.invoiceActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.invoiceLink,
+.downloadButton {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.invoiceLink:hover,
+.downloadButton:hover {
+  background: rgba(59, 130, 246, 0.1);
+  text-decoration: none;
+}
+
+.downloadButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Pagination */
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.loadMoreButton {
+  min-width: 160px;
+}
+
+/* Payment Methods */
+.paymentTab {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.paymentMethodList {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.paymentMethodItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.paymentMethodItem:last-child {
+  border-bottom: none;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.cardIcon {
+  font-size: 1.1rem;
+}
+
+.cardDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardExpiry {
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.expiredWarning,
+.expiringWarning {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.expiredWarning {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.expiringWarning {
+  background: rgba(255, 193, 7, 0.1);
+  color: #856404;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.warningIcon {
+  font-size: 0.9rem;
+}
+
+.defaultBadge {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.paymentActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.portalNote {
+  color: rgba(51, 51, 51, 0.6);
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.emptyState h3 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading p {
+  color: rgba(51, 51, 51, 0.8);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Error State */
+.error {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+.error h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #dc3545;
+  margin-bottom: 1rem;
+}
+
+.error p {
+  color: rgba(51, 51, 51, 0.8);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Success Alert */
+.successAlert {
+  background: rgba(40, 167, 69, 0.1);
+  border: 1px solid rgba(40, 167, 69, 0.3);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  color: #155724;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: slideInDown 0.3s ease-out;
+}
+
+.successIcon {
+  font-size: 1.25rem;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .tabNavigation {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tab {
+    padding: 0.75rem 1rem;
+  }
+
+  .subscriptionCard,
+  .statusCard {
+    padding: 1.5rem;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .invoiceHeader {
+    display: none;
+  }
+
+  .invoiceItem {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: left;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .invoiceItem:hover {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .invoiceActions {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .invoiceAmount {
+    text-align: left;
+    font-size: 1.1rem;
+  }
+
+  .invoiceStatus {
+    width: fit-content;
+  }
+}
+
+@media (max-width: 480px) {
+  .statusHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .statusInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .alertActions {
+    flex-direction: column;
+  }
+
+  .button.small {
+    width: 100%;
+  }
+}

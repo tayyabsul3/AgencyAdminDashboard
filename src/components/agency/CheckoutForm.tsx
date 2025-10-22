@@ -29,7 +29,7 @@ const CheckoutForm = ({ amount, data }: CheckoutFormProps) => {
 
   useEffect(() => {
     // Create payment intent with the payId from parent
-    fetch("/api/create-payment-intent", {
+    fetch(`${process.env.NEXT_PUBLIC_FUNCTIONS_EMULATOR_URL}/createPaymentIntent"`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

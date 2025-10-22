@@ -2,17 +2,217 @@
 import React from "react";
 import Link from "next/link";
 import LandingNavbar from "../components/LandingNavbar/LandingNavbar";
+import "./layout-fixes.css";
 
 export default function QueryfuelLandingPage() {
+  // Clean up layout issues on component mount
+  React.useEffect(() => {
+    const fixLayoutIssues = () => {
+      // Fix the positioning offset issue
+      window.scrollTo(0, 0);
+      
+      const html = document.documentElement;
+      const body = document.body;
+      
+      // Reset positioning that might cause offset
+      html.style.transform = 'none';
+      body.style.transform = 'none';
+      html.style.top = '0';
+      body.style.top = '0';
+      html.style.position = 'static';
+      body.style.position = 'static';
+      html.style.margin = '0';
+      body.style.margin = '0';
+      html.style.padding = '0';
+      body.style.padding = '0';
+      
+      // Force background colors
+      html.style.background = '#F4F4F4';
+      body.style.background = '#F4F4F4';
+      
+      // Find and remove placeholder elements
+      const allElements = document.querySelectorAll('*');
+      allElements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+        const hasNoText = element.textContent.trim() === '';
+        const isSmallBox = rect.width < 200 && rect.height < 100;
+        const computedStyle = window.getComputedStyle(element);
+        const bgColor = computedStyle.backgroundColor;
+        
+        // Check if element looks like a gray placeholder
+        const isGrayish = bgColor.includes('rgb(229, 231, 235)') || 
+                         bgColor.includes('rgb(243, 244, 246)') ||
+                         bgColor.includes('rgb(209, 213, 219)') ||
+                         element.style.backgroundColor.includes('gray') ||
+                         element.style.backgroundColor.includes('grey');
+        
+        // Hide placeholder elements
+        if ((isGrayish || hasNoText) && isSmallBox) {
+          element.style.display = 'none';
+        }
+      });
+      
+      // Specifically target the main container
+      const mainContainer = document.querySelector('main');
+      if (mainContainer) {
+        mainContainer.style.marginTop = '0';
+        mainContainer.style.paddingTop = '0';
+        mainContainer.style.position = 'relative';
+        mainContainer.style.top = '0';
+        mainContainer.style.transform = 'none';
+      }
+      
+      // Hide skeleton loaders
+      const skeletonSelectors = [
+        'div[class*="skeleton"]',
+        'div[class*="loading"]',
+        'div[class*="placeholder"]',
+        '.animate-pulse',
+        '[data-testid*="skeleton"]'
+      ];
+      
+      skeletonSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+          el.style.display = 'none';
+        });
+      });
+      
+      // Force a reflow
+      html.offsetHeight;
+    };
+    
+    // Run immediately and multiple times to ensure it takes effect
+    fixLayoutIssues();
+    const timeoutId1 = setTimeout(fixLayoutIssues, 50);
+    const timeoutId2 = setTimeout(fixLayoutIssues, 200);
+    const timeoutId3 = setTimeout(fixLayoutIssues, 500);
+    
+    return () => {
+      clearTimeout(timeoutId1);
+      clearTimeout(timeoutId2);
+      clearTimeout(timeoutId3);
+    };
+  }, []);
+
   return (
     <>
+      <style jsx global>{`
+        /* Force CSS to load and apply immediately */
+        html {
+          margin: 0 !important;
+          padding: 0 !important;
+          min-height: 100vh !important;
+          position: static !important;
+          top: 0 !important;
+          transform: none !important;
+          background: #F4F4F4 !important;
+        }
+        
+        body {
+          margin: 0 !important;
+          padding: 0 !important;
+          min-height: 100vh !important;
+          position: static !important;
+          top: 0 !important;
+          transform: none !important;
+          background: #F4F4F4 !important;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+        }
+        
+        main {
+          margin: 0 !important;
+          padding: 0 !important;
+          position: relative !important;
+          top: 0 !important;
+          transform: none !important;
+          background: #F4F4F4 !important;
+        }
+        
+        /* Hide all empty divs and placeholder elements */
+        div:empty,
+        div[style*="background"]:empty,
+        div[class*="placeholder"],
+        div[class*="skeleton"],
+        .loading,
+        .placeholder {
+          display: none !important;
+        }
+        
+        /* Remove excessive spacing from Bootstrap classes */
+        .py-5:first-child,
+        .py-xl-6:first-child,
+        .py-3:first-child,
+        .py-xl-4:first-child,
+        .mt-2:first-child,
+        .pt-2:first-child {
+          margin-top: 0 !important;
+          padding-top: 0.5rem !important;
+        }
+        
+        /* Ensure containers start at top */
+        .container, .container-xl, .container-fluid {
+          margin-top: 0 !important;
+        }
+        
+        /* Hide gray placeholder boxes */
+        div[style*="rgb(229, 231, 235)"],
+        div[style*="rgb(243, 244, 246)"],
+        div[style*="rgb(209, 213, 219)"],
+        div[style*="gray"],
+        div[style*="grey"] {
+          display: none !important;
+        }
+        
+        /* Force Bootstrap CSS to load */
+        .bg-light {
+          background-color: #f8f9fa !important;
+        }
+        
+        .position-relative {
+          position: relative !important;
+        }
+        
+        .overflow-hidden {
+          overflow: hidden !important;
+        }
+        
+        /* Ensure navigation is visible */
+        .bg-transparent {
+          background-color: transparent !important;
+        }
+        
+        /* Force text to be visible */
+        .text-dark {
+          color: #212529 !important;
+        }
+        
+        .fw-semibold {
+          font-weight: 600 !important;
+        }
+        
+        /* Force button styles */
+        .btn {
+          display: inline-block !important;
+          padding: 0.375rem 0.75rem !important;
+          margin-bottom: 0 !important;
+          font-size: 1rem !important;
+          font-weight: 400 !important;
+          line-height: 1.5 !important;
+          text-align: center !important;
+          text-decoration: none !important;
+          vertical-align: middle !important;
+          cursor: pointer !important;
+          border: 1px solid transparent !important;
+          border-radius: 0.375rem !important;
+        }
+      `}</style>
 
       <main className="position-relative bg-light overflow-hidden">
       {/* Top nav: reusable component */}
-      <LandingNavbar containerClass="py-2" showDrawer={false} getStartedHref="/signup" />
+      <LandingNavbar containerClass="pt-2 pb-2" showDrawer={false} getStartedHref="/signup" />
 
       {/* Hero */}
-      <section className="py-5 py-xl-6 position-relative overflow-hidden">
+      <section className="py-3 py-xl-4 position-relative overflow-hidden">
         {/* Left/Right glow backgrounds (behind hero content) */}
         <div className="d-none d-md-block position-absolute" aria-hidden="true"
              style={{ top: '170px', left: '-340px', width: '360px', height: '360px', background: 'linear-gradient(90deg, #23D2EE 0%, #627FFF 100%)', filter: 'blur(120px)', WebkitBackdropFilter: 'blur(120px)', backdropFilter: 'blur(120px)', borderRadius: '50%', opacity: 1, pointerEvents: 'none', zIndex: 0 }}></div>
@@ -993,29 +1193,6 @@ export default function QueryfuelLandingPage() {
 
     </div>
   </div>
-
-  {/* Single, non-nested styled-jsx block to reserve list padding on md+ so bullets don't flow under CTAs */}
-  <style jsx global>{`
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    .starter-cta,
-    .growth-cta,
-    .scale-cta,
-    .agency-cta { text-decoration: none !important; }
-    .starter-cta:hover, .starter-cta:focus,
-    .growth-cta:hover, .growth-cta:focus,
-    .scale-cta:hover, .scale-cta:focus,
-    .agency-cta:hover, .agency-cta:focus { text-decoration: none !important; }
-
-    @media (min-width: 768px) {
-      .pricing-list-starter { padding-right: 220px; }
-      .pricing-list-growth { padding-right: 220px; }
-      .pricing-list-scale { padding-right: 220px; }
-      .pricing-list-agency { padding-right: 220px; }
-    }
-  `}</style>
 </section>
 
       {/* Gradient CTA Banner (per screenshot) */}

@@ -2,14 +2,40 @@ import React from 'react';
 
 const AdminPortalLink = () => {
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div style={{
+      position: 'fixed',
+      top: '16px',
+      right: '16px',
+      zIndex: 50
+    }}>
       <a 
         href="/" 
         target="_blank"
-        className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-lg transition-colors duration-200 shadow-lg"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          padding: '8px 16px',
+          backgroundColor: '#1f2937',
+          color: 'white',
+          fontWeight: '500',
+          borderRadius: '8px',
+          textDecoration: 'none',
+          transition: 'background-color 0.2s',
+          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = '#111827';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = '#1f2937';
+        }}
       >
         <svg 
-          className="w-4 h-4 mr-2" 
+          style={{
+            width: '16px',
+            height: '16px',
+            marginRight: '8px'
+          }}
           fill="none" 
           stroke="currentColor" 
           viewBox="0 0 24 24"

@@ -5,7 +5,7 @@ const ClientPortalLink: React.FC = () => {
   return (
     <div className="flex items-center space-x-2">
       <Link 
-        href="/client" 
+        href="http://localhost:3000/client/login/" 
         target="_blank"
         className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
       >

@@ -5,7 +5,6 @@ import PageTransition from '../components/PageTransition/PageTransition'
 import { AuthProvider } from '../contexts/AuthContext'
 import { NotificationProvider } from '../components/ui/NotificationSystem'
 import GlobalOnboardingManager from '../components/onboarding/GlobalOnboardingManager'
-import AdminPortalLink from '../components/AdminPortalLink'
 import DevIndicator from '../components/DevIndicator'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -39,7 +38,6 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <NotificationProvider maxNotifications={5}>
             <GlobalOnboardingManager />
-            <AdminPortalLink />
             <DevIndicator />
             <PageTransition>
               {children}

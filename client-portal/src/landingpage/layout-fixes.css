@@ -1,0 +1,124 @@
+/* Layout fixes for QueryFuel landing page */
+
+/* Remove excessive top spacing */
+html,
+body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Fix main container spacing */
+main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Hide skeleton/placeholder elements that cause layout issues */
+div:empty,
+div[style*="background"]:empty,
+div[class*="placeholder"],
+div[class*="skeleton"],
+.loading,
+.placeholder {
+    display: none !important;
+}
+
+/* Remove excessive margins and padding from top-level elements */
+section:first-child,
+div:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Hide elements that are likely gray placeholders */
+div[style*="gray"]:empty,
+div[style*="grey"]:empty {
+    display: none !important;
+}
+
+/* Ensure proper spacing for the hero section */
+.position-relative.bg-light.overflow-hidden {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Fix any elements with excessive top positioning */
+.position-absolute[style*="top"] {
+    top: 0 !important;
+}
+
+/* Remove min-height from empty elements that might be causing spacing */
+div:empty {
+    min-height: 0 !important;
+    height: 0 !important;
+}
+
+/* Ensure the navigation is properly positioned */
+nav,
+.navbar,
+[class*="nav"] {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Fix container spacing */
+.container,
+.container-xl,
+.container-fluid {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove any fixed heights on empty elements at the top */
+body>div:first-child:empty,
+main>div:first-child:empty,
+section>div:first-child:empty {
+    height: 0 !important;
+    min-height: 0 !important;
+    display: none !important;
+}
+
+/* Ensure smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Fix any elements that might be causing the white space */
+.py-5:first-child,
+.py-xl-6:first-child {
+    padding-top: 1rem !important;
+}
+
+/* Aggressive reset for landing page */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Ensure no top spacing on the main container */
+main.position-relative {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Reset Bootstrap container spacing */
+.container,
+.container-xl {
+    margin-top: 0 !important;
+}
+
+/* Fix navigation container */
+.bg-transparent .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove any phantom elements */
+*:empty {
+    display: none !important;
+}
+
+/* Ensure proper stacking */
+.position-relative {
+    z-index: 1;
+}

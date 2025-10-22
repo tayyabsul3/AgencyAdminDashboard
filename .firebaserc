@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "lead-generation-6cf0f"
-  }
+  },
+  "targets": {
+    "lead-generation-6cf0f": {
+      "hosting": {
+        "agency-admin": [
+          "agency-admin"
+        ],
+        "agencyadmin-4f5d8": [
+          "agencyadmin-4f5d8"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

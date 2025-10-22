@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true, // skip TypeScript errors
   },
+  reactStrictMode: true, 
   images: { unoptimized: true },
   webpack(config) {
     config.module.rules.push({

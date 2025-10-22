@@ -11,6 +11,7 @@ interface ClientState {
   tier: string;
   articlesGenerated: number;
   agencySubscription: any; // Agency's subscription details for shared pool
+   articleLimit: number
 }
 
 const initialState: ClientState = {
@@ -24,6 +25,7 @@ const initialState: ClientState = {
   tier: "",
   articlesGenerated: 0,
   agencySubscription: null,
+  articleLimit:0
 };
 
 export const clientSlice = createSlice({

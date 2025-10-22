@@ -3,11 +3,8 @@
 import React, { useState } from "react";
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "@/components/ui/modal";
-import Button from "@/components/ui/button/Button";
 import { toast } from "sonner";
-import { withUserData } from "@/components/WithUserData";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/Firebase";
+
 
 interface Subscription {
   billingCycle: string;
@@ -40,7 +37,7 @@ interface AgencyTierUpgradeProps {
 const AGENCY_TIERS: Record<string, Tier> = {
   EntryAgency: {
     name: "Entry Agency",
-    price: 1500,
+    price: 1000,
     seats: 10,
     credits: 50,
     features: [
@@ -53,7 +50,7 @@ const AGENCY_TIERS: Record<string, Tier> = {
   },
   GrowthAgency: {
     name: "Growth Agency",
-    price: 2500,
+    price: 1500,
     seats: 30,
     credits: 150,
     features: [
@@ -68,7 +65,7 @@ const AGENCY_TIERS: Record<string, Tier> = {
   },
   ProAgency: {
     name: "Pro Agency",
-    price: 5000,
+    price: 2500,
     seats: 50,
     credits: 500,
     features: [
@@ -109,64 +106,75 @@ function AgencyTierUpgrade({ agencyData, userType, onTierUpdate }: AgencyTierUpg
     openTierModal();
   };
 
-  const handleTierUpgrade = async () => {
-    if (!selectedTier) {
-      toast.error("Please select a tier to upgrade");
-      return;
+const handleTierUpgrade = async () => {
+  if (!selectedTier) {
+    toast.error("Please select a tier to upgrade");
+    return;
+  }
+
+  const selectedTierData = AGENCY_TIERS[selectedTier];
+  const stripeSubscriptionId = agencyData?.subscription?.stripeSubscriptionId;
+
+  if (!stripeSubscriptionId) {
+    toast.error("No active subscription found. Please contact support.");
+    return;
+  }
+
+  // Check if current clients exceed new tier's seat limit
+  if (currentClientCount > selectedTierData.seats) {
+    toast.error(`Cannot downgrade: You have ${currentClientCount} clients but ${selectedTierData.name} only allows ${selectedTierData.seats} seats`);
+    return;
+  }
+
+  setIsProcessing(true);
+
+  try {
+    // Call backend function to update tier
+    const baseUrl = process.env.NEXT_PUBLIC_FUNCTIONS_EMULATOR_URL || "";
+    const endpoint = baseUrl
+      ? `${baseUrl}/updateAgencyTier`
+      : "/api/update-agency-tier";
+
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        agencyId: agencyData.agencyId,
+        newTier: selectedTier,
+        stripeSubscriptionId: stripeSubscriptionId,
+        tierData: {
+          price: selectedTierData.price,
+          seats: selectedTierData.seats,
+          credits: selectedTierData.credits,
+          name: selectedTierData.name
+        }
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Failed to update tier");
     }
 
-    const selectedTierData = AGENCY_TIERS[selectedTier];
+    toast.success(`Successfully upgraded to ${selectedTierData.name}!`);
     
-    if (!selectedTierData) {
-      toast.error("Invalid tier selected");
-      return;
-    }
+    // Close modal and refresh data
+  
     
-    // Check if current clients exceed new tier's seat limit
-    if (currentClientCount > selectedTierData.seats) {
-      toast.error(`Cannot downgrade: You have ${currentClientCount} clients but ${selectedTierData.name} only allows ${selectedTierData.seats} seats`);
-      return;
+    // Call callback to refresh parent component data
+    if (onTierUpdate) {
+      onTierUpdate();
     }
-
-    setIsProcessing(true);
-
-    try {
-      // Get agency ID from localStorage or props
-      const user = localStorage.getItem("user");
-      const agencyId = user ? JSON.parse(user) : agencyData?.id;
-      
-      if (!agencyId) {
-        throw new Error("Agency ID not found");
-      }
-
-      // Update Firestore directly
-      const agencyRef = doc(db, "agencies", agencyId);
-      
-      await updateDoc(agencyRef, {
-        "subscription.tier": selectedTier,
-        "subscription.seats": selectedTierData.seats,
-        "subscription.credits": selectedTierData.credits,
-        "subscription.price": selectedTierData.price,
-        "subscription.updatedAt": serverTimestamp()
-      });
-
-      toast.success(`Successfully upgraded to ${selectedTierData.name}!`);
-      
-      // Close modal and refresh data
       closeTierModal();
-      setIsProcessing(false);
-      
-      // Call callback to refresh parent component data
-      if (onTierUpdate) {
-        onTierUpdate();
-      }
+    setIsProcessing(false);
 
-    } catch (error) {
-      console.error("Error updating tier:", error);
-      toast.error("Failed to update tier. Please try again.");
-      setIsProcessing(false);
-    }
-  };
+  } catch (error:any) {
+    console.error("Error updating tier:", error);
+    toast.error(error.message || "Failed to update tier. Please try again.");
+    setIsProcessing(false);
+  }
+};
 
   const calculateProratedPrice = (newTierPrice: number) => {
     const currentTierPrice = currentTier?.price || 0;

@@ -37,11 +37,8 @@ const Header = () => {
                         </div>
                     </div>
                     <div className={styles.cta}>
-                        <Link href="/signup" className={styles.ctaPrimary}>
-                            Create Your First Article
-                        </Link>
-                        <Link href="/login" className={styles.ctaSecondary}>
-                            Sign In
+                        <Link href="/login" className={styles.ctaPrimary}>
+                            Get Started
                         </Link>
                     </div>
                     <div className={styles.socialProof}>

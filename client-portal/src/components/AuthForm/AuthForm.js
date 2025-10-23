@@ -139,7 +139,7 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, error = null, suc
 
           <div className={`${styles.inputGroup} mb-3`}>
             <label htmlFor="email" className={`${styles.label} form-label fw-semibold fs-6`}>
-              Email address
+              Email address1
             </label>
             <input
               id="email"
@@ -289,15 +289,17 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, error = null, suc
         )}
 
         <div className={styles.footer}>
-          <p className={styles.footerText}>
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <Link 
-              href={isLogin ? '/signup' : '/login'} 
-              className={styles.footerLink}
-            >
-              {isLogin ? 'Sign up here' : 'Sign in here'}
-            </Link>
-          </p>
+          {!isForgotPassword && (
+            <p className={styles.footerText}>
+              {isLogin ? "" : "Already have an account? "}
+              <Link
+                href="/login"
+                className={styles.footerLink}
+              >
+                Sign in here
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </div>

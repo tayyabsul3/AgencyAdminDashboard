@@ -79,9 +79,6 @@ const Navbar = ({ user = null, onLogout, dashboardStats = null, isLoadingStats =
               <Link href="/login" className={styles.loginBtn}>
                 Sign In
               </Link>
-              <Link href="/signup" className={styles.signupBtn}>
-                Start Creating
-              </Link>
             </div>
           )}
         </div>

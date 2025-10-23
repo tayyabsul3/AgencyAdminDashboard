@@ -130,10 +130,6 @@ const Drawer = ({ isOpen, onClose, user, onLogout }) => {
                 <span className={styles.navIcon}>🔑</span>
                 <span>Sign In</span>
               </Link>
-              <Link href="/signup" className={styles.signupButton} onClick={handleLinkClick}>
-                <span className={styles.navIcon}>✨</span>
-                <span>Start Creating</span>
-              </Link>
             </div>
           )}
         </div>

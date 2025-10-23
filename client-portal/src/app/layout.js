@@ -1,5 +1,4 @@
 import './globals.css'
-import '../landingpage/globals.css'
 import { Inter } from 'next/font/google'
 import PageTransition from '../components/PageTransition/PageTransition'
 import { AuthProvider } from '../contexts/AuthContext'

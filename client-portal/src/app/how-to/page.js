@@ -8,7 +8,7 @@ import LandingNavbar from '@/components/LandingNavbar/LandingNavbar';
 export default function HowToPage() {
   return (
     <>
-      <LandingNavbar containerClass="py-2" showDrawer={false} getStartedHref="/signup" />
+      <LandingNavbar containerClass="py-2" showDrawer={false} getStartedHref="/login" />
       <main className="position-relative bg-light overflow-hidden">
         {/* Left/Right glow backgrounds (behind hero content) */}
         <div className="d-none d-md-block position-absolute" aria-hidden="true"

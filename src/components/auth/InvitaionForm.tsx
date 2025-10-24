@@ -4,7 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { auth, db } from "@/lib/Firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp, Timestamp } from "firebase/firestore";
-
+// Add to imports at the top
+import { encryptString } from "@/lib/encryption";
 import Button from "@/components/ui/button/Button";
 import { toast } from "sonner";
 
@@ -104,63 +105,70 @@ export default function InviteRegistration() {
     }));
   };
 
-  const createClientAccount = async (user: any) => {
-    if (!inviteData) throw new Error("No invite data");
+// In app/invite/InviteRegistration.tsx
+const createClientAccount = async (user: any, clientPassword: string) => { 
+  if (!inviteData) throw new Error("No invite data");
 
-    // Get article limit from invitation data, default to 10 if not provided
-    const articleLimit = inviteData.articleLimit || 10;
+  const agencySecretKey = inviteData.agencyId; 
+  const encryptedPassword = encryptString(clientPassword, agencySecretKey); 
 
-    // Create client document in subscriptions collection with article limit
-    const clientRef = doc(db, "subscriptions", user.uid);
-    await setDoc(clientRef, {
-      userId: user.uid,
-      email: formData.email,
-      name: formData.name,
-      ownerId: inviteData.ownerId,
-      agencyId: inviteData.agencyId,
-      agencyName: inviteData.agencyName,
-      status: "active",
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      tier: "client",
-      articlesGenerated: 0,
-      articleLimit: articleLimit // Add article limit to subscription data
-    });
+  // Get article limit from invitation data, default to 10 if not provided
+  const articleLimit = inviteData.articleLimit || 10;
 
-    // Update invite status to "accepted"
-    const inviteRef = doc(db, "invitations", inviteData.agencyId, "invites", inviteData.inviteId);
-    await setDoc(inviteRef, {
-      status: "accepted",
-      acceptedAt: serverTimestamp(),
-      clientUserId: user.uid
+  // Create client document in subscriptions collection with article limit
+  const clientRef = doc(db, "subscriptions", user.uid);
+  await setDoc(clientRef, {
+    userId: user.uid,
+    email: formData.email,
+    name: formData.name,
+    ownerId: inviteData.ownerId,
+    agencyId: inviteData.agencyId,
+    agencyName: inviteData.agencyName,
+    status: "active",
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    tier: "client",
+    articlesGenerated: 0,
+    articleLimit: articleLimit,
+    // New: Store the encrypted password in the client's subscription document
+    encryptedPassword: encryptedPassword, // 👈 New field
+  });
+
+  // Update invite status to "accepted"
+  const inviteRef = doc(db, "invitations", inviteData.agencyId, "invites", inviteData.inviteId);
+  await setDoc(inviteRef, {
+    status: "accepted",
+    acceptedAt: serverTimestamp(),
+    clientUserId: user.uid
+  }, { merge: true });
+
+  // Add client to agency's clients array with article limit
+  const agencyRef = doc(db, "agencies", inviteData.agencyId);
+  const agencySnap = await getDoc(agencyRef);
+  if (agencySnap.exists()) {
+    const agencyData = agencySnap.data();
+    const updatedClients = [
+      ...(agencyData.clients || []),
+      {
+        userId: user.uid,
+        email: formData.email,
+        name: formData.name,
+        ownerId: inviteData.ownerId,
+        agencyId: inviteData.agencyId,
+        agencyName: inviteData.agencyName,
+        status: "active",
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+        tier: "client",
+        articlesGenerated: 0,
+        articleLimit: articleLimit,
+        // New: Store the encrypted password in the agency's client array
+        encryptedPassword: encryptedPassword, // 👈 New field
+      }
+    ];
+    await setDoc(agencyRef, {
+      clients: updatedClients
     }, { merge: true });
-
-    // Add client to agency's clients array with article limit
-    const agencyRef = doc(db, "agencies", inviteData.agencyId);
-    const agencySnap = await getDoc(agencyRef);
-    if (agencySnap.exists()) {
-      const agencyData = agencySnap.data();
-      const updatedClients = [
-        ...(agencyData.clients || []),
-        {
-          userId: user.uid,
-          email: formData.email,
-          name: formData.name,
-          ownerId: inviteData.ownerId,
-          agencyId: inviteData.agencyId,
-          agencyName: inviteData.agencyName,
-          status: "active",
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
-          tier: "client",
-          articlesGenerated: 0,
-          articleLimit: articleLimit // Add article limit to agency's client data
-        }
-      ];
-      await setDoc(agencyRef, {
-        clients: updatedClients
-      }, { merge: true });
-
       // Create email document
       const emailRef = doc(db, "email", user.uid);
       await setDoc(emailRef, {
@@ -202,7 +210,7 @@ export default function InviteRegistration() {
       });
 
       // 3. Create client record in Firestore
-      await createClientAccount(user);
+      await createClientAccount(user,formData.password);
 
       // 4. Save user in localStorage
       localStorage.setItem("user", JSON.stringify(user.uid));

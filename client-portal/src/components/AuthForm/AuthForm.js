@@ -139,7 +139,7 @@ const AuthForm = ({ mode = 'login', onSubmit, loading = false, error = null, suc
 
           <div className={`${styles.inputGroup} mb-3`}>
             <label htmlFor="email" className={`${styles.label} form-label fw-semibold fs-6`}>
-              Email address1
+              Email address
             </label>
             <input
               id="email"

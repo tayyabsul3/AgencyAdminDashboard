@@ -10,14 +10,16 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { doc, getDoc, setDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/Firebase";
 import { setAgencyData } from "@/redux/slices/agencySlice";
-import { FaSpinner } from "react-icons/fa";
-
+import { decryptString } from "@/lib/encryption"; // 👈 New import
+import { MdOutlineVpnKey } from "react-icons/md"; // 👈 New icon import
+import { FaCopy, FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa"; // Updated icons
 interface Client {
   name: string;
   email: string;
   status: "active" | "pending" | "archived";
   userId: string;
   articleLimit?: number;
+  encryptedPassword?: string;
 }
 
 interface AgencyData {
@@ -41,7 +43,14 @@ export default function AgencySeats() {
   const { agencyId, agencyName, clients, subscription } = useAppSelector((state) => state.agency);
   
   const { isOpen, openModal, closeModal } = useModal();
-
+  const { isOpen:isPasswordOpen, openModal:passwordOpenModal, closeModal:passwordCloseModal } = useModal();
+const [passwordModalOpen, setPasswordModalOpen] = useState(false); // New: separate modal state
+const [secretKey, setSecretKey] = useState(""); // New: state for the owner's decryption key
+const [decryptedPassword, setDecryptedPassword] = useState<string | null>(null); // New: state for the decrypted password
+const [isDecrypting, setIsDecrypting] = useState(false); // New: loading state for decryption
+const [passwordClient, setPasswordClient] = useState<Client | null>(null); // New: client whose password is being viewed
+const [showKeyInput, setShowKeyInput] = useState(false); // New: to toggle show/hide key
+const [passwordError, setPasswordError] = useState("");
   const [clientName, setClientName] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [articleLimit, setArticleLimit] = useState<number>(10);
@@ -52,7 +61,7 @@ export default function AgencySeats() {
   const [isInviting, setIsInviting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
+// const { isOpen, openModal, closeModal } = useModal();
   // Fetch agency data from Firestore
   const fetchAgencyData = async (showRefreshLoader = false) => {
     try {
@@ -380,7 +389,64 @@ export default function AgencySeats() {
       </div>
     );
   }
+// In AgencySeats function, before openInviteModal, etc.
 
+const openPasswordModal = (client: Client) => {
+  setPasswordClient(client);
+  setSecretKey(""); // Reset key
+  setDecryptedPassword(null); // Reset password
+  setPasswordError(""); // Reset error
+  setPasswordModalOpen(true); // Open the dedicated password modal
+};
+
+const closePasswordModal = () => {
+  setPasswordModalOpen(false);
+  setPasswordClient(null);
+  setSecretKey("");
+  setDecryptedPassword(null);
+  setPasswordError("");
+};
+
+const handleDecryptPassword = async () => {
+  if (!passwordClient || !passwordClient.encryptedPassword || !secretKey) {
+    setPasswordError("Missing data to decrypt.");
+    return;
+  }
+
+  setIsDecrypting(true);
+  setPasswordError("");
+
+  // ⚠️ Using agencyId as the secret key for demonstration.
+  // In a real app, the agencyId should NOT be the secret key.
+  const agencySecretKey = agencyId; 
+
+  if (secretKey !== agencySecretKey) { // Simple key check
+    setPasswordError("Incorrect Agency Secret Key.");
+    setIsDecrypting(false);
+    return;
+  }
+
+  // DECRYPTION LOGIC
+  const decrypted = decryptString(passwordClient.encryptedPassword, secretKey);
+
+  if (decrypted.startsWith("Decryption Failed:") || decrypted.startsWith("Error:")) {
+    setPasswordError("Decryption Failed. Key might be incorrect or data corrupted.");
+    setDecryptedPassword(null);
+  } else {
+    setDecryptedPassword(decrypted);
+    setPasswordError("");
+  }
+
+  setIsDecrypting(false);
+};
+
+// Utility function for copying to clipboard
+const copyPassword = () => {
+    if (decryptedPassword) {
+        navigator.clipboard.writeText(decryptedPassword);
+        toast.success("Password copied to clipboard!");
+    }
+}
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
       {/* Header */}
@@ -466,6 +532,7 @@ export default function AgencySeats() {
               <th className="px-6 py-4 text-left font-semibold text-gray-900">Email Address</th>
               <th className="px-6 py-4 text-left font-semibold text-gray-900">Article Limit</th>
               <th className="px-6 py-4 text-left font-semibold text-gray-900">Status</th>
+              <th className="px-6 py-4 text-left font-semibold text-gray-900">Password</th>
               <th className="px-6 py-4 text-left font-semibold text-gray-900">Actions</th>
             </tr>
           </thead>
@@ -497,6 +564,19 @@ export default function AgencySeats() {
                     {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
                   </span>
                 </td>
+                <td className="px-6 py-4">
+          {client.encryptedPassword && client.status === "active" ? (
+            <button
+              onClick={() => openPasswordModal(client)}
+              className="flex items-center gap-2 px-3 py-2 text-purple-600 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors disabled:opacity-50 font-medium"
+            >
+              <MdOutlineVpnKey className="w-4 h-4" />
+              View Password
+            </button>
+          ) : (
+            <span className="text-gray-400">N/A</span>
+          )}
+        </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <button
@@ -792,6 +872,104 @@ export default function AgencySeats() {
           </div>
         )}
       </Modal>
+      <Modal isOpen={passwordModalOpen} onClose={closePasswordModal} className="max-w-md p-6">
+  <div className="text-center">
+    <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+      <MdOutlineVpnKey className="w-8 h-8 text-purple-600" />
+    </div>
+
+    <h3 className="text-xl font-bold text-gray-900 mb-2">
+      View Client Password
+    </h3>
+
+    {passwordClient && (
+      <p className="text-gray-600 mb-6">
+        Enter your **Agency Secret Key** to decrypt the password for client **{passwordClient.name}** ({passwordClient.email}).
+      </p>
+    )}
+
+    {/* Decrypted Password Display */}
+    {decryptedPassword ? (
+      <div className="p-4 bg-green-50 rounded-xl border border-green-200 mb-6">
+        <h4 className="font-semibold text-green-800 mb-2 text-left">
+          Decrypted Password:
+        </h4>
+        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-green-300">
+          <span className="font-mono text-lg text-green-900 break-all">
+            {decryptedPassword}
+          </span>
+          <button 
+            onClick={copyPassword} 
+            className="ml-4 p-2 text-green-600 hover:text-green-800 transition-colors"
+            title="Copy Password"
+          >
+            <FaCopy className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    ) : (
+      /* Key Input Field */
+      <div className="space-y-4">
+        {passwordError && (
+          <div className="p-3 text-sm text-red-700 bg-red-50 rounded-lg border border-red-200">
+            {passwordError}
+          </div>
+        )}
+        <div>
+          <Label className="block font-semibold text-gray-700 mb-2">Agency Secret Key</Label>
+          <div className="relative">
+            <input
+              type={showKeyInput ? "text" : "password"}
+              value={secretKey}
+              onChange={(e) => setSecretKey(e.target.value)}
+              placeholder="Enter your Agency Secret Key"
+              disabled={isDecrypting}
+              className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+            />
+            <button
+              type="button"
+              onClick={() => setShowKeyInput(!showKeyInput)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+              disabled={isDecrypting}
+              title={showKeyInput ? "Hide Key" : "Show Key"}
+            >
+              {showKeyInput ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Modal Actions */}
+    <div className="flex gap-3 mt-8">
+      <button
+        onClick={closePasswordModal}
+        disabled={isDecrypting}
+        className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+      >
+        Close
+      </button>
+      {!decryptedPassword && (
+        <button 
+          onClick={handleDecryptPassword}
+          disabled={isDecrypting || secretKey.length === 0}
+          className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none flex items-center justify-center gap-2"
+          style={{
+            background: 'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)', // Purple gradient
+            boxShadow: '0 4px 12px rgba(142, 68, 173, 0.3)'
+          }}
+        >
+          {isDecrypting ? (
+            <FaSpinner className="w-4 h-4 animate-spin" />
+          ) : (
+            <MdOutlineVpnKey className="w-5 h-5" />
+          )}
+          {isDecrypting ? "Decrypting..." : "Decrypt Password"}
+        </button>
+      )}
+    </div>
+  </div>
+</Modal>
     </div>
   );
 }

@@ -184,8 +184,8 @@ div[class*="skeleton"],
 /* Remove excessive margins and padding from top-level elements */
 section:first-child,
 div:first-child {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+  /* margin-top: 0 !important; */
+  padding-top: 10 !important;
 }
 
 /* Hide elements that are likely gray placeholders */

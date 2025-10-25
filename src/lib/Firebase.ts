@@ -11,7 +11,10 @@ import {
   getFirestore,
   connectFirestoreEmulator,
   Firestore,
+  
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
 
 // ✅ Config (env first, fallback defaults for dev)
 const firebaseConfig = {
@@ -113,9 +116,8 @@ export const onAuthStateChange = (callback: (user: any) => void) => {
   }
   return onAuthStateChanged(auth, callback);
 };
-
+const storage = getStorage(app)
 // ---------------------------
 // 📦 Exports
 // ---------------------------
-export { app, auth, db };
-export default app;
+export { app, auth, db,storage };

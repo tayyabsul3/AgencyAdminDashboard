@@ -262,23 +262,24 @@ export const useSubscription = (userId, options = {}) => {
 
   // Credits information
   const creditsInfo = useMemo(() => {
-    // For client tier users, use agency credits if available
-    if (subscription?.tier === 'client' && agencyData) {
-      const agencyCredits = agencyData.subscription?.credits || 0;
-      const agencyCreditsUsed = agencyData.subscription?.creditsUsed || 0;
-      const agencyCreditsRemaining = agencyCredits - agencyCreditsUsed;
-      const agencyUsagePercentage = agencyCredits > 0 ? Math.round((agencyCreditsUsed / agencyCredits) * 100) : 0;
+    // For client tier users, show their article limits and usage
+    if (subscription?.tier === 'client') {
+      const articleLimit = subscription?.articleLimit || 0;
+      const articlesGenerated = subscription?.articlesGenerated || 0;
+      const remainingArticles = Math.max(0, articleLimit - articlesGenerated);
+      const usagePercentage = articleLimit > 0 ? Math.round((articlesGenerated / articleLimit) * 100) : 0;
       
       return {
-        total: agencyCredits,
-        used: agencyCreditsUsed,
-        remaining: agencyCreditsRemaining,
-        usagePercentage: agencyUsagePercentage,
-        resetDate: agencyData.subscription?.creditsResetDate || null,
-        isLowOnCredits: agencyUsagePercentage >= 80,
-        isOutOfCredits: agencyCreditsRemaining <= 0,
-        isAgencyCredits: true,
-        agencyName: agencyData.agencyName || agencyData.name || 'Agency'
+        total: articleLimit,
+        used: articlesGenerated,
+        remaining: remainingArticles,
+        usagePercentage: usagePercentage,
+        resetDate: subscription?.creditsResetDate || null,
+        isLowOnCredits: usagePercentage >= 80,
+        isOutOfCredits: remainingArticles <= 0,
+        isAgencyCredits: false,
+        isClientLimit: true,
+        agencyName: agencyData?.agencyName || agencyData?.name || 'Agency'
       };
     }
     

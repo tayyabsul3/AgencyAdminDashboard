@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/Firebase';
+import { db } from '@/lib/firebase';
 import Link from 'next/link';
 
 export default function PaymentFailure() {

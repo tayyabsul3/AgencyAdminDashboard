@@ -33,11 +33,14 @@ function DashboardContent() {
     redirectTo: '/login',
     requireAuth: true
   });
-  const { credits: creditsInfo } = useSubscription(user?.uid);
+  const { credits: creditsInfo, tier } = useSubscription(user?.uid);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [stats, setStats] = useState(null);
   const [resumableArticles, setResumableArticles] = useState([]);
+  
+  // Import the new CreditDisplay component
+  const CreditDisplay = lazy(() => import('../../components/dashboard/CreditDisplay'));
   const [articleTab, setArticleTab] = useState('in_progress'); // all | draft | in_progress | completed
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
@@ -387,7 +390,7 @@ function DashboardContent() {
     console.log(`Dashboard Render: ${duration.toFixed(2)}ms`);
     renderTimerRef.current = null;
   }
-
+console.log(user)
   return (
     <div className={`${styles.dashboardContainer} ${isTransitioning ? styles.fadeOut : ''}`}
       style={{
@@ -497,6 +500,13 @@ function DashboardContent() {
           </div>
         </div>
 
+        {/* Credits Display */}
+        <div className="mt-4">
+          <Suspense fallback={<LoadingSpinner />}>
+            <CreditDisplay creditsInfo={creditsInfo} />
+          </Suspense>
+        </div>
+
         {/* <!-- Onboarding Card - styled to match sample --> */}
         {/* <!--
           <div className="card border-0 shadow-sm rounded-4 mb-4">
@@ -572,9 +582,9 @@ function DashboardContent() {
         {/* Stats Row (matches sample) */}
         <div className="row g-4 mb-4">
           {/* Total Articles */}
-          <div className="col-12 col-sm-6 col-lg-3">
-            <div className="card border-0 shadow-sm rounded-4 h-100">
-              <div className="card-body text-center py-4">
+          <div className="col-12 col-sm-6  col-lg-3">
+            <div className="card border-0 shadow-sm rounded-4  ">
+              <div className="card-body  text-center py-4 ">
                 <div
                   className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
                   style={{ width: 56, height: 56, background: 'linear-gradient(135deg, #F1E4FF 0%, #ECEBFF 100%)' }}
@@ -588,7 +598,7 @@ function DashboardContent() {
           </div>
 
           {/* Completed */}
-          <div className="col-12 col-sm-6 col-lg-3">
+          <div className="col-12 col-sm-6  col-lg-3">
             <div className="card border-0 shadow-sm rounded-4 h-100">
               <div className="card-body text-center py-4">
                 <div

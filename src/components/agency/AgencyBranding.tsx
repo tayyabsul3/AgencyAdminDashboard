@@ -3,15 +3,30 @@ import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setAgencyData } from "@/redux/slices/agencySlice";
 import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/Firebase";
+import { db } from "@/lib/firebase"; // Ensure correct casing/path for Firebase
 import { toast } from "sonner";
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner, FaUpload } from "react-icons/fa";
+
+// Import components from your setup
+import { Modal } from "../ui/modal"; // The Modal component you use
+import Button from "../ui/button/Button"; // The Button component you use
+import ImageUploader from "./ImageUploader"; // The new ImageCropper component
+
+// Interface for the form data
+interface BrandingData {
+  agencyName: string; 
+  logo: string;
+  primaryColor: string;
+  secondaryColor: string;
+  customDomain: string;
+}
 
 export default function AgencyBranding() {
   const dispatch = useAppDispatch();
   const { agencyId, branding } = useAppSelector((state) => state.agency);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<BrandingData>({
+    agencyName: branding?.agencyName || (agencyId ? agencyId.split('-')[0] : "Your Agency Name"), 
     logo: branding?.logoUrl || "",
     primaryColor: branding?.primaryColor || "#7E22CE",
     secondaryColor: branding?.secondaryColor || "#9333EA",
@@ -20,13 +35,15 @@ export default function AgencyBranding() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  // Using useState for the modal state as useModal hook is not available here
+  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false); 
 
   // 🔹 Fetch branding data from Firestore
   const fetchBranding = async () => {
     setIsLoading(true);
     try {
       const user = localStorage.getItem("user");
-      const storedAgencyId = user ? JSON.parse(user) : null;
+      const storedAgencyId = user ? JSON.parse(user) : null; 
       if (!storedAgencyId) throw new Error("Agency not found in localStorage");
 
       const agencyRef = doc(db, "agencies", storedAgencyId);
@@ -36,15 +53,17 @@ export default function AgencyBranding() {
 
       const data = agencySnap.data();
 
-      // 🔸 Update Redux
-      dispatch(setAgencyData({ branding: data.branding }));
+      dispatch(setAgencyData({ 
+        agencyName: data.agencyName, 
+        branding: data.branding 
+      }));
 
-      // 🔸 Update local form state
       setFormData({
-        logo: data?.logoUrl || "",
-        primaryColor: data?.primaryColor || "#7E22CE",
-        secondaryColor: data?.secondaryColor || "#9333EA",
-        customDomain: data?.domainName || "",
+        agencyName: data.agencyName || "Your Agency Name",
+        logo: data.branding?.logoUrl || "",
+        primaryColor: data.branding?.primaryColor || "#7E22CE",
+        secondaryColor: data.branding?.secondaryColor || "#9333EA",
+        customDomain: data.branding?.domainName || "",
       });
     } catch (error) {
       console.error("Error fetching branding:", error);
@@ -56,12 +75,18 @@ export default function AgencyBranding() {
 
   useEffect(() => {
     fetchBranding();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // 🔹 Handler for when the ImageUploader returns a new logo URL
+  const handleLogoUpdate = (newLogoUrl: string) => {
+    setFormData((prev) => ({ ...prev, logo: newLogoUrl }));
+  };
 
   // 🔹 Save branding to Firestore
   const handleSave = async () => {
-    if (!formData.logo || !formData.primaryColor || !formData.secondaryColor) {
-      toast.error("Please fill all branding details before saving.");
+    if (!formData.agencyName || !formData.logo || !formData.primaryColor || !formData.secondaryColor) {
+      toast.error("Please ensure the Agency Name, Logo, and Colors are set before saving.");
       return;
     }
 
@@ -74,22 +99,29 @@ export default function AgencyBranding() {
       const agencyRef = doc(db, "agencies", storedAgencyId);
 
       await updateDoc(agencyRef, {
-       
-          logo: formData.logo,
+        agencyName: formData.agencyName, 
+        branding: {
+          logoUrl: formData.logo,
           primaryColor: formData.primaryColor,
           secondaryColor: formData.secondaryColor,
-          domain: formData.customDomain,
-      
+          domainName: formData.customDomain,
+        },
         updatedAt: serverTimestamp(),
       });
 
       dispatch(
         setAgencyData({
-          branding: formData,
+          agencyName: formData.agencyName,
+          branding: {
+            logoUrl: formData.logo,
+            primaryColor: formData.primaryColor,
+            secondaryColor: formData.secondaryColor,
+            domainName: formData.customDomain,
+          }
         })
       );
 
-      toast.success("Branding updated successfully!");
+      toast.success("Branding updated successfully! 🎉");
     } catch (error) {
       console.error("Error saving branding:", error);
       toast.error("Failed to save branding settings");
@@ -120,7 +152,34 @@ return (
       <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></div>
     </div>
 
-    {/* LOGO SECTION */}
+    {/* AGENCY NAME SECTION */}
+    <div className="mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-green-500 rounded-lg flex items-center justify-center">
+          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+        </div>
+        <h2 className="text-lg font-bold text-gray-900">Agency Name</h2>
+      </div>
+      <div>
+        <label className="block font-semibold text-gray-700 mb-2">Agency Name</label>
+        <input
+          type="text"
+          placeholder="Enter your agency's official name"
+          name="agencyName"
+          value={formData.agencyName}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, agencyName: e.target.value }))
+          }
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+        />
+      </div>
+    </div>
+    
+    <hr className="my-8 border-gray-200" />
+
+    {/* LOGO SECTION - Refactored for Uploader with Modal */}
     <div className="mb-8">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
@@ -131,59 +190,64 @@ return (
         <h2 className="text-lg font-bold text-gray-900">Agency Logo</h2>
       </div>
       
-      <div className="flex items-start gap-6">
-        <div
-          className="w-32 h-32 rounded-2xl border-2 flex items-center justify-center bg-gray-50 overflow-hidden shadow-sm flex-shrink-0"
-          style={{ borderColor: formData.primaryColor }}
-        >
-          {formData.logo ? (
-            <img
-              src={formData.logo}
-              alt="Agency Logo"
-              className="w-28 h-28 object-contain rounded-lg"
-            />
-          ) : (
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-6">
+          
+          {/* Current Logo Preview */}
+          <div className="flex items-center gap-4 p-3 bg-white rounded-lg border border-gray-300">
+            <div
+              className="w-20 h-20 rounded-full border-2 flex items-center justify-center bg-white overflow-hidden shadow-md flex-shrink-0"
+              style={{ borderColor: formData.primaryColor }}
+            >
+              {formData.logo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={formData.logo}
+                  alt="Agency Logo"
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-              </div>
-              <span className="text-gray-500 font-medium">No Logo</span>
+              )}
             </div>
-          )}
-        </div>
-        
-        <div className="flex-1">
-          <div className="mb-4">
-            <label className="block font-semibold text-gray-700 mb-2">Logo URL</label>
-            <input
-              type="text"
-              placeholder="Paste your logo image URL here..."
-              name="logo"
-              value={formData.logo}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, logo: e.target.value }))
-              }
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-            />
-          </div>
-          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-            <div className="flex items-start gap-3">
-              <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <div>
-                <p className="text-blue-800 font-medium">Logo Requirements</p>
-                <p className="text-blue-700 mt-1">Use a direct image URL from a CDN or image hosting service for best results</p>
-              </div>
+            <div>
+              <p className="font-bold text-gray-900">Current Logo Preview</p>
+              <p className="text-sm text-gray-600">This logo will be used across all client-facing portals.</p>
             </div>
           </div>
-        </div>
+          
+          <div className="p-4 bg-white rounded-lg border border-gray-300">
+             
+            {/* BUTTON TO OPEN IMAGE UPLOADER MODAL */}
+            <Button
+                onClick={() => setIsLogoModalOpen(true)}
+                className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-md"
+            >
+                <FaUpload /> Upload & Crop New Logo
+            </Button>
+            {/* ------------------------------------- */}
+
+             <div className="mt-6 pt-4 border-t border-gray-200">
+              <label className="block font-semibold text-gray-700 mb-2">Or, Paste Logo URL (Fallback)</label>
+              <input
+                type="text"
+                placeholder="Paste your logo image URL here..."
+                name="logo"
+                value={formData.logo}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, logo: e.target.value }))
+                }
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              />
+            </div>
+          </div>
       </div>
     </div>
 
-    {/* COLORS SECTION */}
+    <hr className="my-8 border-gray-200" />
+
+    {/* COLORS SECTION - Same as before */}
     <div className="mb-8">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
@@ -251,8 +315,11 @@ return (
         </div>
       </div>
     </div>
+    
+    <hr className="my-8 border-gray-200" />
 
-    {/* DOMAIN SECTION */}
+
+    {/* DOMAIN SECTION - Same as before */}
     <div className="mb-8">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
@@ -298,8 +365,11 @@ return (
         </div>
       </div>
     </div>
+    
+    <hr className="my-8 border-gray-200" />
 
-    {/* PREVIEW SECTION */}
+
+    {/* PREVIEW SECTION - Same as before */}
     <div className="mt-12 pt-8 border-t border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -325,13 +395,14 @@ return (
         >
           <div className="flex items-center gap-4">
             {formData.logo && (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={formData.logo}
                 alt="Agency Logo"
                 className="w-10 h-10 rounded-lg object-cover shadow-lg"
               />
             )}
-            <span className="font-bold text-white text-lg">Your Agency</span>
+            <span className="font-bold text-white text-lg">{formData.agencyName}</span>
           </div>
           <div className="text-white bg-white/20 px-4 py-2 rounded-full font-medium">
             {formData.customDomain || "youragency.com"}
@@ -358,7 +429,7 @@ return (
               </svg>
             </div>
             <p className="text-gray-900 font-bold text-lg mb-2">
-              Your branding is applied here
+              Welcome to {formData.agencyName}'s Client Portal!
             </p>
             <p className="text-gray-600">
               This is how your clients will see the interface
@@ -370,14 +441,14 @@ return (
 
     {/* SAVE BUTTON */}
     <div className="mt-12 pt-8 border-t border-gray-200">
-      <button
+      <Button
         onClick={handleSave}
         disabled={isSaving}
         className="w-full py-4 text-white font-bold rounded-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
-        style={{
-          background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
-          boxShadow: '0 8px 25px rgba(76, 110, 245, 0.35)'
-        }}
+        // style={{
+        //   background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+        //   boxShadow: '0 8px 25px rgba(76, 110, 245, 0.35)'
+        // }}
       >
         {isSaving ? (
           <div className="flex items-center justify-center gap-3">
@@ -392,8 +463,33 @@ return (
             <span className="text-lg">Save Branding Settings</span>
           </div>
         )}
-      </button>
+      </Button>
     </div>
+
+    {/* 🆕 LOGO UPLOAD MODAL */}
+    <Modal
+      isOpen={isLogoModalOpen}
+      onClose={() => setIsLogoModalOpen(false)}
+      className="max-w-[700px] m-4"
+    >
+        <div className="no-scrollbar mb-5 relative w-full max-h-[100dvh] max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+            <div className="px-2 pr-14">
+                <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+                    Upload & Crop Agency Logo
+                </h4>
+                <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+                    Select an image file (PNG/JPG) to use as your agency logo. You can crop it to a perfect square or circle.
+                </p>
+            </div>
+            
+            <div className=" max-h-[80dvh] ">
+                <ImageUploader 
+                    onUploadComplete={handleLogoUpdate} 
+                    onClose={() => setIsLogoModalOpen(false)} // Pass the modal close handler
+                />
+            </div>
+        </div>
+    </Modal>
   </div>
 );
 }

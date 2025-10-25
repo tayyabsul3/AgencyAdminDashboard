@@ -11,7 +11,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/Firebase";
+import { db } from "@/lib/firebase";
 import { setAgencyData } from "@/redux/slices/agencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 

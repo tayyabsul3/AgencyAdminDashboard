@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { setAgencyData } from "@/redux/slices/agencySlice";
 import { setClientData } from "@/redux/slices/clientSlice";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/Firebase";
+import { db } from "@/lib/firebase";
 
 interface AuthGuardProps {
   children: React.ReactNode;

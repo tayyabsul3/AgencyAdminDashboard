@@ -8,7 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { toast } from "sonner";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/Firebase";
+import { db } from "@/lib/firebase";
 
 interface CheckoutFormProps {
   amount: number;
@@ -28,8 +28,13 @@ const CheckoutForm = ({ amount, data }: CheckoutFormProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+
+   const baseUrl = process.env.NEXT_PUBLIC_FUNCTIONS_EMULATOR_URL || "";
+    const endpoint = baseUrl
+      ? `${baseUrl}/createPaymentIntent`
+      : "/api/create-payment-intent";
     // Create payment intent with the payId from parent
-    fetch(`${process.env.NEXT_PUBLIC_FUNCTIONS_EMULATOR_URL}/createPaymentIntent"`, {
+    fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

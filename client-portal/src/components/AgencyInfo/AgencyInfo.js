@@ -17,7 +17,7 @@ const AgencyInfo = ({ variant = 'banner', className = '' }) => {
   
   if (variant === 'banner') {
     return (
-      <div className={`alert alert-info shadow-sm d-flex align-items-center ${className}`} role="alert">
+      <div className={`alert alert-info shadow-sm d-flex mb-5 align-items-center ${className}`} role="alert">
         <i className="bi bi-building me-2"></i>
         <div>
           <strong>Agency Account:</strong> You're part of <strong>{agencyInfo.agencyName}</strong> agency. 

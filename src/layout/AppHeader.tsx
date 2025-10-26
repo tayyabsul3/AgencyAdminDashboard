@@ -1,9 +1,6 @@
 "use client";
-import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
-import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -17,6 +14,8 @@ const AppHeader: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { agencyName } = useAppSelector(state => state.agency);
   const { agencyName: fromClient } = useAppSelector(state => state.client);
+  const clientPortalUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://agencyadmin-4f5d8.web.app';
+
 
   useEffect(() => {
     const checkUser = () => {
@@ -152,9 +151,6 @@ const AppHeader: React.FC = () => {
           </div>
         </Link>
 
-      
-
-        {/* Mobile Menu Button */}
         <button
           onClick={toggleApplicationMenu}
           className="flex items-center justify-center w-12 h-12 text-gray-600 rounded-xl transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 lg:hidden shadow-sm border border-gray-200"
@@ -176,18 +172,14 @@ const AppHeader: React.FC = () => {
         </button>
       </div>
 
-      {/* Right Section - User Controls */}
       <div
         className={`${
           isApplicationMenuOpen ? "flex" : "hidden"
         } items-center justify-between w-full gap-6 px-6 py-2  lg:flex lg:bg-transparent lg:justify-end lg:px-0 lg:py-3 border-t border-gray-100 lg:border-t-0`}
       >
       
-
-        {/* Client Portal Link */}
         <Link 
-          // href="http://localhost:3000/client/login/" 
-         href="https://agencyadmin-4f5d8.web.app/client/login/" 
+         href={`${clientPortalUrl}/client/login/`} 
           target="_blank"
           className="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200"
         >

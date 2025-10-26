@@ -2,11 +2,12 @@ import React from 'react';
 import Link from 'next/link';
 
 const ClientPortalLink: React.FC = () => {
+  const clientPortalUrl = process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL || 'https://agencyadmin-4f5d8.web.app';
+  
   return (
     <div className="flex items-center space-x-2">
       <Link 
-        // href="http://localhost:3000/client/login/" 
-        href="https://agencyadmin-4f5d8.web.app/client/login/" 
+        href={`${clientPortalUrl}/client/login/`}
         target="_blank"
         className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
       >

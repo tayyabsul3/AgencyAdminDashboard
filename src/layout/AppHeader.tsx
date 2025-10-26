@@ -186,7 +186,8 @@ const AppHeader: React.FC = () => {
 
         {/* Client Portal Link */}
         <Link 
-          href="http://localhost:3000/client/login/" 
+          // href="http://localhost:3000/client/login/" 
+         href="https://agencyadmin-4f5d8.web.app/client/login/" 
           target="_blank"
           className="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200"
         >

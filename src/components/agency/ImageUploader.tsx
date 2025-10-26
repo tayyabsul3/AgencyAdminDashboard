@@ -4,7 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "@/lib/firebase"; // Ensure correct path/casing
+import { storage } from "@/lib/Firebase"; // Ensure correct path/casing
 import { toast } from "sonner";
 import { FaSpinner, FaUpload, FaCrop, FaTimes, FaCircle, FaSquare } from "react-icons/fa";
 // Assuming you have a Button component like the one in your environment

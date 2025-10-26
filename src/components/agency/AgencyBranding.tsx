@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setAgencyData } from "@/redux/slices/agencySlice";
 import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase"; // Ensure correct casing/path for Firebase
+import { db } from "@/lib/Firebase"; // Ensure correct casing/path for Firebase
 import { toast } from "sonner";
 import { FaSpinner, FaUpload } from "react-icons/fa";
 

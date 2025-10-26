@@ -501,11 +501,11 @@ console.log(user)
         </div>
 
         {/* Credits Display */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <Suspense fallback={<LoadingSpinner />}>
             <CreditDisplay creditsInfo={creditsInfo} />
           </Suspense>
-        </div>
+        </div> */}
 
         {/* <!-- Onboarding Card - styled to match sample --> */}
         {/* <!--

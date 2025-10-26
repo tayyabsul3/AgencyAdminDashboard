@@ -477,7 +477,7 @@ const ArticleList = React.memo(function ArticleList({
                 <div className="card border-0 shadow-sm rounded-4 h-100" style={{ background: theme.cardBg, border: theme.border }} aria-busy={isStatusPending || isDeletePending}>
                   <div className="card-body d-flex flex-column">
                     {/* Top row: category chip and actions placeholder */}
-                    <div className="d-flex justify-content-between align-items-start mb-2">
+                    <div className="d-flex justify-content-between  align-items-start mb-2">
                       <span className="badge rounded-3 border" style={{ background: theme.chipBg, color: theme.chipText, borderColor: theme.chipBorder }}>
                         {article.category || article.topic || (article._source === 'keyword' ? 'Keyword' : 'Article')}
                       </span>

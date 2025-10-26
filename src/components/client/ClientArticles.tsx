@@ -4,7 +4,7 @@ import { useModal } from "@/hooks/useModal";
 import { Modal } from "@/components/ui/modal";
 import Button from "@/components/ui/button/Button";
 import { toast } from "sonner";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import { doc, getDoc, updateDoc, increment } from "firebase/firestore";
 import { withUserData } from "@/components/WithUserData";
 import { useAppDispatch } from "@/redux/hooks";

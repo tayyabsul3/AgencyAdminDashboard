@@ -34,7 +34,7 @@ const UserProfile = ({ user, onProfileClick, isLoading = false }) => {
       case 'agency_custom':
         return 'Agency Custom Plan';
       default:
-        return `${tier} Plan`;
+        return `${tier} `;
     }
   };
 

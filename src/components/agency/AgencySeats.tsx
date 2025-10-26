@@ -8,7 +8,7 @@ import Button from "@/components/ui/button/Button";
 import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { doc, getDoc, setDoc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import { setAgencyData } from "@/redux/slices/agencySlice";
 import { decryptString } from "@/lib/encryption"; // 👈 New import
 import { MdOutlineVpnKey } from "react-icons/md"; // 👈 New icon import

@@ -255,6 +255,7 @@
 
 .navSection {
   display: flex;
+
   flex-direction: column;
   gap: 0.5rem;
   /* Ensure consistent width and prevent overflow */
@@ -1451,6 +1452,7 @@ tstrap-like utility classes for responsive design */
   /* Improve navigation section spacing on mobile */
   .navSection {
     margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
   }
 
   .navSection:last-child {

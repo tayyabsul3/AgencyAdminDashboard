@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { doc, getDoc, updateDoc, arrayUnion, increment } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/Firebase';
 import Link from 'next/link';
 import { toast } from 'sonner';
 

@@ -207,9 +207,9 @@ div:empty {
 }
 
 /* Ensure the navigation is properly positioned */
-nav, .navbar, [class*="nav"] {
+nav, .navbar {
   margin-top: 0 !important;
-  padding-top: 0 !important;
+  padding-top: 0.5rem !important;
 }
 
 /* Fix container spacing */

@@ -1934,7 +1934,6 @@ ${autoPromptContent}`
           
           const finalMetaSection = metaSection || foundMetaDiv;
           
-          // Debug: Log what we found
           console.log('Meta Description Extraction Debug:', {
             hasHtml: !!htmlContent,
             htmlLength: htmlContent?.length || 0,

@@ -8,7 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { toast } from "sonner";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 
 interface CheckoutFormProps {
   amount: number;

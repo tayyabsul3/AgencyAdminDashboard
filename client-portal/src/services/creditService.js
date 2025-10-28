@@ -23,6 +23,15 @@ const subscriptionRef = doc(db, 'subscriptions', userId);
 
             // Check if this is a client tier user with an agency
             if (subscriptionData.tier === 'client' && subscriptionData.agencyId) {
+                // --- START: ALL READS MUST HAPPEN BEFORE ANY WRITES ---
+                const agencyId = subscriptionData.agencyId;
+                const agencyRef = doc(db, 'agencies', agencyId);
+                const agencyDoc = await transaction.get(agencyRef); // Read agency doc BEFORE any writes
+
+                if (!agencyDoc.exists()) {
+                    throw new Error('Agency not found'); 
+                }
+                // --- END: ALL READS COMPLETED ---
 
                 // --- START: CLIENT SUBSCRIPTION UPDATE (Article Count) ---
                 const articleLimit = subscriptionData.articleLimit || 0;
@@ -45,14 +54,6 @@ const subscriptionRef = doc(db, 'subscriptions', userId);
 
 
                 // --- START: AGENCY DOCUMENT UPDATES (Client Array and Credit) ---
-                const agencyId = subscriptionData.agencyId;
-                const agencyRef = doc(db, 'agencies', agencyId);
-                const agencyDoc = await transaction.get(agencyRef); // Must get agency doc in transaction
-
-                if (!agencyDoc.exists()) {
-                    // This will rollback the client subscription update (1c) too.
-                    throw new Error('Agency not found'); 
-                }
 
                 const agencyData = agencyDoc.data();
                 const clientsArray = agencyData.clients || [];

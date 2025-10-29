@@ -10,9 +10,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { doc, getDoc, setDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/Firebase";
 import { setAgencyData } from "@/redux/slices/agencySlice";
-import { decryptString } from "@/lib/encryption"; // 👈 New import
-import { MdOutlineVpnKey } from "react-icons/md"; // 👈 New icon import
-import { FaCopy, FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa"; // Updated icons
+import { decryptString } from "@/lib/encryption";
+import { MdOutlineVpnKey } from "react-icons/md";
+import { FaCopy, FaSpinner, FaEye, FaEyeSlash, FaPaperPlane } from "react-icons/fa";
+
 interface Client {
   name: string;
   email: string;
@@ -43,14 +44,13 @@ export default function AgencySeats() {
   const { agencyId, agencyName, clients, subscription } = useAppSelector((state) => state.agency);
   
   const { isOpen, openModal, closeModal } = useModal();
-  const { isOpen:isPasswordOpen, openModal:passwordOpenModal, closeModal:passwordCloseModal } = useModal();
-const [passwordModalOpen, setPasswordModalOpen] = useState(false); // New: separate modal state
-const [secretKey, setSecretKey] = useState(""); // New: state for the owner's decryption key
-const [decryptedPassword, setDecryptedPassword] = useState<string | null>(null); // New: state for the decrypted password
-const [isDecrypting, setIsDecrypting] = useState(false); // New: loading state for decryption
-const [passwordClient, setPasswordClient] = useState<Client | null>(null); // New: client whose password is being viewed
-const [showKeyInput, setShowKeyInput] = useState(false); // New: to toggle show/hide key
-const [passwordError, setPasswordError] = useState("");
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [secretKey, setSecretKey] = useState("");
+  const [decryptedPassword, setDecryptedPassword] = useState<string | null>(null);
+  const [isDecrypting, setIsDecrypting] = useState(false);
+  const [passwordClient, setPasswordClient] = useState<Client | null>(null);
+  const [showKeyInput, setShowKeyInput] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const [clientName, setClientName] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [articleLimit, setArticleLimit] = useState<number>(10);
@@ -61,7 +61,11 @@ const [passwordError, setPasswordError] = useState("");
   const [isInviting, setIsInviting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-// const { isOpen, openModal, closeModal } = useModal();
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [modalType, setModalType] = useState<'invite' | 'archive' | 'edit' | null>(null);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+
   // Fetch agency data from Firestore
   const fetchAgencyData = async (showRefreshLoader = false) => {
     try {
@@ -148,7 +152,7 @@ const [passwordError, setPasswordError] = useState("");
   const handleInvite = async () => {
     if (clientName && clientEmail) {
       setIsInviting(true);
-      
+
       try {
         if (articleLimit < 1) {
           toast.error("Article limit must be at least 1");
@@ -157,7 +161,7 @@ const [passwordError, setPasswordError] = useState("");
         }
 
         const inviteId = generateInviteId();
-        
+
         const inviteData = {
           inviteId,
           clientName,
@@ -171,41 +175,16 @@ const [passwordError, setPasswordError] = useState("");
         };
 
         await createInviteDocument(agencyId, inviteId, inviteData);
-        
-        const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/invite?agencyId=${agencyId}&inviteId=${inviteId}`;
-        
-        toast.success(
-          <div>
-            <p className="font-semibold">Client {clientName} invited successfully!</p>
-            <p className="mt-2 text-sm">
-              Article Limit: <strong>{articleLimit}</strong> articles
-            </p>
-            <p className="mt-2 text-sm">
-              Share this invitation link:{" "}
-              <a 
-                href={inviteLink} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-500 underline break-all"
-              >
-                {inviteLink}
-              </a>
-            </p>
-          </div>,
-          {
-            duration: 10000,
-          }
-        );
 
-        setClientName("");
-        setClientEmail("");
-        setArticleLimit(10);
-        closeModal();
-        
-        fetchAgencyData(true);
+        const generatedInviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/invite?agencyId=${agencyId}&inviteId=${inviteId}`;
+
+        setInviteLink(generatedInviteLink);
+        fetchAgencyData(true); 
+
       } catch (error) {
         console.error("Error creating invite:", error);
         toast.error("Failed to create invitation. Please try again.");
+        setInviteLink(null);
       } finally {
         setIsInviting(false);
       }
@@ -218,12 +197,12 @@ const [passwordError, setPasswordError] = useState("");
     fetchAgencyData(true);
   };
 
-  const [modalType, setModalType] = useState<'invite' | 'archive' | 'edit' | null>(null);
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-
   const openInviteModal = () => {
     setModalType('invite');
     setArticleLimit(10);
+    setInviteLink(null);
+    setClientName("");
+    setClientEmail("");
     openModal();
   };
 
@@ -248,6 +227,7 @@ const [passwordError, setPasswordError] = useState("");
     setClientEmail("");
     setArticleLimit(10);
     setNewArticleLimit(10);
+    setInviteLink(null);
     closeModal();
   };
 
@@ -270,7 +250,6 @@ const [passwordError, setPasswordError] = useState("");
         return;
       }
 
-      // Get current agency data
       const agencyRef = doc(db, "agencies", agencyId);
       const agencySnap = await getDoc(agencyRef);
       
@@ -280,27 +259,25 @@ const [passwordError, setPasswordError] = useState("");
 
       const agencyData = agencySnap.data();
       
-      // Update client's article limit in agency's clients array
       const updatedClients = agencyData.clients.map((client: Client) => 
         client.userId === editingClient.userId 
           ? { ...client, articleLimit: newArticleLimit }
           : client
       );
 
-      // Update agency document
       await updateDoc(agencyRef, {
         clients: updatedClients,
         updatedAt: serverTimestamp()
       });
 
-      // Update client's subscription document
-      const clientSubRef = doc(db, "subscriptions", editingClient.userId);
-      await updateDoc(clientSubRef, {
-        articleLimit: newArticleLimit,
-        updatedAt: serverTimestamp()
-      });
+      if (editingClient.userId) {
+        const clientSubRef = doc(db, "subscriptions", editingClient.userId);
+        await updateDoc(clientSubRef, {
+          articleLimit: newArticleLimit,
+          updatedAt: serverTimestamp()
+        });
+      }
 
-      // Update Redux immediately for better UX
       dispatch(setAgencyData({
         ...agencyData,
         clients: updatedClients
@@ -379,6 +356,105 @@ const [passwordError, setPasswordError] = useState("");
     }
   };
 
+  const openPasswordModal = (client: Client) => {
+    setPasswordClient(client);
+    setSecretKey("");
+    setDecryptedPassword(null);
+    setPasswordError("");
+    setPasswordModalOpen(true);
+  };
+
+  const closePasswordModal = () => {
+    setPasswordModalOpen(false);
+    setPasswordClient(null);
+    setSecretKey("");
+    setDecryptedPassword(null);
+    setPasswordError("");
+  };
+
+  const handleDecryptPassword = async () => {
+    if (!passwordClient || !passwordClient.encryptedPassword || !secretKey) {
+      setPasswordError("Missing data to decrypt.");
+      return;
+    }
+
+    setIsDecrypting(true);
+    setPasswordError("");
+
+    const agencySecretKey = agencyId; 
+
+    if (secretKey !== agencySecretKey) {
+      setPasswordError("Incorrect Agency Secret Key.");
+      setIsDecrypting(false);
+      return;
+    }
+
+    const decrypted = decryptString(passwordClient.encryptedPassword, secretKey);
+
+    if (decrypted.startsWith("Decryption Failed:") || decrypted.startsWith("Error:")) {
+      setPasswordError("Decryption Failed. Key might be incorrect or data corrupted.");
+      setDecryptedPassword(null);
+    } else {
+      setDecryptedPassword(decrypted);
+      setPasswordError("");
+    }
+
+    setIsDecrypting(false);
+  };
+
+  const copyPassword = () => {
+    if (decryptedPassword) {
+      navigator.clipboard.writeText(decryptedPassword);
+      toast.success("Password copied to clipboard!");
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!inviteLink || !clientEmail || !clientName) {
+      toast.error("Missing invitation or client data.");
+      return;
+    }
+
+    setIsSendingEmail(true);
+
+    try {
+      const apiEndpoint = `${process.env.NEXT_PUBLIC_FUNCTIONS_EMULATOR_URL}/sendClientPortalInvite`; 
+console.log(apiEndpoint)
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clientEmail: clientEmail,
+          portalLink: inviteLink,
+          agencyName: agencyName,
+          clientName: clientName,
+          agencyId: agencyId,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to send invitation email.");
+      }
+
+      toast.success(`Invitation email sent to ${clientName} (${clientEmail})!`);
+      
+      setClientName("");
+      setClientEmail("");
+      setArticleLimit(10);
+      setInviteLink(null);
+      closeAllModals();
+
+    } catch (error: any) {
+      console.error("Error sending email:", error);
+      toast.error(error.message || "Failed to send email. Please copy the link manually.");
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-40 text-gray-500 dark:text-gray-400">
@@ -389,64 +465,7 @@ const [passwordError, setPasswordError] = useState("");
       </div>
     );
   }
-// In AgencySeats function, before openInviteModal, etc.
 
-const openPasswordModal = (client: Client) => {
-  setPasswordClient(client);
-  setSecretKey(""); // Reset key
-  setDecryptedPassword(null); // Reset password
-  setPasswordError(""); // Reset error
-  setPasswordModalOpen(true); // Open the dedicated password modal
-};
-
-const closePasswordModal = () => {
-  setPasswordModalOpen(false);
-  setPasswordClient(null);
-  setSecretKey("");
-  setDecryptedPassword(null);
-  setPasswordError("");
-};
-
-const handleDecryptPassword = async () => {
-  if (!passwordClient || !passwordClient.encryptedPassword || !secretKey) {
-    setPasswordError("Missing data to decrypt.");
-    return;
-  }
-
-  setIsDecrypting(true);
-  setPasswordError("");
-
-  // ⚠️ Using agencyId as the secret key for demonstration.
-  // In a real app, the agencyId should NOT be the secret key.
-  const agencySecretKey = agencyId; 
-
-  if (secretKey !== agencySecretKey) { // Simple key check
-    setPasswordError("Incorrect Agency Secret Key.");
-    setIsDecrypting(false);
-    return;
-  }
-
-  // DECRYPTION LOGIC
-  const decrypted = decryptString(passwordClient.encryptedPassword, secretKey);
-
-  if (decrypted.startsWith("Decryption Failed:") || decrypted.startsWith("Error:")) {
-    setPasswordError("Decryption Failed. Key might be incorrect or data corrupted.");
-    setDecryptedPassword(null);
-  } else {
-    setDecryptedPassword(decrypted);
-    setPasswordError("");
-  }
-
-  setIsDecrypting(false);
-};
-
-// Utility function for copying to clipboard
-const copyPassword = () => {
-    if (decryptedPassword) {
-        navigator.clipboard.writeText(decryptedPassword);
-        toast.success("Password copied to clipboard!");
-    }
-}
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
       {/* Header */}
@@ -565,18 +584,18 @@ const copyPassword = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4">
-          {client.encryptedPassword && client.status === "active" ? (
-            <button
-              onClick={() => openPasswordModal(client)}
-              className="flex items-center gap-2 px-3 py-2 text-purple-600 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors disabled:opacity-50 font-medium"
-            >
-              <MdOutlineVpnKey className="w-4 h-4" />
-              View Password
-            </button>
-          ) : (
-            <span className="text-gray-400">N/A</span>
-          )}
-        </td>
+                  {client.encryptedPassword && client.status === "active" ? (
+                    <button
+                      onClick={() => openPasswordModal(client)}
+                      className="flex items-center gap-2 px-3 py-2 text-purple-600 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors disabled:opacity-50 font-medium"
+                    >
+                      <MdOutlineVpnKey className="w-4 h-4" />
+                      View Password
+                    </button>
+                  ) : (
+                    <span className="text-gray-400">N/A</span>
+                  )}
+                </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <button
@@ -618,7 +637,7 @@ const copyPassword = () => {
             ))}
             {(!clients || clients.length === 0) && (
               <tr>
-                <td colSpan={5} className="px-6 py-12 text-center">
+                <td colSpan={6} className="px-6 py-12 text-center">
                   <div className="flex flex-col items-center justify-center text-gray-500">
                     <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -644,100 +663,161 @@ const copyPassword = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900">Invite Client</h3>
-                <p className="text-gray-600">Add a new client to your agency</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block font-semibold text-gray-700 mb-2">Client Name</label>
-                <input
-                  type="text"
-                  value={clientName}
-                  onChange={(e) => setClientName(e.target.value)}
-                  placeholder="Enter client full name"
-                  disabled={isInviting}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block font-semibold text-gray-700 mb-2">Email Address</label>
-                <input
-                  type="email"
-                  value={clientEmail}
-                  onChange={(e) => setClientEmail(e.target.value)}
-                  placeholder="Enter client email address"
-                  disabled={isInviting}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                />
-              </div>
-              
-              <div>
-                <label className="block font-semibold text-gray-700 mb-2">
-                  Article Limit
-                  <span className="text-sm text-gray-500 font-normal ml-2">
-                    (Maximum articles this client can generate)
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="1000"
-                  value={articleLimit}
-                  onChange={(e) => setArticleLimit(parseInt(e.target.value) || 1)}
-                  disabled={isInviting}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="Enter article limit"
-                />
-                <p className="text-sm text-gray-500 mt-1">
-                  This client will be able to generate up to {articleLimit} articles
+                <h3 className="text-xl font-bold text-gray-900">
+                  {inviteLink ? "Invitation Created!" : "Invite Client"}
+                </h3>
+                <p className="text-gray-600">
+                  {inviteLink ? "Share the link below or send an email to your client." : "Add a new client to your agency"}
                 </p>
               </div>
-              
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="flex justify-between items-center font-medium text-gray-900">
-                  <span>Seat Usage</span>
-                  <span>{usedSeats + 1} of {totalSeats}</span>
-                </div>
-                {usedSeats + 1 > totalSeats && (
-                  <div className="flex items-center gap-2 text-red-600 font-medium mt-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                    Not enough seats available
-                  </div>
-                )}
-              </div>
             </div>
 
-            <div className="flex gap-3 mt-8">
-              <button
-                onClick={closeAllModals}
-                disabled={isInviting}
-                className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleInvite} 
-                disabled={usedSeats >= totalSeats || isInviting || articleLimit < 1}
-                className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none"
-                style={{
-                  background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
-                  boxShadow: '0 4px 12px rgba(76, 110, 245, 0.3)'
-                }}
-              >
-                {isInviting ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Creating Invite...
+            {inviteLink ? (
+              <div className="space-y-6">
+                <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+                  <h4 className="font-semibold text-green-800 mb-2 text-sm">
+                    Invitation Link Ready for {clientName}:
+                  </h4>
+                  <div className="flex items-center p-3 bg-white rounded-lg border border-green-300">
+                    <span className="text-sm text-gray-900 break-all truncate">
+                      {inviteLink}
+                    </span>
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText(inviteLink);
+                        toast.success("Invitation link copied!");
+                      }}
+                      className="ml-4 p-2 text-green-600 hover:text-green-800 transition-colors flex-shrink-0"
+                      title="Copy Link"
+                    >
+                      <FaCopy className="w-5 h-5" />
+                    </button>
                   </div>
-                ) : (
-                  "Send Invitation"
-                )}
-              </button>
-            </div>
+                </div>
+
+                <div className="text-center text-sm text-gray-600 p-2 bg-blue-50 rounded-lg border border-blue-200">
+                  Client <strong>{clientName}</strong> has been assigned a limit of <strong>{articleLimit}</strong> articles.
+                </div>
+
+                <div className="flex gap-3 mt-8">
+                  <button
+                    onClick={closeAllModals}
+                    disabled={isSendingEmail}
+                    className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  >
+                    Close
+                  </button>
+                  <button 
+                    onClick={handleSendEmail} 
+                    disabled={isSendingEmail}
+                    className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none flex items-center justify-center gap-2"
+                    style={{
+                      background: 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)',
+                      boxShadow: '0 4px 12px rgba(39, 174, 96, 0.3)'
+                    }}
+                  >
+                    {isSendingEmail ? (
+                      <FaSpinner className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <FaPaperPlane className="w-4 h-4" />
+                    )}
+                    {isSendingEmail ? "Sending Email..." : "Send Email"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-2">Client Name</label>
+                    <input
+                      type="text"
+                      value={clientName}
+                      onChange={(e) => setClientName(e.target.value)}
+                      placeholder="Enter client full name"
+                      disabled={isInviting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-2">Email Address</label>
+                    <input
+                      type="email"
+                      value={clientEmail}
+                      onChange={(e) => setClientEmail(e.target.value)}
+                      placeholder="Enter client email address"
+                      disabled={isInviting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-2">
+                      Article Limit
+                      <span className="text-sm text-gray-500 font-normal ml-2">
+                        (Maximum articles this client can generate)
+                      </span>
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="1000"
+                      value={articleLimit}
+                      onChange={(e) => setArticleLimit(parseInt(e.target.value) || 1)}
+                      disabled={isInviting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      placeholder="Enter article limit"
+                    />
+                    <p className="text-sm text-gray-500 mt-1">
+                      This client will be able to generate up to {articleLimit} articles
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex justify-between items-center font-medium text-gray-900">
+                      <span>Seat Usage</span>
+                      <span>{usedSeats + 1} of {totalSeats}</span>
+                    </div>
+                    {usedSeats + 1 > totalSeats && (
+                      <div className="flex items-center gap-2 text-red-600 font-medium mt-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                        Not enough seats available
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex gap-3 mt-8">
+                  <button
+                    onClick={closeAllModals}
+                    disabled={isInviting}
+                    className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={handleInvite} 
+                    disabled={usedSeats >= totalSeats || isInviting || articleLimit < 1}
+                    className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none"
+                    style={{
+                      background: 'linear-gradient(135deg, #6aa6ff 0%, #6c71ff 50%, #6de0ff 100%)',
+                      boxShadow: '0 4px 12px rgba(76, 110, 245, 0.3)'
+                    }}
+                  >
+                    {isInviting ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Creating Invite...
+                      </div>
+                    ) : (
+                      "Create Invitation"
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -756,7 +836,6 @@ const copyPassword = () => {
             </div>
 
             <div className="space-y-6">
-              {/* Before/After Comparison */}
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="p-4 bg-red-50 rounded-lg border border-red-200">
                   <h4 className="font-semibold text-red-800 mb-2 text-sm">Before Update</h4>
@@ -795,8 +874,6 @@ const copyPassword = () => {
                   This client will be able to generate up to {newArticleLimit} articles
                 </p>
               </div>
-
-           
             </div>
 
             <div className="flex gap-3 mt-8">
@@ -872,104 +949,103 @@ const copyPassword = () => {
           </div>
         )}
       </Modal>
+
+      {/* Password Modal */}
       <Modal isOpen={passwordModalOpen} onClose={closePasswordModal} className="max-w-md p-6">
-  <div className="text-center">
-    <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-      <MdOutlineVpnKey className="w-8 h-8 text-purple-600" />
-    </div>
-
-    <h3 className="text-xl font-bold text-gray-900 mb-2">
-      View Client Password
-    </h3>
-
-    {passwordClient && (
-      <p className="text-gray-600 mb-6">
-        Enter your **Agency Secret Key** to decrypt the password for client **{passwordClient.name}** ({passwordClient.email}).
-      </p>
-    )}
-
-    {/* Decrypted Password Display */}
-    {decryptedPassword ? (
-      <div className="p-4 bg-green-50 rounded-xl border border-green-200 mb-6">
-        <h4 className="font-semibold text-green-800 mb-2 text-left">
-          Decrypted Password:
-        </h4>
-        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-green-300">
-          <span className="font-mono text-lg text-green-900 break-all">
-            {decryptedPassword}
-          </span>
-          <button 
-            onClick={copyPassword} 
-            className="ml-4 p-2 text-green-600 hover:text-green-800 transition-colors"
-            title="Copy Password"
-          >
-            <FaCopy className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-    ) : (
-      /* Key Input Field */
-      <div className="space-y-4">
-        {passwordError && (
-          <div className="p-3 text-sm text-red-700 bg-red-50 rounded-lg border border-red-200">
-            {passwordError}
+        <div className="text-center">
+          <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+            <MdOutlineVpnKey className="w-8 h-8 text-purple-600" />
           </div>
-        )}
-        <div>
-          <Label className="block font-semibold text-gray-700 mb-2">Agency Secret Key</Label>
-          <div className="relative">
-            <input
-              type={showKeyInput ? "text" : "password"}
-              value={secretKey}
-              onChange={(e) => setSecretKey(e.target.value)}
-              placeholder="Enter your Agency Secret Key"
-              disabled={isDecrypting}
-              className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
-            />
-            <button
-              type="button"
-              onClick={() => setShowKeyInput(!showKeyInput)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
-              disabled={isDecrypting}
-              title={showKeyInput ? "Hide Key" : "Show Key"}
-            >
-              {showKeyInput ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
 
-    {/* Modal Actions */}
-    <div className="flex gap-3 mt-8">
-      <button
-        onClick={closePasswordModal}
-        disabled={isDecrypting}
-        className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
-      >
-        Close
-      </button>
-      {!decryptedPassword && (
-        <button 
-          onClick={handleDecryptPassword}
-          disabled={isDecrypting || secretKey.length === 0}
-          className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none flex items-center justify-center gap-2"
-          style={{
-            background: 'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)', // Purple gradient
-            boxShadow: '0 4px 12px rgba(142, 68, 173, 0.3)'
-          }}
-        >
-          {isDecrypting ? (
-            <FaSpinner className="w-4 h-4 animate-spin" />
-          ) : (
-            <MdOutlineVpnKey className="w-5 h-5" />
+          <h3 className="text-xl font-bold text-gray-900 mb-2">
+            View Client Password
+          </h3>
+
+          {passwordClient && (
+            <p className="text-gray-600 mb-6">
+              Enter your <strong>Agency Secret Key</strong> to decrypt the password for client <strong>{passwordClient.name}</strong> ({passwordClient.email}).
+            </p>
           )}
-          {isDecrypting ? "Decrypting..." : "Decrypt Password"}
-        </button>
-      )}
-    </div>
-  </div>
-</Modal>
+
+          {decryptedPassword ? (
+            <div className="p-4 bg-green-50 rounded-xl border border-green-200 mb-6">
+              <h4 className="font-semibold text-green-800 mb-2 text-left">
+                Decrypted Password:
+              </h4>
+              <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-green-300">
+                <span className="font-mono text-lg text-green-900 break-all">
+                  {decryptedPassword}
+                </span>
+                <button 
+                  onClick={copyPassword} 
+                  className="ml-4 p-2 text-green-600 hover:text-green-800 transition-colors"
+                  title="Copy Password"
+                >
+                  <FaCopy className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {passwordError && (
+                <div className="p-3 text-sm text-red-700 bg-red-50 rounded-lg border border-red-200">
+                  {passwordError}
+                </div>
+              )}
+              <div>
+                <Label className="block font-semibold text-gray-700 mb-2">Agency Secret Key</Label>
+                <div className="relative">
+                  <input
+                    type={showKeyInput ? "text" : "password"}
+                    value={secretKey}
+                    onChange={(e) => setSecretKey(e.target.value)}
+                    placeholder="Enter your Agency Secret Key"
+                    disabled={isDecrypting}
+                    className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowKeyInput(!showKeyInput)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    disabled={isDecrypting}
+                    title={showKeyInput ? "Hide Key" : "Show Key"}
+                  >
+                    {showKeyInput ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-3 mt-8">
+            <button
+              onClick={closePasswordModal}
+              disabled={isDecrypting}
+              className="flex-1 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+            >
+              Close
+            </button>
+            {!decryptedPassword && (
+              <button 
+                onClick={handleDecryptPassword}
+                disabled={isDecrypting || secretKey.length === 0}
+                className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:transform-none flex items-center justify-center gap-2"
+                style={{
+                  background: 'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)',
+                  boxShadow: '0 4px 12px rgba(142, 68, 173, 0.3)'
+                }}
+              >
+                {isDecrypting ? (
+                  <FaSpinner className="w-4 h-4 animate-spin" />
+                ) : (
+                  <MdOutlineVpnKey className="w-5 h-5" />
+                )}
+                {isDecrypting ? "Decrypting..." : "Decrypt Password"}
+              </button>
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
